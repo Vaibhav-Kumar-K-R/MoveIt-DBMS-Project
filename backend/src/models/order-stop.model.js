@@ -29,7 +29,7 @@ const orderStopSchema = new mongoose.Schema(
       ref: "Vehicle",
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const OrderStop = mongoose.model("OrderStop", orderStopSchema);

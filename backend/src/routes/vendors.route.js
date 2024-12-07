@@ -1,11 +1,8 @@
 import express from "express";
+import VendorController from "../controllers/vendors.controller.js";
 
 const vendorRouter = express.Router();
 
-vendorRouter.get("/", (req, res) => {
-  res.json({
-    route: "Vendor",
-  });
-});
+vendorRouter.post("/auth/sign-up", VendorController.signUpVendor);
 
 export default vendorRouter;
