@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import bcrypt from "bcryptjs";
 
 const vendorSchema = new mongoose.Schema(
   {
@@ -8,7 +9,7 @@ const vendorSchema = new mongoose.Schema(
     },
     profile_img_url: {
       type: String,
-      required: true,
+      default: "/images/default-user.png",
     },
     email: {
       type: String,
@@ -48,8 +49,16 @@ const vendorSchema = new mongoose.Schema(
       required: true,
     },
   },
-  { timestamps: true },
+  { timestamps: true }
 );
+
+vendorSchema.pre("save", async function (next) {
+  if (this.isModified("password")) {
+    this.password = await bcrypt.hash(this.password, 10);
+  }
+
+  next();
+});
 
 const Vendor = mongoose.model("Vendor", vendorSchema);
 

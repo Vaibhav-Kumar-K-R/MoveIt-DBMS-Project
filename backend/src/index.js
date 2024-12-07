@@ -2,17 +2,18 @@
 import express from "express";
 import "dotenv/config";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 
 // Configs Imports
 import { connectDB } from "./config/db.js";
 
 // Router endpoints
-import vendorRouter from "./routes/vendor.route.js";
-import customerRouter from "./routes/customer.route.js";
-import adminRouter from "./routes/admin.route.js";
-import managerRouter from "./routes/manager.route.js";
-import employeeRouter from "./routes/employee.route.js";
-import warehouseRouter from "./routes/warehouse.route.js";
+import vendorRouter from "./routes/vendors.route.js";
+import customerRouter from "./routes/customers.route.js";
+import adminRouter from "./routes/admins.route.js";
+import managerRouter from "./routes/managers.route.js";
+import employeeRouter from "./routes/employees.route.js";
+import warehouseRouter from "./routes/warehouses.route.js";
 
 connectDB();
 
@@ -22,6 +23,7 @@ const PORT = process.env.PORT || 5000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
+app.use(cookieParser());
 
 app.get("/health", (_req, res) => {
   res.status(200).json({
