@@ -7,7 +7,7 @@ export const connectDB = async () => {
       "Connected to database:",
       process.env.NODE_ENV === "development"
         ? process.env.MONGO_URI
-        : "production DB",
+        : "production DB"
     );
   } catch (error) {
     throw new Error("Failed to connect to database");
