@@ -7,9 +7,14 @@ const vendorSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    profile_img_url: {
-      type: String,
-      default: "/images/default-user.png",
+    profile_img: {
+      profile_img_url: {
+        type: String,
+        default: "/images/default-user.png",
+      },
+      public_id: {
+        type: String,
+      },
     },
     email: {
       type: String,
