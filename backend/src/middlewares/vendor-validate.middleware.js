@@ -70,8 +70,31 @@ const validateCreateOrderRequest = (req, res, next) => {
   }
 };
 
+const validateUpdateProfileRequest = (req, res, next) => {
+  try {
+    const updateProfileSchema = z.object({
+      name: z.string().min(3).max(50),
+      email: z.string().email(),
+      phone: z.string().min(10).max(10),
+      address: z.string().min(3).max(100),
+      city: z.string().min(3).max(50),
+      state: z.string().min(3).max(50),
+      shop_name: z.string().min(3).max(50),
+      shop_description: z.string().min(3).max(250),
+      pin_code: z.string().min(6).max(6),
+    });
+
+    updateProfileSchema.parse(req.body);
+
+    next();
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
 export default {
   validateVendorSignUpRequest,
   validateSignInRequest,
   validateCreateOrderRequest,
+  validateUpdateProfileRequest,
 };

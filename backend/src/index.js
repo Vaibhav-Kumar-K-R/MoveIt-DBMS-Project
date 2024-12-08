@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 
 // Configs Imports
 import { connectDB } from "./config/db.js";
+import { setUpCloudinary } from "./config/cloudinary.js";
 
 // Router endpoints
 import vendorRouter from "./routes/vendors.route.js";
@@ -16,6 +17,7 @@ import employeeRouter from "./routes/employees.route.js";
 import warehouseRouter from "./routes/warehouses.route.js";
 
 connectDB();
+setUpCloudinary();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
