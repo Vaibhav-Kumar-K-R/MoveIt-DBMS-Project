@@ -1,11 +1,8 @@
 import express from "express";
+import customersController from "../controllers/customers.controller.js";
 
 const customerRouter = express.Router();
 
-customerRouter.get("/", (req, res) => {
-  res.json({
-    route: "Customer",
-  });
-});
+customerRouter.get("/get-order/:trackingId", customersController.getOrder);
 
 export default customerRouter;
