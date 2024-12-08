@@ -1,6 +1,8 @@
 import Vendor from "../models/vendor.model.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
+import Order from "../models/order.model.js";
+import { v4 as uuidv4 } from "uuid";
 
 const signUpVendor = async (req, res, next) => {
   try {
@@ -25,7 +27,7 @@ const signUpVendor = async (req, res, next) => {
     });
 
     return res.status(201).json({
-      vendor,
+      vendorId: vendor._id,
       message: "Vendor Registered successfully",
     });
   } catch (error) {
@@ -63,8 +65,30 @@ const signInVendor = async (req, res, next) => {
     });
 
     return res.status(200).json({
-      vendor,
+      vendorId: vendor._id,
       message: "Vendor Signed In successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const createOrder = async (req, res, next) => {
+  try {
+    // Generate a unique tracking ID and shipping ID using UUID
+    const trackingId = `TRACKING_${uuidv4().split("-")[0].toUpperCase()}`;
+    const shippingId = `SHIPPING_${uuidv4().split("-")[0].toUpperCase()}`;
+
+    const order = await Order.create({
+      ...req.body,
+      tracking_id: trackingId,
+      shipping_id: shippingId,
+      vendor_id: req.vendorId,
+    });
+
+    return res.status(201).json({
+      orderId: order._id,
+      message: "Order created successfully",
     });
   } catch (error) {
     next(error);
@@ -74,4 +98,5 @@ const signInVendor = async (req, res, next) => {
 export default {
   signUpVendor,
   signInVendor,
+  createOrder,
 };

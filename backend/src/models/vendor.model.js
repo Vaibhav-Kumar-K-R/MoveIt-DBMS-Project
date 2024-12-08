@@ -49,7 +49,7 @@ const vendorSchema = new mongoose.Schema(
       required: true,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 vendorSchema.pre("save", async function (next) {
