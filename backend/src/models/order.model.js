@@ -5,14 +5,17 @@ const orderSchema = new mongoose.Schema(
     tracking_id: {
       type: String,
       unique: true,
+      required: true,
     },
     shipping_id: {
       type: String,
       unique: true,
+      required: true,
     },
     vendor_id: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Vendor",
+      required: true,
     },
     product_name: {
       type: String,
