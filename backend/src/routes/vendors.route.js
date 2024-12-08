@@ -5,4 +5,6 @@ const vendorRouter = express.Router();
 
 vendorRouter.post("/auth/sign-up", VendorController.signUpVendor);
 
+vendorRouter.post("/auth/sign-in", VendorController.signInVendor);
+
 export default vendorRouter;
