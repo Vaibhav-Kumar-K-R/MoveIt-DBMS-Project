@@ -42,7 +42,12 @@ app.use("/api/employee", employeeRouter);
 
 // Error handler
 app.use("*", (err, _req, res, next) => {
-  res.status(500).json({ error: err.message });
+  console.log(err);
+
+  res.status(500).json({
+    error: err.message,
+  });
+
   next();
 });
 
