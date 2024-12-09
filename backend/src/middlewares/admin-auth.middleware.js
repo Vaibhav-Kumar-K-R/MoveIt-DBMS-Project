@@ -13,7 +13,6 @@ const verifyAdminToken = (req, res, next) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     req.adminId = decoded.adminId;
-
     next();
   } catch (error) {
     res.status(401).json({
@@ -22,4 +21,6 @@ const verifyAdminToken = (req, res, next) => {
   }
 };
 
-export default verifyAdminToken;
+export default {
+  verifyAdminToken,
+};

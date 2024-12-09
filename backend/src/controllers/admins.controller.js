@@ -3,6 +3,7 @@ import Manager from "../models/manager.model.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { uploadImage } from "../config/cloudinary.js";
+
 const signInAdmin = async (req, res, next) => {
   try {
     const { email, password } = req.body;
@@ -10,7 +11,7 @@ const signInAdmin = async (req, res, next) => {
 
     if (!admin) {
       return res.status(404).json({
-        message: "Admin doesn't exist!!",
+        message: "Admin doesn't exist. Please Sign-up",
       });
     }
 
@@ -33,14 +34,7 @@ const signInAdmin = async (req, res, next) => {
     });
 
     return res.status(200).json({
-      admin: {
-        admin_id: admin._id,
-        name: admin.name,
-        profile_img_url: admin.profile_img_url,
-        email: admin.email,
-        phone: admin.phone,
-        token: token,
-      },
+      adminId: admin._id,
       message: "Admin Signed In successfully",
     });
   } catch (error) {
@@ -50,17 +44,28 @@ const signInAdmin = async (req, res, next) => {
 
 const createManagerProfile = async (req, res, next) => {
   try {
-    if (!req.file) {
-      return res.status(400).json({ error: "File not uploaded!" });
-    }
-    const profileImage = req.file;
-    let profileImgDetails = null;
+    let manager = await Manager.findOne({ email: req.body.email });
 
-    if (profileImage) {
-      profileImgDetails = await uploadImage(profileImage, req.body.name);
+    if (manager) {
+      return res.status(400).json({
+        message: "Manager already exists",
+      });
     }
-    req.body.profile_img_url = profileImgDetails.secure_url;
-    const manager = await Manager.create(req.body);
+
+    if (!req.file) {
+      return res.status(400).json({ message: "File not uploaded!" });
+    }
+
+    const profileImage = req.file;
+    const profileImgDetails = await uploadImage(profileImage);
+
+    manager = await Manager.create({
+      ...req.body,
+      profile_img: {
+        profile_img_url: profileImgDetails.secure_url,
+        public_id: profileImgDetails.public_id,
+      },
+    });
 
     return res.status(201).json({
       manager_id: manager._id,
