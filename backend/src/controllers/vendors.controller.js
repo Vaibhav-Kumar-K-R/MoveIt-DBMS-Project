@@ -131,30 +131,36 @@ const updateProfile = async (req, res, next) => {
     const vendorId = req.vendorId;
     const profileImage = req.file;
     let profileImgDetails = null;
+    let updatedVendor;
+
+    const vendor = await Vendor.findById(vendorId);
+
+    if (!vendor) {
+      return res.status(404).json({
+        message: "Vendor not found",
+      });
+    }
 
     if (profileImage) {
-      const vendor = await Vendor.findById(vendorId);
       profileImgDetails = await uploadImage(
         profileImage,
         vendor.profile_img?.public_id,
       );
-    }
 
-    const updatedVendor = await Vendor.findByIdAndUpdate(
-      vendorId,
-      {
-        ...req.body,
-        profile_img: {
-          profile_img_url: profileImgDetails.secure_url,
-          public_id: profileImgDetails.public_id,
+      updatedVendor = await Vendor.findByIdAndUpdate(
+        vendorId,
+        {
+          ...req.body,
+          profile_img: {
+            profile_img_url: profileImgDetails.secure_url,
+            public_id: profileImgDetails.public_id,
+          },
         },
-      },
-      { new: true },
-    );
-
-    if (!updatedVendor) {
-      return res.status(404).json({
-        message: "Vendor not found",
+        { new: true },
+      );
+    } else {
+      updatedVendor = await Vendor.findByIdAndUpdate(vendorId, req.body, {
+        new: true,
       });
     }
 

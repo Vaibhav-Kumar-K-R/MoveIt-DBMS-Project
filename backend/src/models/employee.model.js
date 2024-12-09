@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import bcrypt from "bcryptjs";
 
 const employeeSchema = new mongoose.Schema(
   {
@@ -15,9 +16,14 @@ const employeeSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
-    profile_img_url: {
-      type: String,
-      required: true,
+    profile_img: {
+      profile_img_url: {
+        type: String,
+        default: "/images/default-user.png",
+      },
+      public_id: {
+        type: String,
+      },
     },
     email: {
       type: String,
@@ -34,6 +40,7 @@ const employeeSchema = new mongoose.Schema(
     },
     role: {
       type: String,
+      enum: ["driver", "delivery_boy"],
       required: true,
     },
     driving_experience: {
@@ -47,6 +54,14 @@ const employeeSchema = new mongoose.Schema(
   },
   { timestamps: true },
 );
+
+employeeSchema.pre("save", async function (next) {
+  if (this.isModified("password")) {
+    this.password = await bcrypt.hash(this.password, 10);
+  }
+
+  next();
+});
 
 const Employee = mongoose.model("Employee", employeeSchema);
 

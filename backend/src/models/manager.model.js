@@ -10,7 +10,7 @@ const managerSchema = new mongoose.Schema(
     profile_img: {
       profile_img_url: {
         type: String,
-        required: true,
+        default: "/images/default-user.png",
       },
       public_id: {
         type: String,

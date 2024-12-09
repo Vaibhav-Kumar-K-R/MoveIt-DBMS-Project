@@ -23,7 +23,7 @@ const validateVendorSignUpRequest = (req, res, next) => {
   }
 };
 
-const validateSignInRequest = (req, res, next) => {
+const validateVendorSignInRequest = (req, res, next) => {
   try {
     const signInSchema = z.object({
       email: z.string().email(),
@@ -94,7 +94,7 @@ const validateUpdateProfileRequest = (req, res, next) => {
 
 export default {
   validateVendorSignUpRequest,
-  validateSignInRequest,
+  validateVendorSignInRequest,
   validateCreateOrderRequest,
   validateUpdateProfileRequest,
 };
