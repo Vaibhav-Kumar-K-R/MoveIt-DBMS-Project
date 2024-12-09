@@ -6,9 +6,14 @@ const adminSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    profile_img_url: {
-      type: String,
-      required: true,
+    profile_img: {
+      profile_img_url: {
+        type: String,
+        required: true,
+      },
+      public_id: {
+        type: String,
+      },
     },
     email: {
       type: String,
