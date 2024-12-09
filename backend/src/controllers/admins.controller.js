@@ -1,5 +1,7 @@
 import Admin from "../models/admin.model.js";
 import Manager from "../models/manager.model.js";
+import Warehouse from "../models/warehouse.model.js";
+import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { uploadImage } from "../config/cloudinary.js";
@@ -76,7 +78,33 @@ const createManagerProfile = async (req, res, next) => {
   }
 };
 
+const createWarehouseProfile = async (req, res, next) => {
+  try {
+    let warehouse = await Warehouse.findOne({ email: req.body.email });
+
+    if (warehouse) {
+      return res.status(400).json({
+        message: "Warehouse with given email already exists!!",
+      });
+    }
+    // Validate that the manager_id exists as an ObjectId
+    if (!mongoose.Types.ObjectId.isValid(req.body.manager_id)) {
+      return res.status(400).json({ error: "Invalid ObjectId for manager_id" });
+    }
+    req.body.manager_id = new mongoose.Types.ObjectId(req.body.manager_id);
+    warehouse = await Warehouse.create(req.body);
+
+    return res.status(201).json({
+      warehouse_id: warehouse._id,
+      message: "Warehouse profile created successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
   signInAdmin,
   createManagerProfile,
+  createWarehouseProfile,
 };

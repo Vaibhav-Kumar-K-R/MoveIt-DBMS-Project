@@ -20,4 +20,11 @@ adminRouter.post(
   adminController.createManagerProfile,
 );
 
+adminRouter.post(
+  "/create-warehouse",
+  adminAuthMiddleware.verifyAdminToken,
+  adminMiddlware.validateCreateWarehouseRequest,
+  adminController.createWarehouseProfile,
+);
+
 export default adminRouter;
