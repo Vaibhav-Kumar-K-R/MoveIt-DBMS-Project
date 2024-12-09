@@ -2,6 +2,7 @@ import Manager from "../models/manager.model.js";
 import Employee from "../models/employee.model.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import mongoose from "mongoose";
 
 const getEmployeesUnderManager = async (req, res, next) => {
   try {
@@ -94,7 +95,7 @@ const addEmployee = async (req, res, next) => {
         : {
             ...req.body,
             manager_id: req.managerId,
-          },
+          }
     );
 
     res.status(201).json({
