@@ -17,7 +17,7 @@ const validateAdminSignInRequest = (req, res, next) => {
 
 const validateCreateWarehouseRequest = (req, res, next) => {
   try {
-    const warehouseSchema = z.object({
+    const createWarehouseRequest = z.object({
       name: z.string().min(3).max(50),
       address: z.string().min(3).max(100),
       pincode: z.string().min(6).max(6),
@@ -25,9 +25,10 @@ const validateCreateWarehouseRequest = (req, res, next) => {
       state: z.string(),
       email: z.string().email(),
       password: z.string().min(8).max(50),
+      manager_id: z.string(),
     });
 
-    warehouseSchema.parse(req.body);
+    createWarehouseRequest.parse(req.body);
 
     next();
   } catch (error) {
@@ -37,7 +38,7 @@ const validateCreateWarehouseRequest = (req, res, next) => {
 
 const validateCreateManagerRequest = (req, res, next) => {
   try {
-    const managerSchema = z.object({
+    const createManagerRequest = z.object({
       name: z.string().min(3).max(50),
       email: z.string().email(),
       phone: z.string().min(10).max(10),
@@ -45,7 +46,7 @@ const validateCreateManagerRequest = (req, res, next) => {
       password: z.string().min(8).max(50),
     });
 
-    managerSchema.parse(req.body);
+    createManagerRequest.parse(req.body);
 
     next();
   } catch (error) {

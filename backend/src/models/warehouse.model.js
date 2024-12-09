@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-
+import bcrypt from "bcryptjs";
 const warehouseSchema = new mongoose.Schema(
   {
     name: {
@@ -39,6 +39,14 @@ const warehouseSchema = new mongoose.Schema(
   },
   { timestamps: true },
 );
+
+warehouseSchema.pre("save", async function (next) {
+  if (this.isModified("password")) {
+    this.password = await bcrypt.hash(this.password, 10);
+  }
+
+  next();
+});
 
 const Warehouse = mongoose.model("warehouse", warehouseSchema);
 
