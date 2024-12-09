@@ -103,8 +103,30 @@ const createWarehouseProfile = async (req, res, next) => {
   }
 };
 
+const getWarehouseList = async (req, res, next) => {
+  try {
+    let warehouseList = await Warehouse.find({}).select(
+      "-createdAt -updatedAt -__v -_id",
+    );
+
+    if (warehouseList.length == 0) {
+      return res.status(400).json({
+        message: "No warehouses found !!",
+      });
+    }
+
+    return res.status(201).json({
+      warehouses: warehouseList,
+      total_count: warehouseList.length,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
   signInAdmin,
   createManagerProfile,
   createWarehouseProfile,
+  getWarehouseList,
 };
