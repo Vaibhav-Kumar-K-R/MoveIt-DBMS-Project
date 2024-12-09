@@ -14,7 +14,7 @@ vendorRouter.post(
 
 vendorRouter.post(
   "/auth/sign-in",
-  vendorValidateMiddleware.validateSignInRequest,
+  vendorValidateMiddleware.validateVendorSignInRequest,
   vendorsController.signInVendor,
 );
 

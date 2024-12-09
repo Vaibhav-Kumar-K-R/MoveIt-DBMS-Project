@@ -1,4 +1,5 @@
 import { z } from "zod";
+
 const validateAdminSignInRequest = (req, res, next) => {
   try {
     const signInSchema = z.object({
@@ -33,14 +34,14 @@ const validateCreateWarehouseRequest = (req, res, next) => {
     res.status(400).json({ message: error.message });
   }
 };
+
 const validateCreateManagerRequest = (req, res, next) => {
   try {
     const managerSchema = z.object({
       name: z.string().min(3).max(50),
-      profile_img_url: z.string(),
-      phone: z.string().min(10).max(10),
-      dob: z.string().min(8).max(10),
       email: z.string().email(),
+      phone: z.string().min(10).max(10),
+      dob: z.string().regex(/^\d{2}-\d{2}-\d{4}$/), // DD-MM-YYYY
       password: z.string().min(8).max(50),
     });
 
@@ -53,6 +54,7 @@ const validateCreateManagerRequest = (req, res, next) => {
     res.status(400).json({ message: error.message });
   }
 };
+
 export default {
   validateAdminSignInRequest,
   validateCreateWarehouseRequest,

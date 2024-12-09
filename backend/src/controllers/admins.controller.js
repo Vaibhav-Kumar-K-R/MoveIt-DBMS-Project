@@ -52,22 +52,26 @@ const createManagerProfile = async (req, res, next) => {
       });
     }
 
-    if (!req.file) {
-      return res.status(400).json({ message: "File not uploaded!" });
+    const profileImage = req.file;
+    let profileImgDetails = null;
+
+    if (profileImage) {
+      profileImgDetails = await uploadImage(profileImage);
     }
 
-    const profileImage = req.file;
-    const profileImgDetails = await uploadImage(profileImage);
+    manager = await Manager.create(
+      profileImgDetails
+        ? {
+            ...req.body,
+            profile_img: {
+              profile_img_url: profileImgDetails.secure_url,
+              public_id: profileImgDetails.public_id,
+            },
+          }
+        : req.body,
+    );
 
-    manager = await Manager.create({
-      ...req.body,
-      profile_img: {
-        profile_img_url: profileImgDetails.secure_url,
-        public_id: profileImgDetails.public_id,
-      },
-    });
-
-    return res.status(201).json({
+    res.status(201).json({
       manager_id: manager._id,
       message: "Manager profile created successfully",
     });
