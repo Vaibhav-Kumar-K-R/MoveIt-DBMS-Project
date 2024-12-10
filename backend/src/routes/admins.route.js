@@ -33,4 +33,42 @@ adminRouter.get(
   adminController.getWarehouseList,
 );
 
+adminRouter.get(
+  "/warehouse/:state",
+  adminAuthMiddleware.verifyAdminToken,
+  adminController.getWarehousebyState,
+);
+
+adminRouter.post(
+  "/add-vehicle",
+  upload.single("vehicleImg"),
+  adminAuthMiddleware.verifyAdminToken,
+  adminMiddlware.validateCreateVehicleRequest,
+  adminController.addVehicle,
+);
+
+adminRouter.get(
+  "/get-stats",
+  adminAuthMiddleware.verifyAdminToken,
+  adminController.getStats,
+);
+
+adminRouter.delete(
+  "/manager/:managerName",
+  adminAuthMiddleware.verifyAdminToken,
+  adminController.deleteManager,
+);
+
+adminRouter.delete(
+  "/vehicle/:number_plate",
+  adminAuthMiddleware.verifyAdminToken,
+  adminController.deleteVehicle,
+);
+
+adminRouter.delete(
+  "/warehouse/:warehouseName",
+  adminAuthMiddleware.verifyAdminToken,
+  adminController.deleteWarehouse,
+);
+
 export default adminRouter;

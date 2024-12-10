@@ -56,8 +56,29 @@ const validateCreateManagerRequest = (req, res, next) => {
   }
 };
 
+const validateCreateVehicleRequest = (req, res, next) => {
+  try {
+    req.body.capacity = parseInt(req.body.capacity);
+    const createVehicleRequest = z.object({
+      number_plate: z.string().min(10).max(15),
+      status: z.string(),
+      capacity: z.number(),
+      vehicle_img_url: z.string(),
+      model: z.string(),
+      type: z.string(),
+    });
+
+    createVehicleRequest.parse(req.body);
+
+    next();
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
 export default {
   validateAdminSignInRequest,
   validateCreateWarehouseRequest,
   validateCreateManagerRequest,
+  validateCreateVehicleRequest,
 };

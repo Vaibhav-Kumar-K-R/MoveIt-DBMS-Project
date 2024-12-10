@@ -1,6 +1,10 @@
 import Admin from "../models/admin.model.js";
 import Manager from "../models/manager.model.js";
 import Warehouse from "../models/warehouse.model.js";
+import Order from "../models/order.model.js";
+import Employee from "../models/employee.model.js";
+import Vendor from "../models/vendor.model.js";
+import Vehicle from "../models/vehicle.model.js";
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
@@ -128,9 +132,166 @@ const getWarehouseList = async (req, res, next) => {
   }
 };
 
+const getWarehousebyState = async (req, res, next) => {
+  try {
+    const state = req.params.state;
+    let stateWarehouse = await Warehouse.find({
+      state: state,
+    }).select("-createdAt -updatedAt -__v -_id  -password");
+
+    if (stateWarehouse.length == 0) {
+      return res.status(400).json({
+        message: "No warehouses found under the given state name!!",
+      });
+    }
+
+    return res.status(201).json({
+      warehouses: stateWarehouse,
+      total_count: stateWarehouse.length,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const addVehicle = async (req, res, next) => {
+  try {
+    let vehicle = await Vehicle.findOne({
+      number_plate: req.body.number_plate,
+    });
+
+    if (vehicle) {
+      return res.status(400).json({
+        message: "Vehicle already exists",
+      });
+    }
+
+    const vehicleImage = req.file;
+    let vehicleImgDetails = null;
+
+    if (vehicleImage) {
+      vehicleImgDetails = await uploadImage(vehicleImage);
+    }
+    req.body.vehicle_img_url = vehicleImgDetails.secure_url;
+    vehicle = await Vehicle.create(req.body);
+
+    res.status(201).json({
+      vehicle_id: vehicle._id,
+      message: "New vehicle added successfully.",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getStats = async (req, res, next) => {
+  try {
+    const [
+      vendorCount,
+      warehouseCount,
+      managerCount,
+      employeesCount,
+      orderCount,
+      vehiclesCount,
+      activeordersCount,
+    ] = await Promise.all([
+      Vendor.countDocuments(),
+      Warehouse.countDocuments(),
+      Manager.countDocuments(),
+      Employee.countDocuments(),
+      Order.countDocuments(),
+      Vehicle.countDocuments(),
+      Order.countDocuments({ status: { $ne: "available" } }),
+    ]);
+
+    res.status(200).json({
+      total_vendors: vendorCount,
+      total_warehouses: warehouseCount,
+      total_managers: managerCount,
+      total_employees: employeesCount,
+      total_orders: orderCount,
+      total_vehicles: vehiclesCount,
+      total_active_orders: activeordersCount,
+    });
+  } catch (error) {
+    res.status(400).json({
+      message: "Failed to fetch statistics!!",
+    });
+  }
+};
+
+const deleteManager = async (req, res, next) => {
+  try {
+    const managerName = req.params.managerName;
+    let manager = await Manager.findOneAndDelete({
+      name: managerName,
+    });
+
+    if (!manager) {
+      return res.status(400).json({
+        message: "Manager under the given name does not exist!!",
+      });
+    }
+
+    return res.status(200).json({
+      message: "Manager successfully removed",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const deleteWarehouse = async (req, res, next) => {
+  try {
+    const warehouseName = req.params.warehouseName;
+    let warehouse = await Warehouse.findOneAndDelete({
+      name: warehouseName,
+    });
+
+    if (!warehouse) {
+      return res.status(400).json({
+        message: "Warehouse under the given name does not exist!!",
+      });
+    }
+
+    return res.status(200).json({
+      message: "Warehouse successfully removed",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const deleteVehicle = async (req, res, next) => {
+  try {
+    const numberPlate = req.params.number_plate;
+    let vehicle = await Vehicle.findOneAndDelete({
+      number_plate: numberPlate,
+    });
+
+    if (!vehicle) {
+      return res.status(400).json({
+        message: "Vehicle under the given number plate does not exist!!",
+      });
+    }
+
+    return res.status(200).json({
+      message: "Vehicle successfully removed",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
   signInAdmin,
   createManagerProfile,
   createWarehouseProfile,
   getWarehouseList,
+  getWarehousebyState,
+  addVehicle,
+  getStats,
+  deleteManager,
+  deleteWarehouse,
+  deleteVehicle,
 };

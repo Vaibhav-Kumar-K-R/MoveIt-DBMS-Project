@@ -95,7 +95,7 @@ const addEmployee = async (req, res, next) => {
         : {
             ...req.body,
             manager_id: req.managerId,
-          }
+          },
     );
 
     res.status(201).json({
