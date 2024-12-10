@@ -33,4 +33,10 @@ adminRouter.get(
   adminController.getWarehouseList,
 );
 
+adminRouter.get(
+  "/warehouse/:state",
+  adminAuthMiddleware.verifyAdminToken,
+  adminController.getWarehousebyState,
+);
+
 export default adminRouter;

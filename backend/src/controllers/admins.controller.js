@@ -128,9 +128,32 @@ const getWarehouseList = async (req, res, next) => {
   }
 };
 
+const getWarehousebyState = async (req, res, next) => {
+  try {
+    const state = req.params.state;
+    let stateWarehouse = await Warehouse.find({
+      state: state,
+    }).select("-createdAt -updatedAt -__v -_id  -password");
+
+    if (stateWarehouse.length == 0) {
+      return res.status(400).json({
+        message: "No warehouses found under the given state name!!",
+      });
+    }
+
+    return res.status(201).json({
+      warehouses: stateWarehouse,
+      total_count: stateWarehouse.length,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
   signInAdmin,
   createManagerProfile,
   createWarehouseProfile,
   getWarehouseList,
+  getWarehousebyState,
 };
