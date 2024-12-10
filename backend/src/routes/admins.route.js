@@ -53,4 +53,22 @@ adminRouter.get(
   adminController.getStats,
 );
 
+adminRouter.delete(
+  "/manager/:managerName",
+  adminAuthMiddleware.verifyAdminToken,
+  adminController.deleteManager,
+);
+
+adminRouter.delete(
+  "/vehicle/:number_plate",
+  adminAuthMiddleware.verifyAdminToken,
+  adminController.deleteVehicle,
+);
+
+adminRouter.delete(
+  "/warehouse/:warehouseName",
+  adminAuthMiddleware.verifyAdminToken,
+  adminController.deleteWarehouse,
+);
+
 export default adminRouter;

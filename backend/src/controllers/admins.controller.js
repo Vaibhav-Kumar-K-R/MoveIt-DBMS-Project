@@ -220,6 +220,69 @@ const getStats = async (req, res, next) => {
   }
 };
 
+const deleteManager = async (req, res, next) => {
+  try {
+    const managerName = req.params.managerName;
+    let manager = await Manager.findOneAndDelete({
+      name: managerName,
+    });
+
+    if (!manager) {
+      return res.status(400).json({
+        message: "Manager under the given name does not exist!!",
+      });
+    }
+
+    return res.status(200).json({
+      message: "Manager successfully removed",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const deleteWarehouse = async (req, res, next) => {
+  try {
+    const warehouseName = req.params.warehouseName;
+    let warehouse = await Warehouse.findOneAndDelete({
+      name: warehouseName,
+    });
+
+    if (!warehouse) {
+      return res.status(400).json({
+        message: "Warehouse under the given name does not exist!!",
+      });
+    }
+
+    return res.status(200).json({
+      message: "Warehouse successfully removed",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const deleteVehicle = async (req, res, next) => {
+  try {
+    const numberPlate = req.params.number_plate;
+    let vehicle = await Vehicle.findOneAndDelete({
+      number_plate: numberPlate,
+    });
+
+    if (!vehicle) {
+      return res.status(400).json({
+        message: "Vehicle under the given number plate does not exist!!",
+      });
+    }
+
+    return res.status(200).json({
+      message: "Vehicle successfully removed",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
   signInAdmin,
   createManagerProfile,
@@ -228,4 +291,7 @@ export default {
   getWarehousebyState,
   addVehicle,
   getStats,
+  deleteManager,
+  deleteWarehouse,
+  deleteVehicle,
 };
