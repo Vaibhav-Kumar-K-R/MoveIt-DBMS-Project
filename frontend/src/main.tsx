@@ -6,22 +6,22 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { BrowserRouter as Router } from "react-router-dom";
 
 const queryClient = new QueryClient({
-	defaultOptions: {
-		queries: {
-			retry: 3, // Number of retry attempts on failure (default is 3)
-			refetchOnWindowFocus: false, // Prevent refetching when window regains focus
-			staleTime: 60000, // Data stays fresh for 60 seconds
-			cacheTime: 300000, // Data is cached for 5 minutes
-		},
-	},
+  defaultOptions: {
+    queries: {
+      retry: 3, // Number of retry attempts on failure (default is 3)
+      refetchOnWindowFocus: false, // Prevent refetching when window regains focus
+      staleTime: 60000, // Data stays fresh for 60 seconds
+      cacheTime: 300000, // Data is cached for 5 minutes
+    },
+  },
 });
 
 createRoot(document.getElementById("root")!).render(
-	<StrictMode>
-		<Router>
-			<QueryClientProvider client={queryClient}>
-				<App />
-			</QueryClientProvider>
-		</Router>
-	</StrictMode>
+  <StrictMode>
+    <Router>
+      <QueryClientProvider client={queryClient}>
+        <App />
+      </QueryClientProvider>
+    </Router>
+  </StrictMode>,
 );

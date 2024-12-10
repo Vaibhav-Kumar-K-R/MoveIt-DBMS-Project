@@ -4,6 +4,6 @@ const Footer = () => {
       <p>Footer</p>
     </footer>
   );
-}
+};
 
 export default Footer;
