@@ -39,4 +39,18 @@ adminRouter.get(
   adminController.getWarehousebyState,
 );
 
+adminRouter.post(
+  "/add-vehicle",
+  upload.single("vehicleImg"),
+  adminAuthMiddleware.verifyAdminToken,
+  adminMiddlware.validateCreateVehicleRequest,
+  adminController.addVehicle,
+);
+
+adminRouter.get(
+  "/get-stats",
+  adminAuthMiddleware.verifyAdminToken,
+  adminController.getStats,
+);
+
 export default adminRouter;
