@@ -95,12 +95,20 @@ const createWarehouseProfile = async (req, res, next) => {
         message: "Warehouse with given email already exists!!",
       });
     }
+
     // Validate that the manager_id exists as an ObjectId
-    if (!mongoose.Types.ObjectId.isValid(req.body.manager_id)) {
-      return res.status(400).json({ error: "Invalid ObjectId for manager_id" });
+    if (!mongoose.isValidObjectId(req.body.manager_id)) {
+      return res
+        .status(400)
+        .json({ message: "Invalid ObjectId for manager_id" });
     }
-    req.body.manager_id = new mongoose.Types.ObjectId(req.body.manager_id);
-    warehouse = await Warehouse.create(req.body);
+
+    warehouse = await Warehouse.create({
+      ...req.body,
+      manager_id: mongoose.Types.ObjectId.createFromHexString(
+        req.body.manager_id,
+      ),
+    });
 
     return res.status(201).json({
       warehouse_id: warehouse._id,
@@ -111,7 +119,7 @@ const createWarehouseProfile = async (req, res, next) => {
   }
 };
 
-const getWarehouseList = async (req, res, next) => {
+const getWarehouseList = async (_req, res, next) => {
   try {
     let warehouseList = await Warehouse.find({}).select(
       "-createdAt -updatedAt -__v -_id",
@@ -172,8 +180,18 @@ const addVehicle = async (req, res, next) => {
     if (vehicleImage) {
       vehicleImgDetails = await uploadImage(vehicleImage);
     }
-    req.body.vehicle_img_url = vehicleImgDetails.secure_url;
-    vehicle = await Vehicle.create(req.body);
+
+    vehicle = await Vehicle.create(
+      vehicleImgDetails
+        ? {
+            ...req.body,
+            vehicle_img: {
+              vehicle_img_url: vehicleImgDetails.secure_url,
+              public_id: vehicleImgDetails.public_id,
+            },
+          }
+        : req.body,
+    );
 
     res.status(201).json({
       vehicle_id: vehicle._id,
@@ -187,13 +205,13 @@ const addVehicle = async (req, res, next) => {
 const getStats = async (req, res, next) => {
   try {
     const [
-      vendorCount,
-      warehouseCount,
-      managerCount,
+      vendorsCount,
+      warehousesCount,
+      managersCount,
       employeesCount,
-      orderCount,
+      ordersCount,
       vehiclesCount,
-      activeordersCount,
+      activeOrdersCount,
     ] = await Promise.all([
       Vendor.countDocuments(),
       Warehouse.countDocuments(),
@@ -201,17 +219,21 @@ const getStats = async (req, res, next) => {
       Employee.countDocuments(),
       Order.countDocuments(),
       Vehicle.countDocuments(),
-      Order.countDocuments({ status: { $ne: "available" } }),
+      Order.countDocuments({
+        status: {
+          $nin: ["delivered", "cancelled"],
+        },
+      }),
     ]);
 
     res.status(200).json({
-      total_vendors: vendorCount,
-      total_warehouses: warehouseCount,
-      total_managers: managerCount,
+      total_vendors: vendorsCount,
+      total_warehouses: warehousesCount,
+      total_managers: managersCount,
       total_employees: employeesCount,
-      total_orders: orderCount,
+      total_orders: ordersCount,
       total_vehicles: vehiclesCount,
-      total_active_orders: activeordersCount,
+      total_active_orders: activeOrdersCount,
     });
   } catch (error) {
     res.status(400).json({
@@ -222,14 +244,12 @@ const getStats = async (req, res, next) => {
 
 const deleteManager = async (req, res, next) => {
   try {
-    const managerName = req.params.managerName;
-    let manager = await Manager.findOneAndDelete({
-      name: managerName,
-    });
+    const { managerId } = req.params;
+    let manager = await Manager.findByIdAndDelete(managerId);
 
     if (!manager) {
-      return res.status(400).json({
-        message: "Manager under the given name does not exist!!",
+      return res.status(404).json({
+        message: "Manager not found!!",
       });
     }
 
@@ -243,14 +263,12 @@ const deleteManager = async (req, res, next) => {
 
 const deleteWarehouse = async (req, res, next) => {
   try {
-    const warehouseName = req.params.warehouseName;
-    let warehouse = await Warehouse.findOneAndDelete({
-      name: warehouseName,
-    });
+    const { warehouseId } = req.params;
+    let warehouse = await Warehouse.findByIdAndDelete(warehouseId);
 
     if (!warehouse) {
-      return res.status(400).json({
-        message: "Warehouse under the given name does not exist!!",
+      return res.status(404).json({
+        message: "Warehouse not found!!",
       });
     }
 
@@ -264,9 +282,9 @@ const deleteWarehouse = async (req, res, next) => {
 
 const deleteVehicle = async (req, res, next) => {
   try {
-    const numberPlate = req.params.number_plate;
+    const { vehicleId } = req.params;
     let vehicle = await Vehicle.findOneAndDelete({
-      number_plate: numberPlate,
+      number_plate: vehicleId,
     });
 
     if (!vehicle) {

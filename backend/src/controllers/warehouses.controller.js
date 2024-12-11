@@ -1,6 +1,8 @@
 import Warehouse from "../models/warehouse.model.js";
+import Order from "../models/order.model.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import OrderStop from "../models/order-stop.model.js";
 
 const signInWarehouse = async (req, res, next) => {
   try {
@@ -24,7 +26,7 @@ const signInWarehouse = async (req, res, next) => {
     const token = jwt.sign(
       { warehouseId: warehouse._id },
       process.env.JWT_SECRET,
-      { expiresIn: "1d" }
+      { expiresIn: "1d" },
     );
 
     res.cookie("warehouse_auth_token", token, {
@@ -42,9 +44,48 @@ const signInWarehouse = async (req, res, next) => {
   }
 };
 
-// Need to update
 const addOrderStop = async (req, res, next) => {
   try {
+    const { shippingId, warehouseId } = req.params.shippingId;
+
+    const order = await Order.findOne({
+      shipping_id: shippingId,
+    }).populate("_id");
+
+    if (!order) {
+      return res.status(404).json({
+        message: "Order not found",
+      });
+    }
+
+    if (order.status === "cancelled") {
+      return res.status(400).json({
+        message: "Order already cancelled",
+      });
+    }
+
+    if (order.status === "delivered") {
+      return res.status(400).json({
+        message: "Order already delivered",
+      });
+    }
+
+    if (order.status === "out_for_delivery") {
+      return res.status(400).json({
+        message: "Order already out for delivery",
+      });
+    }
+
+    const orderStop = await OrderStop.create({
+      order_id: order._id,
+      warehouse_id: warehouseId,
+      arrival_datetime: Date.now(),
+    });
+
+    res.status(201).json({
+      orderStopId: orderStop._id,
+      message: "Order stop added successfully",
+    });
   } catch (error) {
     next(error);
   }

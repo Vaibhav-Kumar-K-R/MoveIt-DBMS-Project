@@ -35,7 +35,7 @@ const NotFound = () => {
               variant: "link",
               className:
                 "text-sm text-sky-500 hover:text-sky-600 transition-colors flex items-center gap-2 justify-center",
-            })
+            }),
           )}
         >
           Go back home <MoveRight />

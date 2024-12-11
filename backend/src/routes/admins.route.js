@@ -54,21 +54,21 @@ adminRouter.get(
 );
 
 adminRouter.delete(
-  "/manager/:managerName",
+  "/manager/:managerId",
   adminAuthMiddleware.verifyAdminToken,
   adminController.deleteManager,
 );
 
 adminRouter.delete(
-  "/vehicle/:number_plate",
+  "/warehouse/:warehouseId",
   adminAuthMiddleware.verifyAdminToken,
-  adminController.deleteVehicle,
+  adminController.deleteWarehouse,
 );
 
 adminRouter.delete(
-  "/warehouse/:warehouseName",
+  "/vehicle/:vehicleId",
   adminAuthMiddleware.verifyAdminToken,
-  adminController.deleteWarehouse,
+  adminController.deleteVehicle,
 );
 
 export default adminRouter;

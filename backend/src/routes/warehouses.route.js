@@ -7,7 +7,12 @@ const warehouseRouter = express.Router();
 warehouseRouter.post(
   "/auth/sign-in",
   warehouseValidateMiddleware.validateWarehouseSignInRequest,
-  warehousesController.signInWarehouse
+  warehousesController.signInWarehouse,
+);
+
+warehouseRouter.post(
+  "/add-order-stop/:shippingId/:warehouseId",
+  warehousesController.addOrderStop,
 );
 
 export default warehouseRouter;

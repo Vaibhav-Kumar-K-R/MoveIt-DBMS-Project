@@ -17,9 +17,14 @@ const vehicleSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    vehicle_img_url: {
-      type: String,
-      required: true,
+    vehicle_img: {
+      vehicle_img_url: {
+        type: String,
+        required: true,
+      },
+      public_id: {
+        type: String,
+      },
     },
     model: {
       type: String,
