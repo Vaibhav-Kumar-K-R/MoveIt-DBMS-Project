@@ -19,7 +19,7 @@ export const useGetCustomerOrderDetailsRequest = (trackingId: string) => {
     async (): Promise<CustomerOrderDetail> => {
       try {
         const response = await axiosInstance.get(
-          `/customer/get-order/${trackingId}`
+          `/customer/get-order/${trackingId}`,
         );
 
         // Return the data from the response
@@ -41,7 +41,7 @@ export const useGetCustomerOrderDetailsRequest = (trackingId: string) => {
     getCustomerOrderDetailsRequest,
     {
       enabled: !!trackingId, // Enable the query only if trackingId is truthy
-    }
+    },
   );
 
   // Return the state and data from the query

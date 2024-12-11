@@ -14,7 +14,7 @@ const orderStopSchema = new mongoose.Schema(
     },
     arrival_datetime: {
       type: Date,
-      default: Date.now,
+      default: null,
     },
     departure_datetime: {
       type: Date,
