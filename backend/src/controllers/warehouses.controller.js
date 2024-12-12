@@ -3,6 +3,8 @@ import Order from "../models/order.model.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import OrderStop from "../models/order-stop.model.js";
+import Vehicle from "../models/vehicle.model.js";
+import Employee from "../models/employee.model.js";
 
 const signInWarehouse = async (req, res, next) => {
   try {
@@ -26,7 +28,7 @@ const signInWarehouse = async (req, res, next) => {
     const token = jwt.sign(
       { warehouseId: warehouse._id },
       process.env.JWT_SECRET,
-      { expiresIn: "1d" },
+      { expiresIn: "1d" }
     );
 
     res.cookie("warehouse_auth_token", token, {
@@ -46,15 +48,26 @@ const signInWarehouse = async (req, res, next) => {
 
 const addOrderStop = async (req, res, next) => {
   try {
-    const { shippingId, warehouseId } = req.params.shippingId;
+    const { shippingId, warehouseId } = req.params;
 
     const order = await Order.findOne({
       shipping_id: shippingId,
-    }).populate("_id");
+    });
 
     if (!order) {
       return res.status(404).json({
         message: "Order not found",
+      });
+    }
+
+    let orderStop = await OrderStop.findOne({
+      order_id: order._id,
+      warehouse_id: warehouseId,
+    });
+
+    if (orderStop) {
+      return res.status(400).json({
+        message: "Order stop already added",
       });
     }
 
@@ -76,7 +89,7 @@ const addOrderStop = async (req, res, next) => {
       });
     }
 
-    const orderStop = await OrderStop.create({
+    orderStop = await OrderStop.create({
       order_id: order._id,
       warehouse_id: warehouseId,
       arrival_datetime: Date.now(),
@@ -91,7 +104,52 @@ const addOrderStop = async (req, res, next) => {
   }
 };
 
+const departureOrderStop = async (req, res, next) => {
+  try {
+    const { orderStopId } = req.params;
+    const { vehicleId, driverId } = req.body;
+
+    const orderStop = await OrderStop.findById(orderStopId);
+
+    if (!orderStop) {
+      return res.status(404).json({
+        message: "Order stop not found",
+      });
+    }
+
+    const [vehicle, employee] = await Promise.all([
+      Vehicle.findById(vehicleId),
+      Employee.findById(driverId),
+    ]);
+
+    if (!vehicle || !employee) {
+      return res.status(404).json({
+        message: !vehicle ? "Vehicle not found" : "Driver not found",
+      });
+    }
+
+    if (employee.role !== "driver") {
+      return res.status(400).json({
+        message: "Employee is not a driver",
+      });
+    }
+
+    orderStop.departure_datetime = Date.now();
+    orderStop.vehicle_id = vehicleId;
+    orderStop.driver_id = driverId;
+
+    await orderStop.save();
+
+    res.status(200).json({
+      message: "Order stop departed successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
   signInWarehouse,
   addOrderStop,
+  departureOrderStop,
 };

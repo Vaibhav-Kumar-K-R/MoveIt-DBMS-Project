@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { z } from "zod";
 
 const validateWarehouseSignInRequest = (req, res, next) => {
@@ -15,6 +16,26 @@ const validateWarehouseSignInRequest = (req, res, next) => {
   }
 };
 
+const validateOrderDepartureRequest = (req, res, next) => {
+  try {
+    const orderDepartureRequest = z.object({
+      vehicleId: z.string().refine((id) => mongoose.isValidObjectId(id), {
+        message: "Invalid ObjectId for vehicle",
+      }),
+      driverId: z.string().refine((id) => mongoose.isValidObjectId(id), {
+        message: "Invalid ObjectId for vehicle",
+      }),
+    });
+
+    orderDepartureRequest.parse(req.body);
+
+    next();
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
 export default {
   validateWarehouseSignInRequest,
+  validateOrderDepartureRequest,
 };
