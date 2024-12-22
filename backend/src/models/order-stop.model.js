@@ -12,24 +12,17 @@ const orderStopSchema = new mongoose.Schema(
       ref: "Warehouse",
       required: true,
     },
-    arrival_datetime: {
-      type: Date,
-      default: null,
-    },
-    departure_datetime: {
-      type: Date,
-      default: null,
-    },
-    driver_id: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Employee",
-    },
-    vehicle_id: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Vehicle",
+    arrival_datetime: { type: Date, default: null },
+    departure_datetime: { type: Date, default: null },
+    driver_id: { type: mongoose.Schema.Types.ObjectId, ref: "Employee" },
+    vehicle_id: { type: mongoose.Schema.Types.ObjectId, ref: "Vehicle" },
+    curr_status: {
+      type: String,
+      enum: ["arrived", "departed"],
+      required: true,
     },
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
 const OrderStop = mongoose.model("OrderStop", orderStopSchema);
