@@ -5,7 +5,6 @@ import Order from "../models/order.model.js";
 import Employee from "../models/employee.model.js";
 import Vendor from "../models/vendor.model.js";
 import Vehicle from "../models/vehicle.model.js";
-import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { uploadImage } from "../config/cloudinary.js";
@@ -96,19 +95,7 @@ const createWarehouseProfile = async (req, res, next) => {
       });
     }
 
-    // Validate that the manager_id exists as an ObjectId
-    if (!mongoose.isValidObjectId(req.body.manager_id)) {
-      return res
-        .status(400)
-        .json({ message: "Invalid ObjectId for manager_id" });
-    }
-
-    warehouse = await Warehouse.create({
-      ...req.body,
-      manager_id: mongoose.Types.ObjectId.createFromHexString(
-        req.body.manager_id,
-      ),
-    });
+    warehouse = await Warehouse.create(req.body);
 
     return res.status(201).json({
       warehouse_id: warehouse._id,

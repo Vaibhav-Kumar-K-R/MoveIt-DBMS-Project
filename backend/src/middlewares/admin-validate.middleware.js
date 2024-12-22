@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { z } from "zod";
 
 const validateAdminSignInRequest = (req, res, next) => {
@@ -25,7 +26,9 @@ const validateCreateWarehouseRequest = (req, res, next) => {
       state: z.string(),
       email: z.string().email(),
       password: z.string().min(8).max(50),
-      manager_id: z.string(),
+      manager_id: z.string().refine((id) => mongoose.isValidObjectId(id), {
+        message: "Invalid Object Id",
+      }),
     });
 
     createWarehouseRequest.parse(req.body);

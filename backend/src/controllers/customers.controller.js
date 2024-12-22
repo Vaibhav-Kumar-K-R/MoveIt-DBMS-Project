@@ -1,3 +1,4 @@
+import OrderStop from "../models/order-stop.model.js";
 import Order from "../models/order.model.js";
 
 const getOrder = async (req, res, next) => {
@@ -6,7 +7,7 @@ const getOrder = async (req, res, next) => {
       tracking_id: req.params.trackingId,
     }).populate({
       path: "vendor_id",
-      select: "-password",
+      select: "-password -__v",
     });
 
     if (!order) {
@@ -15,7 +16,16 @@ const getOrder = async (req, res, next) => {
       });
     }
 
-    return res.status(200).json(order);
+    const orderStops = await OrderStop.find({
+      order_id: order._id,
+    }).sort({
+      arrival_datetime: -1,
+    });
+
+    return res.status(200).json({
+      order,
+      tracking: orderStops,
+    });
   } catch (error) {
     next(error);
   }
