@@ -13,6 +13,11 @@ const managerSchema = new mongoose.Schema(
     phone: { type: String, required: true },
     dob: { type: String, required: true },
     salary: { type: Number, required: true },
+    work_status: {
+      type: String,
+      enum: ["working", "resigned", "terminated"],
+      default: "working",
+    },
   },
   { timestamps: true }
 );
