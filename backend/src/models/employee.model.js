@@ -17,10 +17,15 @@ const employeeSchema = new mongoose.Schema(
     role: { type: String, enum: ["driver", "delivery_boy"], required: true },
     driving_experience: { type: Number, required: true },
     salary: { type: Number, required: true },
-    work_status: {
+    curr_status: {
       type: String,
       enum: ["in_work", "available", "on_leave"],
       default: "active",
+    },
+    work_status: {
+      type: String,
+      enum: ["working", "resigned", "terminated"],
+      default: "working",
     },
   },
   { timestamps: true }

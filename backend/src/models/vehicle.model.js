@@ -3,10 +3,9 @@ import mongoose from "mongoose";
 const vehicleSchema = new mongoose.Schema(
   {
     number_plate: { type: String, required: true, unique: true },
-    status: {
+    curr_status: {
       type: String,
-      required: true,
-      enum: ["available", "in_use", "in_maintenance"],
+      enum: ["available", "in_use", "in_maintenance", "not_available"],
       default: "available",
     },
     capacity: { type: Number, required: true },
