@@ -1,5 +1,4 @@
 import Warehouse from "../models/warehouse.model.js";
-import Order from "../models/order.model.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import OrderStop from "../models/order-stop.model.js";
@@ -40,64 +39,6 @@ const signInWarehouse = async (req, res, next) => {
     res.status(200).json({
       warehouseId: warehouse._id,
       message: "Signed in successfully",
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
-const addOrderStop = async (req, res, next) => {
-  try {
-    const { shippingId, warehouseId } = req.params;
-
-    const order = await Order.findOne({
-      shipping_id: shippingId,
-    });
-
-    if (!order) {
-      return res.status(404).json({
-        message: "Order not found",
-      });
-    }
-
-    let orderStop = await OrderStop.findOne({
-      order_id: order._id,
-      warehouse_id: warehouseId,
-    });
-
-    if (orderStop) {
-      return res.status(400).json({
-        message: "Order stop already added",
-      });
-    }
-
-    if (order.status === "cancelled") {
-      return res.status(400).json({
-        message: "Order already cancelled",
-      });
-    }
-
-    if (order.status === "delivered") {
-      return res.status(400).json({
-        message: "Order already delivered",
-      });
-    }
-
-    if (order.status === "out_for_delivery") {
-      return res.status(400).json({
-        message: "Order already out for delivery",
-      });
-    }
-
-    orderStop = await OrderStop.create({
-      order_id: order._id,
-      warehouse_id: warehouseId,
-      arrival_datetime: Date.now(),
-    });
-
-    res.status(201).json({
-      orderStopId: orderStop._id,
-      message: "Order stop added successfully",
     });
   } catch (error) {
     next(error);
@@ -148,8 +89,50 @@ const departureOrderStop = async (req, res, next) => {
   }
 };
 
+const verifyOrderStop = async (req, res, next) => {
+  try {
+    const { orderStopId } = req.params;
+    const orderStop = await OrderStop.findById(orderStopId);
+
+    if (!orderStop) {
+      return res.status(404).json({
+        message: "Order stop not found",
+      });
+    }
+
+    orderStop.isVerified = true;
+    await orderStop.save();
+
+    res.status(200).json({
+      message: "Order stop verified successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const deleteOrderStop = async (req, res, next) => {
+  try {
+    const { orderStopId } = req.params;
+    const orderStop = await OrderStop.findByIdAndDelete(orderStopId);
+
+    if (!orderStop) {
+      return res.status(404).json({
+        message: "Order stop not found",
+      });
+    }
+
+    res.status(200).json({
+      message: "Order stop deleted successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
   signInWarehouse,
-  addOrderStop,
+  verifyOrderStop,
   departureOrderStop,
+  deleteOrderStop,
 };

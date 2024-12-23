@@ -100,10 +100,7 @@ const cancelOrder = async (req, res, next) => {
   try {
     const { shippingId } = req.params;
 
-    const order = await Order.findOneAndUpdate(
-      { shipping_id: shippingId },
-      { status: "cancelled" },
-    );
+    const order = await Order.findOne({ shipping_id: shippingId });
 
     if (!order) {
       return res.status(404).json({
@@ -116,6 +113,9 @@ const cancelOrder = async (req, res, next) => {
         message: "Order already cancelled",
       });
     }
+
+    order.status = "cancelled";
+    await order.save();
 
     return res.status(200).json({
       orderId: order._id,
@@ -144,7 +144,7 @@ const updateProfile = async (req, res, next) => {
     if (profileImage) {
       profileImgDetails = await uploadImage(
         profileImage,
-        vendor.profile_img?.public_id,
+        vendor.profile_img?.public_id
       );
 
       updatedVendor = await Vendor.findByIdAndUpdate(
@@ -156,7 +156,7 @@ const updateProfile = async (req, res, next) => {
             public_id: profileImgDetails.public_id,
           },
         },
-        { new: true },
+        { new: true }
       );
     } else {
       updatedVendor = await Vendor.findByIdAndUpdate(vendorId, req.body, {

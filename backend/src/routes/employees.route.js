@@ -1,11 +1,13 @@
 import express from "express";
+import employeesController from "../controllers/employees.controller";
 
 const employeeRouter = express.Router();
 
-employeeRouter.get("/", (req, res) => {
-  res.json({
-    route: "Employee",
-  });
-});
+employeeRouter.post("/auth/sign-in", employeesController.signInEmployee);
+
+employeeRouter.post(
+  "/add-order-stop/:shippingId/:warehouseId",
+  employeesController.addOrderStop,
+);
 
 export default employeeRouter;

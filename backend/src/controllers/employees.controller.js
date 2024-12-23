@@ -1,0 +1,107 @@
+import Employee from "../models/employee.model";
+import jwt from "jsonwebtoken";
+import Order from "../models/order.model";
+import OrderStop from "../models/order-stop.model";
+
+const signInEmployee = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const employee = await Employee.findOne({ email });
+
+    if (!employee) {
+      return res.status(404).json({
+        message: "Employee doesn't exist. Please Sign-up",
+      });
+    }
+
+    const isPasswordMatch = await bcrypt.compare(password, employee.password);
+
+    if (!isPasswordMatch) {
+      return res.status(400).json({
+        message: "Something went wrong",
+      });
+    }
+
+    const token = jwt.sign(
+      { employeeId: employee._id },
+      process.env.JWT_SECRET,
+      { expiresIn: "1d" }
+    );
+
+    res.cookie("employee_auth_token", token, {
+      maxAge: 1000 * 60 * 60 * 24,
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+    });
+
+    return res.status(200).json({
+      employeeId: employee._id,
+      message: "Employee Signed In successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const addOrderStop = async (req, res, next) => {
+  try {
+    const { shippingId, warehouseId } = req.params;
+
+    const order = await Order.findOne({
+      shipping_id: shippingId,
+    });
+
+    if (!order) {
+      return res.status(404).json({
+        message: "Order not found",
+      });
+    }
+
+    let orderStop = await OrderStop.findOne({
+      order_id: order._id,
+      warehouse_id: warehouseId,
+    });
+
+    if (orderStop) {
+      return res.status(400).json({
+        message: "Order stop already added",
+      });
+    }
+
+    if (order.status === "cancelled") {
+      return res.status(400).json({
+        message: "Order already cancelled",
+      });
+    }
+
+    if (order.status === "delivered") {
+      return res.status(400).json({
+        message: "Order already delivered",
+      });
+    }
+
+    if (order.status === "out_for_delivery") {
+      return res.status(400).json({
+        message: "Order already out for delivery",
+      });
+    }
+
+    orderStop = await OrderStop.create({
+      order_id: order._id,
+      warehouse_id: warehouseId,
+      arrival_datetime: Date.now(),
+    });
+
+    res.status(201).json({
+      orderStopId: orderStop._id,
+      message: "Order stop added successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export default {
+  signInEmployee,
+  addOrderStop,
+};
