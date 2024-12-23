@@ -19,7 +19,7 @@ const managerSchema = new mongoose.Schema(
       default: "working",
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 managerSchema.pre("save", async function (next) {

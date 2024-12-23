@@ -16,7 +16,7 @@ const vehicleSchema = new mongoose.Schema(
     model: { type: String, required: true },
     type: { type: String, required: true },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const Vehicle = mongoose.model("Vehicle", vehicleSchema);

@@ -1,9 +1,10 @@
-import Employee from "../models/employee.model";
+import Employee from "../models/employee.model.js";
+import Order from "../models/order.model.js";
+import OrderStop from "../models/order-stop.model.js";
 import jwt from "jsonwebtoken";
-import Order from "../models/order.model";
-import OrderStop from "../models/order-stop.model";
+import bcrypt from "bcryptjs";
 
-const signInEmployee = async (req, res) => {
+const signInEmployee = async (req, res, next) => {
   try {
     const { email, password } = req.body;
     const employee = await Employee.findOne({ email });
@@ -25,7 +26,7 @@ const signInEmployee = async (req, res) => {
     const token = jwt.sign(
       { employeeId: employee._id },
       process.env.JWT_SECRET,
-      { expiresIn: "1d" }
+      { expiresIn: "1d" },
     );
 
     res.cookie("employee_auth_token", token, {

@@ -77,8 +77,8 @@ const signInVendor = async (req, res, next) => {
 const createOrder = async (req, res, next) => {
   try {
     // Generate a unique tracking ID and shipping ID using UUID
-    const trackingId = `TRACKING_${uuidv4().split("-")[0].toUpperCase()}`;
-    const shippingId = `SHIPPING_${uuidv4().split("-")[0].toUpperCase()}`;
+    const trackingId = `TRACKING_${uuidv4().split("-")[0]}`;
+    const shippingId = `SHIPPING_${uuidv4().split("-")[0]}`;
 
     const order = await Order.create({
       ...req.body,
@@ -144,7 +144,7 @@ const updateProfile = async (req, res, next) => {
     if (profileImage) {
       profileImgDetails = await uploadImage(
         profileImage,
-        vendor.profile_img?.public_id
+        vendor.profile_img?.public_id,
       );
 
       updatedVendor = await Vendor.findByIdAndUpdate(
@@ -156,7 +156,7 @@ const updateProfile = async (req, res, next) => {
             public_id: profileImgDetails.public_id,
           },
         },
-        { new: true }
+        { new: true },
       );
     } else {
       updatedVendor = await Vendor.findByIdAndUpdate(vendorId, req.body, {

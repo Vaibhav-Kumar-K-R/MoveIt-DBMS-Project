@@ -9,34 +9,30 @@ const vendorRouter = express.Router();
 vendorRouter.post(
   "/auth/sign-up",
   vendorValidateMiddleware.validateVendorSignUpRequest,
-  vendorsController.signUpVendor,
+  vendorsController.signUpVendor
 );
 
 vendorRouter.post(
   "/auth/sign-in",
   vendorValidateMiddleware.validateVendorSignInRequest,
-  vendorsController.signInVendor,
+  vendorsController.signInVendor
 );
+
+vendorRouter.use(vendorAuthMiddleware.verifyVendorToken);
 
 vendorRouter.post(
   "/create-order",
-  vendorAuthMiddleware.verifyVendorToken,
   vendorValidateMiddleware.validateCreateOrderRequest,
-  vendorsController.createOrder,
+  vendorsController.createOrder
 );
 
-vendorRouter.patch(
-  "/cancel-order/:shippingId",
-  vendorAuthMiddleware.verifyVendorToken,
-  vendorsController.cancelOrder,
-);
+vendorRouter.patch("/cancel-order/:shippingId", vendorsController.cancelOrder);
 
 vendorRouter.put(
   "/update-profile",
   upload.single("profileImage"),
   vendorValidateMiddleware.validateUpdateProfileRequest,
-  vendorAuthMiddleware.verifyVendorToken,
-  vendorsController.updateProfile,
+  vendorsController.updateProfile
 );
 
 export default vendorRouter;

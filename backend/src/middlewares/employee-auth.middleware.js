@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import Employee from "../models/employee.model";
+import Employee from "../models/employee.model.js";
 
 const verifyEmployeeToken = (req, res, next) => {
   const token = req.cookies["employee_auth_token"];
