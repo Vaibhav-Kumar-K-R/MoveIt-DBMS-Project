@@ -21,6 +21,7 @@ const orderStopSchema = new mongoose.Schema(
       enum: ["arrived", "departed"],
       required: true,
     },
+    isVerified: { type: Boolean, default: false },
   },
   { timestamps: true }
 );

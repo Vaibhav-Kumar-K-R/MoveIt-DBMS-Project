@@ -19,13 +19,13 @@ const employeeSchema = new mongoose.Schema(
     salary: { type: Number, required: true },
     curr_status: {
       type: String,
-      enum: ["in_work", "available", "on_leave"],
-      default: "active",
+      enum: ["in_work", "available", "on_leave", "inactive"],
+      default: "available",
     },
     work_status: {
       type: String,
-      enum: ["working", "resigned", "terminated"],
-      default: "working",
+      enum: ["employed", "resigned", "terminated"],
+      default: "employed",
     },
   },
   { timestamps: true }

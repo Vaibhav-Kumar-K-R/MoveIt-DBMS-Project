@@ -1,24 +1,32 @@
 import express from "express";
 import warehousesController from "../controllers/warehouses.controller.js";
 import warehouseValidateMiddleware from "../middlewares/warehouse-validate.middleware.js";
+import warehouseAuthMiddleware from "../middlewares/warehouse-auth.middleware.js";
 
 const warehouseRouter = express.Router();
 
 warehouseRouter.post(
   "/auth/sign-in",
   warehouseValidateMiddleware.validateWarehouseSignInRequest,
-  warehousesController.signInWarehouse,
+  warehousesController.signInWarehouse
 );
 
-warehouseRouter.post(
-  "/add-order-stop/:shippingId/:warehouseId",
-  warehousesController.addOrderStop,
-);
+warehouseRouter.use(warehouseAuthMiddleware.verifyWarehouseToken);
 
 warehouseRouter.post(
-  "/:orderStopId/departure",
+  "/departure/:orderStopId",
   warehouseValidateMiddleware.validateOrderDepartureRequest,
-  warehousesController.departureOrderStop,
+  warehousesController.departureOrderStop
+);
+
+warehouseRouter.put(
+  "/verify/:orderStopId",
+  warehousesController.verifyOrderStop
+);
+
+warehouseRouter.delete(
+  "/delete/:orderStopId",
+  warehousesController.deleteOrderStop
 );
 
 export default warehouseRouter;
