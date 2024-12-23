@@ -18,9 +18,12 @@ const getOrder = async (req, res, next) => {
 
     const orderStops = await OrderStop.find({
       order_id: order._id,
-    }).sort({
-      arrival_datetime: -1,
-    });
+      isVerified: true,
+    })
+      .select("-__v")
+      .sort({
+        arrival_datetime: 1,
+      });
 
     return res.status(200).json({
       order,

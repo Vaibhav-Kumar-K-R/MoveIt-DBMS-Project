@@ -39,7 +39,7 @@ const orderSchema = new mongoose.Schema(
       default: "placed",
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const Order = mongoose.model("Order", orderSchema);

@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import OrderStop from "../models/order-stop.model.js";
 import Vehicle from "../models/vehicle.model.js";
 import Employee from "../models/employee.model.js";
+import mongoose from "mongoose";
 
 const signInWarehouse = async (req, res, next) => {
   try {
@@ -27,7 +28,7 @@ const signInWarehouse = async (req, res, next) => {
     const token = jwt.sign(
       { warehouseId: warehouse._id },
       process.env.JWT_SECRET,
-      { expiresIn: "1d" }
+      { expiresIn: "1d" },
     );
 
     res.cookie("warehouse_auth_token", token, {
@@ -48,6 +49,13 @@ const signInWarehouse = async (req, res, next) => {
 const departureOrderStop = async (req, res, next) => {
   try {
     const { orderStopId } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(orderStopId)) {
+      return res.status(400).json({
+        message: "Invalid order stop id",
+      });
+    }
+
     const { vehicleId, driverId } = req.body;
 
     const orderStop = await OrderStop.findById(orderStopId);
@@ -78,6 +86,7 @@ const departureOrderStop = async (req, res, next) => {
     orderStop.departure_datetime = Date.now();
     orderStop.vehicle_id = vehicleId;
     orderStop.driver_id = driverId;
+    orderStop.curr_status = "departed";
 
     await orderStop.save();
 
@@ -92,11 +101,24 @@ const departureOrderStop = async (req, res, next) => {
 const verifyOrderStop = async (req, res, next) => {
   try {
     const { orderStopId } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(orderStopId)) {
+      return res.status(400).json({
+        message: "Invalid order stop id",
+      });
+    }
+
     const orderStop = await OrderStop.findById(orderStopId);
 
     if (!orderStop) {
       return res.status(404).json({
         message: "Order stop not found",
+      });
+    }
+
+    if (orderStop.isVerified) {
+      return res.status(400).json({
+        message: "Order stop already verified",
       });
     }
 
@@ -114,13 +136,29 @@ const verifyOrderStop = async (req, res, next) => {
 const deleteOrderStop = async (req, res, next) => {
   try {
     const { orderStopId } = req.params;
-    const orderStop = await OrderStop.findByIdAndDelete(orderStopId);
+
+    if (!mongoose.Types.ObjectId.isValid(orderStopId)) {
+      return res.status(400).json({
+        message: "Invalid order stop id",
+      });
+    }
+
+    // Can delete the order stop only if it is not verified
+    const orderStop = await OrderStop.findById(orderStopId);
 
     if (!orderStop) {
       return res.status(404).json({
         message: "Order stop not found",
       });
     }
+
+    if (orderStop.isVerified) {
+      return res.status(400).json({
+        message: "Order stop already verified and cannot be deleted",
+      });
+    }
+
+    await orderStop.deleteOne();
 
     res.status(200).json({
       message: "Order stop deleted successfully",

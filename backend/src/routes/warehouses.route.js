@@ -8,7 +8,7 @@ const warehouseRouter = express.Router();
 warehouseRouter.post(
   "/auth/sign-in",
   warehouseValidateMiddleware.validateWarehouseSignInRequest,
-  warehousesController.signInWarehouse
+  warehousesController.signInWarehouse,
 );
 
 warehouseRouter.use(warehouseAuthMiddleware.verifyWarehouseToken);
@@ -16,17 +16,17 @@ warehouseRouter.use(warehouseAuthMiddleware.verifyWarehouseToken);
 warehouseRouter.post(
   "/departure/:orderStopId",
   warehouseValidateMiddleware.validateOrderDepartureRequest,
-  warehousesController.departureOrderStop
+  warehousesController.departureOrderStop,
 );
 
-warehouseRouter.put(
+warehouseRouter.patch(
   "/verify/:orderStopId",
-  warehousesController.verifyOrderStop
+  warehousesController.verifyOrderStop,
 );
 
 warehouseRouter.delete(
   "/delete/:orderStopId",
-  warehousesController.deleteOrderStop
+  warehousesController.deleteOrderStop,
 );
 
 export default warehouseRouter;

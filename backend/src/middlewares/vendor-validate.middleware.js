@@ -45,7 +45,11 @@ const validateCreateOrderRequest = (req, res, next) => {
       product_description: z.string().min(3).max(250),
       quantity: z.coerce.number().min(1),
       product_img_url: z.string().url(),
-      price: z.coerce.number().min(1),
+      price_details: z.object({
+        product_price: z.coerce.number().min(1),
+        delivery_charge: z.coerce.number().min(1),
+        gst: z.coerce.number().min(0).max(1),
+      }),
       weight: z.coerce.number().gt(0),
       customer_name: z.string().min(3).max(50),
       customer_email: z.string().email(),

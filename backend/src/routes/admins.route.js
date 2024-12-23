@@ -9,66 +9,41 @@ const adminRouter = express.Router();
 adminRouter.post(
   "/sign-in",
   adminMiddlware.validateAdminSignInRequest,
-  adminController.signInAdmin,
+  adminController.signInAdmin
 );
+
+adminRouter.use(adminAuthMiddleware.verifyAdminToken);
 
 adminRouter.post(
   "/create-manager",
   upload.single("managerProfileImg"),
-  adminAuthMiddleware.verifyAdminToken,
   adminMiddlware.validateCreateManagerRequest,
-  adminController.createManagerProfile,
+  adminController.createManagerProfile
 );
 
 adminRouter.post(
   "/create-warehouse",
-  adminAuthMiddleware.verifyAdminToken,
   adminMiddlware.validateCreateWarehouseRequest,
-  adminController.createWarehouseProfile,
+  adminController.createWarehouseProfile
 );
 
-adminRouter.get(
-  "/warehouses",
-  adminAuthMiddleware.verifyAdminToken,
-  adminController.getWarehouseList,
-);
+adminRouter.get("/warehouses", adminController.getWarehouseList);
 
-adminRouter.get(
-  "/warehouse/:state",
-  adminAuthMiddleware.verifyAdminToken,
-  adminController.getWarehousebyState,
-);
+adminRouter.get("/warehouse/:state", adminController.getWarehousebyState);
 
 adminRouter.post(
   "/add-vehicle",
   upload.single("vehicleImg"),
-  adminAuthMiddleware.verifyAdminToken,
   adminMiddlware.validateCreateVehicleRequest,
-  adminController.addVehicle,
+  adminController.addVehicle
 );
 
-adminRouter.get(
-  "/get-stats",
-  adminAuthMiddleware.verifyAdminToken,
-  adminController.getStats,
-);
+adminRouter.get("/get-stats", adminController.getStats);
 
-adminRouter.delete(
-  "/manager/:managerId",
-  adminAuthMiddleware.verifyAdminToken,
-  adminController.deleteManager,
-);
+adminRouter.delete("/manager/:managerId", adminController.deleteManager);
 
-adminRouter.delete(
-  "/warehouse/:warehouseId",
-  adminAuthMiddleware.verifyAdminToken,
-  adminController.deleteWarehouse,
-);
+adminRouter.delete("/warehouse/:warehouseId", adminController.deleteWarehouse);
 
-adminRouter.delete(
-  "/vehicle/:vehicleId",
-  adminAuthMiddleware.verifyAdminToken,
-  adminController.deleteVehicle,
-);
+adminRouter.delete("/vehicle/:vehicleId", adminController.deleteVehicle);
 
 export default adminRouter;

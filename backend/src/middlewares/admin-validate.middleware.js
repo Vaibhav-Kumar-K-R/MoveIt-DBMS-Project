@@ -26,6 +26,12 @@ const validateCreateWarehouseRequest = (req, res, next) => {
       state: z.string(),
       email: z.string().email(),
       password: z.string().min(8).max(50),
+      phone: z
+        .string()
+        .min(10)
+        .max(10)
+        .regex(/^\d{10}$/),
+      status: z.enum(["open", "closed"]).default("open"),
       manager_id: z.string().refine((id) => mongoose.isValidObjectId(id), {
         message: "Invalid Object Id",
       }),

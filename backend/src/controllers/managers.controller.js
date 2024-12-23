@@ -16,7 +16,9 @@ const getEmployeesUnderManager = async (req, res, next) => {
 
     const employees = await Employee.find({
       manager_id: managerId,
-    }).select("-password");
+    })
+      .select("-password")
+      .sort({ createdAt: -1 });
 
     res.status(200).json({
       employees,
@@ -94,7 +96,7 @@ const addEmployee = async (req, res, next) => {
         : {
             ...req.body,
             manager_id: req.managerId,
-          }
+          },
     );
 
     res.status(201).json({

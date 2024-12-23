@@ -19,11 +19,11 @@ const orderStopSchema = new mongoose.Schema(
     curr_status: {
       type: String,
       enum: ["arrived", "departed"],
-      required: true,
+      default: "arrived",
     },
     isVerified: { type: Boolean, default: false },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const OrderStop = mongoose.model("OrderStop", orderStopSchema);

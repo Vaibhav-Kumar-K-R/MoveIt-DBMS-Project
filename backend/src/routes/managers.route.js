@@ -6,29 +6,28 @@ import upload from "../config/multer.js";
 
 const managerRouter = express.Router();
 
-managerRouter.get(
-  "/get-employees",
-  managerAuthMiddleware.verifyManagerToken,
-  managersController.getEmployeesUnderManager,
-);
-
 managerRouter.post(
   "/auth/sign-in",
   managerValidateMiddleware.validateManagerSignInRequest,
   managersController.signInManager,
 );
 
+app.use(managerAuthMiddleware.verifyManagerToken);
+
+managerRouter.get(
+  "/get-employees",
+  managersController.getEmployeesUnderManager,
+);
+
 managerRouter.post(
   "/add-employee",
   upload.single("employeeProfileImg"),
-  managerAuthMiddleware.verifyManagerToken,
   managerValidateMiddleware.validateAddEmployeeRequest,
   managersController.addEmployee,
 );
 
 managerRouter.delete(
   "/remove-employee/:employeeId",
-  managerAuthMiddleware.verifyManagerToken,
   managersController.removeEmployee,
 );
 
