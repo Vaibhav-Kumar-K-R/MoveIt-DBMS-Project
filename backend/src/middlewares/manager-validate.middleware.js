@@ -23,7 +23,7 @@ const validateAddEmployeeRequest = (req, res, next) => {
         .string()
         .regex(
           /^(([A-Z]{2}[0-9]{2})( )|([A-Z]{2}-[0-9]{2}))((19|20)[0-9][0-9])[0-9]{7}$/,
-          { message: "Invalid Indian Licence Number" }
+          { message: "Invalid Indian Licence Number" },
         ),
       email: z.string().email(),
       password: z.string().min(8).max(50),
