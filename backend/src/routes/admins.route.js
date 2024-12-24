@@ -21,15 +21,20 @@ adminRouter.post(
   adminController.createManagerProfile
 );
 
+adminRouter.patch("/update-managerWork-status/", adminController.updateManagerWorkStatus);
+
 adminRouter.post(
   "/create-warehouse",
   adminMiddlware.validateCreateWarehouseRequest,
   adminController.createWarehouseProfile
 );
 
+
 adminRouter.get("/warehouses", adminController.getWarehouseList);
 
 adminRouter.get("/warehouse/:state", adminController.getWarehousebyState);
+
+adminRouter.patch("/update-warehouse-status/", adminController.updateWarehouseStatus);
 
 adminRouter.post(
   "/add-vehicle",
@@ -38,12 +43,10 @@ adminRouter.post(
   adminController.addVehicle
 );
 
+adminRouter.patch("/update-vehicle-status/", adminController.updateVehicleStatus);
+
 adminRouter.get("/get-stats", adminController.getStats);
 
-adminRouter.delete("/manager/:managerId", adminController.deleteManager);
 
-adminRouter.delete("/warehouse/:warehouseId", adminController.deleteWarehouse);
-
-adminRouter.delete("/vehicle/:vehicleId", adminController.deleteVehicle);
 
 export default adminRouter;

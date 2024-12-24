@@ -12,7 +12,7 @@ managerRouter.post(
   managersController.signInManager,
 );
 
-app.use(managerAuthMiddleware.verifyManagerToken);
+managerRouter.use(managerAuthMiddleware.verifyManagerToken);
 
 managerRouter.get(
   "/get-employees",
