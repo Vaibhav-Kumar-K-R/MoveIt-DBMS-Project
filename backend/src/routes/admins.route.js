@@ -9,7 +9,7 @@ const adminRouter = express.Router();
 adminRouter.post(
   "/sign-in",
   adminMiddlware.validateAdminSignInRequest,
-  adminController.signInAdmin
+  adminController.signInAdmin,
 );
 
 adminRouter.use(adminAuthMiddleware.verifyAdminToken);
@@ -18,32 +18,41 @@ adminRouter.post(
   "/create-manager",
   upload.single("managerProfileImg"),
   adminMiddlware.validateCreateManagerRequest,
-  adminController.createManagerProfile
+  adminController.createManagerProfile,
+);
+
+adminRouter.patch(
+  "/update-managerWork-status/",
+  adminController.updateManagerWorkStatus,
 );
 
 adminRouter.post(
   "/create-warehouse",
   adminMiddlware.validateCreateWarehouseRequest,
-  adminController.createWarehouseProfile
+  adminController.createWarehouseProfile,
 );
 
 adminRouter.get("/warehouses", adminController.getWarehouseList);
 
 adminRouter.get("/warehouse/:state", adminController.getWarehousebyState);
 
+adminRouter.patch(
+  "/update-warehouse-status/",
+  adminController.updateWarehouseStatus,
+);
+
 adminRouter.post(
   "/add-vehicle",
   upload.single("vehicleImg"),
   adminMiddlware.validateCreateVehicleRequest,
-  adminController.addVehicle
+  adminController.addVehicle,
+);
+
+adminRouter.patch(
+  "/update-vehicle-status/",
+  adminController.updateVehicleStatus,
 );
 
 adminRouter.get("/get-stats", adminController.getStats);
-
-adminRouter.delete("/manager/:managerId", adminController.deleteManager);
-
-adminRouter.delete("/warehouse/:warehouseId", adminController.deleteWarehouse);
-
-adminRouter.delete("/vehicle/:vehicleId", adminController.deleteVehicle);
 
 export default adminRouter;

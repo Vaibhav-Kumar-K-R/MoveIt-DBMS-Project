@@ -85,6 +85,42 @@ const createManagerProfile = async (req, res, next) => {
   }
 };
 
+const updateManagerWorkStatus = async (req, res, next) => {
+  try {
+    let manager = await Manager.findOne({ email: req.body.email });
+    let updatedStatus = req.body.work_status;
+    if (!manager) {
+      return res.status(400).json({
+        message: "Manager under given email does not exist!!",
+      });
+    }
+
+    if (
+      Manager.schema.path("work_status").enumValues.indexOf(updatedStatus) ===
+      -1
+    ) {
+      return res.status(400).json({
+        message: "Invalid work status",
+      });
+    }
+    manager = await Manager.findOneAndUpdate(
+      {
+        email: req.body.email,
+      },
+      {
+        work_status: updatedStatus,
+      },
+    );
+
+    res.status(200).json({
+      manager_id: manager._id,
+      message: "Manager work status successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const createWarehouseProfile = async (req, res, next) => {
   try {
     let warehouse = await Warehouse.findOne({ email: req.body.email });
@@ -100,6 +136,41 @@ const createWarehouseProfile = async (req, res, next) => {
     return res.status(201).json({
       warehouse_id: warehouse._id,
       message: "Warehouse profile created successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const updateWarehouseStatus = async (req, res, next) => {
+  try {
+    let warehouse = await Warehouse.findOne({ email: req.body.email });
+    let updatedStatus = req.body.status;
+    if (!warehouse) {
+      return res.status(400).json({
+        message: "Warehouse under given email does not exist!!",
+      });
+    }
+
+    if (
+      Warehouse.schema.path("status").enumValues.indexOf(updatedStatus) === -1
+    ) {
+      return res.status(400).json({
+        message: "Invalid work status",
+      });
+    }
+    warehouse = await Warehouse.findOneAndUpdate(
+      {
+        email: req.body.email,
+      },
+      {
+        status: updatedStatus,
+      },
+    );
+
+    res.status(200).json({
+      warehouse_id: warehouse._id,
+      message: "Warehouse status updated successfully",
     });
   } catch (error) {
     next(error);
@@ -189,6 +260,44 @@ const addVehicle = async (req, res, next) => {
   }
 };
 
+const updateVehicleStatus = async (req, res, next) => {
+  try {
+    let vehicle = await Vehicle.findOne({
+      number_plate: req.body.number_plate,
+    });
+    let updatedStatus = req.body.status;
+    if (!vehicle) {
+      return res.status(400).json({
+        message: "Vehicle does not exist!!",
+      });
+    }
+
+    if (
+      Vehicle.schema.path("curr_status").enumValues.indexOf(updatedStatus) ===
+      -1
+    ) {
+      return res.status(400).json({
+        message: "Invalid work status",
+      });
+    }
+    vehicle = await Vehicle.findOneAndUpdate(
+      {
+        number_plate: req.body.number_plate,
+      },
+      {
+        curr_status: updatedStatus,
+      },
+    );
+
+    res.status(200).json({
+      vehicle_id: vehicle._id,
+      message: "Vehicle status updated successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const getStats = async (req, res, next) => {
   try {
     const [
@@ -229,65 +338,6 @@ const getStats = async (req, res, next) => {
   }
 };
 
-const deleteManager = async (req, res, next) => {
-  try {
-    const { managerId } = req.params;
-    let manager = await Manager.findByIdAndDelete(managerId);
-
-    if (!manager) {
-      return res.status(404).json({
-        message: "Manager not found!!",
-      });
-    }
-
-    return res.status(200).json({
-      message: "Manager successfully removed",
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
-const deleteWarehouse = async (req, res, next) => {
-  try {
-    const { warehouseId } = req.params;
-    let warehouse = await Warehouse.findByIdAndDelete(warehouseId);
-
-    if (!warehouse) {
-      return res.status(404).json({
-        message: "Warehouse not found!!",
-      });
-    }
-
-    return res.status(200).json({
-      message: "Warehouse successfully removed",
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
-const deleteVehicle = async (req, res, next) => {
-  try {
-    const { vehicleId } = req.params;
-    let vehicle = await Vehicle.findOneAndDelete({
-      number_plate: vehicleId,
-    });
-
-    if (!vehicle) {
-      return res.status(400).json({
-        message: "Vehicle under the given number plate does not exist!!",
-      });
-    }
-
-    return res.status(200).json({
-      message: "Vehicle successfully removed",
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
 export default {
   signInAdmin,
   createManagerProfile,
@@ -296,7 +346,7 @@ export default {
   getWarehousebyState,
   addVehicle,
   getStats,
-  deleteManager,
-  deleteWarehouse,
-  deleteVehicle,
+  updateManagerWorkStatus,
+  updateWarehouseStatus,
+  updateVehicleStatus,
 };

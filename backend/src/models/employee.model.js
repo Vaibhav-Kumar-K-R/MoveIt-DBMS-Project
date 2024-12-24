@@ -28,7 +28,7 @@ const employeeSchema = new mongoose.Schema(
       default: "employed",
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 employeeSchema.pre("save", async function (next) {

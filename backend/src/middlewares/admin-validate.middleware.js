@@ -53,6 +53,7 @@ const validateCreateManagerRequest = (req, res, next) => {
       phone: z.string().min(10).max(10),
       dob: z.string().regex(/^\d{2}-\d{2}-\d{4}$/), // DD-MM-YYYY
       password: z.string().min(8).max(50),
+      salary: z.number(),
     });
 
     createManagerRequest.parse(req.body);
@@ -70,7 +71,7 @@ const validateCreateVehicleRequest = (req, res, next) => {
     req.body.capacity = parseInt(req.body.capacity);
     const createVehicleRequest = z.object({
       number_plate: z.string().min(10).max(15),
-      status: z.string(),
+      curr_status: z.string(),
       capacity: z.number(),
       vehicle_img_url: z.string(),
       model: z.string(),
