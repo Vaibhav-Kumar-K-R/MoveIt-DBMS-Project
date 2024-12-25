@@ -303,18 +303,26 @@ const getStats = async (req, res, next) => {
     const [
       vendorsCount,
       warehousesCount,
+      openWarehouseCount,
       managersCount,
       employeesCount,
+      driversCount,
+      deliveryBoysCount,
       ordersCount,
       vehiclesCount,
+      availableVehicleCount,
       activeOrdersCount,
     ] = await Promise.all([
       Vendor.countDocuments(),
       Warehouse.countDocuments(),
-      Manager.countDocuments(),
-      Employee.countDocuments(),
+      Warehouse.countDocuments({ status: "open" }),
+      Manager.countDocuments({ work_status: "working" }),
+      Employee.countDocuments({ curr_status: "employed" }),
+      Employee.countDocuments({ role: "driver" }),
+      Employee.countDocuments({ role: "delivery_boy" }),
       Order.countDocuments(),
       Vehicle.countDocuments(),
+      Vehicle.countDocuments({ curr_status: "available" }),
       Order.countDocuments({
         status: {
           $nin: ["delivered", "cancelled"],
@@ -325,10 +333,15 @@ const getStats = async (req, res, next) => {
     res.status(200).json({
       total_vendors: vendorsCount,
       total_warehouses: warehousesCount,
-      total_managers: managersCount,
-      total_employees: employeesCount,
+      warehouses_open: openWarehouseCount,
+      warehouses_closed: warehousesCount - openWarehouseCount,
+      total_working_managers: managersCount,
+      total_working_employees: employeesCount,
+      total_drivers: driversCount,
+      total_delivery_boys: deliveryBoysCount,
       total_orders: ordersCount,
       total_vehicles: vehiclesCount,
+      available_vehicles: availableVehicleCount,
       total_active_orders: activeOrdersCount,
     });
   } catch (error) {
