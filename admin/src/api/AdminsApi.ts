@@ -1,8 +1,32 @@
 import axiosInstance from "@/lib/axios";
-import { LoginFormData } from "@/pages/login/Login";
-import { useMutation } from "react-query";
+import { LoginFormData } from "@/pages/login/types";
+import { useMutation, useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+
+export const useAdminAuth = () => {
+  const adminAuth = async () => {
+    try {
+      const response = await axiosInstance.get("/admin/me");
+
+      return response.data;
+    } catch (error: any) {
+      throw new Error("You need to be logged in to access this page");
+    }
+  };
+
+  const { data, isLoading, isError } = useQuery({
+    queryKey: "adminAuth",
+    queryFn: adminAuth,
+  });
+
+  return {
+    isSignedIn: !!data,
+    user: data,
+    isLoading,
+    isError,
+  };
+};
 
 export const useLoginUserRequestMutation = () => {
   const loginUserRequestMutation = async (formData: LoginFormData) => {
@@ -30,7 +54,7 @@ export const useLoginUserRequestMutation = () => {
     mutationFn: loginUserRequestMutation,
     onSuccess: () => {
       navigate("/", { replace: true });
-      toast.success("Login successful!");
+      toast.success("Login successful! Welcome back 👋");
     },
     onError: (error: any) => {
       toast.error(error?.toString());

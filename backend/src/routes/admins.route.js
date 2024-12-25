@@ -14,6 +14,8 @@ adminRouter.post(
 
 adminRouter.use(adminAuthMiddleware.verifyAdminToken);
 
+adminRouter.get("/me", adminController.getAdmin);
+
 adminRouter.post(
   "/create-manager",
   upload.single("managerProfileImg"),

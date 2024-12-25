@@ -9,6 +9,16 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { uploadImage } from "../config/cloudinary.js";
 
+const getAdmin = async (req, res, next) => {
+  try {
+    const admin = await Admin.findById(req.adminId).select("-password -__v");
+
+    return res.status(200).json(admin);
+  } catch (error) {
+    next(error);
+  }
+};
+
 const signInAdmin = async (req, res, next) => {
   try {
     const { email, password } = req.body;
@@ -345,13 +355,12 @@ const getStats = async (req, res, next) => {
       total_active_orders: activeOrdersCount,
     });
   } catch (error) {
-    res.status(400).json({
-      message: "Failed to fetch statistics!!",
-    });
+    next(error);
   }
 };
 
 export default {
+  getAdmin,
   signInAdmin,
   createManagerProfile,
   createWarehouseProfile,
