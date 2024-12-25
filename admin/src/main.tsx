@@ -9,7 +9,7 @@ import { Toaster } from "sonner";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      retry: 3, // Number of retry attempts on failure (default is 3)
+      retry: 1, // Number of retry attempts on failure (default is 3)
       refetchOnWindowFocus: false, // Prevent refetching when window regains focus
       staleTime: 60000, // Data stays fresh for 60 seconds
       cacheTime: 300000, // Data is cached for 5 minutes
