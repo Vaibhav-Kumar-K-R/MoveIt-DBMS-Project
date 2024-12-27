@@ -53,7 +53,7 @@ export const useLoginUserRequestMutation = () => {
     mutationKey: "loginUserRequest",
     mutationFn: loginUserRequestMutation,
     onSuccess: () => {
-      navigate("/", { replace: true });
+      navigate("/dashboard", { replace: true });
       toast.success("Login successful! Welcome back 👋");
     },
     onError: (error: any) => {
@@ -66,5 +66,28 @@ export const useLoginUserRequestMutation = () => {
     loginUser,
     isLoading,
     data,
+  };
+};
+
+export const useGetStatsRequest = () => {
+  const GetStatsRequest = async () => {
+    try {
+      const response = await axiosInstance.get("/admin/get-stats");
+
+      return response.data;
+    } catch (error: any) {
+      throw new Error("You need to be logged in to access this page");
+    }
+  };
+
+  const { data, isLoading, isError } = useQuery({
+    queryKey: "GetStatsRequest",
+    queryFn: GetStatsRequest,
+  });
+
+  return {
+    response: data,
+    isLoading,
+    isError,
   };
 };

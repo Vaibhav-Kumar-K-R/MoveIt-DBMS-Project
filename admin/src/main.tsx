@@ -18,12 +18,10 @@ const queryClient = new QueryClient({
 });
 
 createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <Router>
-      <QueryClientProvider client={queryClient}>
-        <App />
-        <Toaster richColors closeButton />
-      </QueryClientProvider>
-    </Router>
-  </StrictMode>,
+  <Router>
+    <QueryClientProvider client={queryClient}>
+      <App />
+      <Toaster richColors closeButton />
+    </QueryClientProvider>
+  </Router>,
 );
