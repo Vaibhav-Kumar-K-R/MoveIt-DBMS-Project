@@ -7,23 +7,22 @@ import { useToast } from "@/hooks/use-toast";
 
 const Home = () => {
   const [cards, setCards] = useState<typeof cardData>([]);
-  let { isLoading,isError, response } = useGetStatsRequest();
-  const { toast } = useToast()
+  let { isLoading, isError, response } = useGetStatsRequest();
+  const { toast } = useToast();
   useEffect(() => {
-   
     if (response) {
-      Object.entries(response).map(([_,value]: [any, any], index) => {
+      Object.entries(response).map(([_, value]: [any, any], index) => {
         cardData[index].value = parseInt(value);
       });
       setCards(cardData);
     }
   }, [response]);
 
-  if(isError){
-      toast({
-          title: "Uh oh! Something went wrong.",
-          description: "There was a problem with your request.",
-        })
+  if (isError) {
+    toast({
+      title: "Uh oh! Something went wrong.",
+      description: "There was a problem with your request.",
+    });
   }
 
   if (isLoading) {

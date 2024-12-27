@@ -74,6 +74,12 @@ const cardData: { title: string; value: number; icon: any; color?: string }[] =
       icon: Package,
       color: "text-blue-400",
     },
+    {
+      title: " Delivered Orders",
+      value: 0,
+      icon: Package,
+      color: "text-green-400",
+    },
   ];
 
 export { cardData };

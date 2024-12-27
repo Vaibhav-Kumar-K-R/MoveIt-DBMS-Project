@@ -6,7 +6,9 @@ import {
   Users,
   User,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 import ProfileButton from "@/layouts/components/ProfileButton";
+import { useLocation } from "react-router-dom";
 import {
   Sidebar,
   SidebarContent,
@@ -23,37 +25,29 @@ import {
 const items = [
   {
     title: "Home",
-    url: "/home",
+    url: "/dashboard",
     icon: Home,
   },
   {
     title: "Warehouses",
-    url: "#",
+    url: "/dashboard/warehouses",
     icon: WarehouseIcon,
   },
   {
     title: "Managers",
-    url: "#",
+    url: "/dashboard/managers",
     icon: UserRound,
   },
   {
-    title: "Employees",
-    url: "#",
-    icon: Users,
-  },
-  {
-    title: "Vendors",
-    url: "#",
-    icon: User,
-  },
-  {
     title: "Vehicles",
-    url: "#",
+    url: "/dashboard/vehicles",
     icon: Truck,
   },
 ];
 
 export function AppSidebar() {
+  const { pathname } = useLocation();
+
   return (
     <div>
       <Sidebar>
@@ -66,11 +60,16 @@ export function AppSidebar() {
               <SidebarMenu>
                 {items.map((item) => (
                   <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild>
-                      <a href={item.url}>
+                    <SidebarMenuButton
+                      className={
+                        pathname === item.url ? "bg-black text-white" : ""
+                      }
+                      asChild
+                    >
+                      <Link to={item.url}>
                         <item.icon />
                         <span className="text-lg">{item.title}</span>
-                      </a>
+                      </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 ))}
