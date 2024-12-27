@@ -4,7 +4,25 @@ import jwt from "jsonwebtoken";
 import OrderStop from "../models/order-stop.model.js";
 import Vehicle from "../models/vehicle.model.js";
 import Employee from "../models/employee.model.js";
-import mongoose from "mongoose";
+import mongoose, { get } from "mongoose";
+
+const getWarehouse = async (req, res, next) => {
+  try {
+    const warehouse = await Warehouse.findById(req.warehouseId).select(
+      "-password -__v"
+    );
+
+    if (!warehouse) {
+      return res.status(404).json({
+        message: "Warehouse doesn't exist",
+      });
+    }
+
+    res.status(200).json(warehouse);
+  } catch (error) {
+    next(error);
+  }
+};
 
 const signInWarehouse = async (req, res, next) => {
   try {
@@ -28,7 +46,7 @@ const signInWarehouse = async (req, res, next) => {
     const token = jwt.sign(
       { warehouseId: warehouse._id },
       process.env.JWT_SECRET,
-      { expiresIn: "1d" },
+      { expiresIn: "1d" }
     );
 
     res.cookie("warehouse_auth_token", token, {
@@ -169,6 +187,7 @@ const deleteOrderStop = async (req, res, next) => {
 };
 
 export default {
+  getWarehouse,
   signInWarehouse,
   verifyOrderStop,
   departureOrderStop,

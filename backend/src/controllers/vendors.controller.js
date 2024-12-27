@@ -5,6 +5,22 @@ import Order from "../models/order.model.js";
 import { v4 as uuidv4 } from "uuid";
 import { uploadImage } from "../config/cloudinary.js";
 
+const getVendor = async (req, res, next) => {
+  try {
+    const vendor = await Vendor.findById(req.vendorId).select("-password -__v");
+
+    if (!vendor) {
+      return res.status(404).json({
+        message: "Vendor not found",
+      });
+    }
+
+    return res.status(200).json(vendor);
+  } catch (error) {
+    next(error);
+  }
+};
+
 const signUpVendor = async (req, res, next) => {
   try {
     let vendor = await Vendor.findOne({ email: req.body.email });
@@ -144,7 +160,7 @@ const updateProfile = async (req, res, next) => {
     if (profileImage) {
       profileImgDetails = await uploadImage(
         profileImage,
-        vendor.profile_img?.public_id,
+        vendor.profile_img?.public_id
       );
 
       updatedVendor = await Vendor.findByIdAndUpdate(
@@ -156,7 +172,7 @@ const updateProfile = async (req, res, next) => {
             public_id: profileImgDetails.public_id,
           },
         },
-        { new: true },
+        { new: true }
       );
     } else {
       updatedVendor = await Vendor.findByIdAndUpdate(vendorId, req.body, {
@@ -174,6 +190,7 @@ const updateProfile = async (req, res, next) => {
 };
 
 export default {
+  getVendor,
   signUpVendor,
   signInVendor,
   createOrder,

@@ -6,11 +6,14 @@ const employeeRouter = express.Router();
 
 employeeRouter.post("/auth/sign-in", employeesController.signInEmployee);
 
+employeeRouter.use(employeeAuthMiddleware.verifyEmployeeToken);
+
+employeeRouter.get("/me", employeesController.getEmployee);
+
 employeeRouter.post(
   "/add-order-stop/:shippingId/:warehouseId",
-  employeeAuthMiddleware.verifyEmployeeToken,
   employeeAuthMiddleware.verifyDriver,
-  employeesController.addOrderStop,
+  employeesController.addOrderStop
 );
 
 export default employeeRouter;
