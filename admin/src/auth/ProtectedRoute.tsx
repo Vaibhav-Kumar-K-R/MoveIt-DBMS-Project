@@ -13,7 +13,7 @@ const ProtectedRoute = () => {
 
   // Redirect signed-in users from `/login` to home
   if (isSignedIn && location.pathname === "/login") {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/dashboard" replace />;
   }
 
   // Allow access for signed-in users or redirect to login

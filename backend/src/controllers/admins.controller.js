@@ -328,6 +328,7 @@ const getStats = async (req, res, next) => {
       vehiclesCount,
       availableVehicleCount,
       activeOrdersCount,
+      deliveredOrderCount,
     ] = await Promise.all([
       Vendor.countDocuments(),
       Warehouse.countDocuments(),
@@ -344,6 +345,7 @@ const getStats = async (req, res, next) => {
           $nin: ["delivered", "cancelled"],
         },
       }),
+      Order.countDocuments({ status: "delivered" }),
     ]);
 
     res.status(200).json({
@@ -359,6 +361,7 @@ const getStats = async (req, res, next) => {
       total_vehicles: vehiclesCount,
       available_vehicles: availableVehicleCount,
       total_active_orders: activeOrdersCount,
+      total_delivered_orders: deliveredOrderCount,
     });
   } catch (error) {
     next(error);

@@ -40,7 +40,7 @@ const LoginPage = () => {
 
   useEffect(() => {
     if (isSignedIn) {
-      navigate("/", { replace: true });
+      navigate("/dashboard", { replace: true });
     }
 
     if (isAuthError) {
