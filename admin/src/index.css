@@ -64,3 +64,9 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer background {
+  .bg-main {
+    @apply bg-gradient-to-tl from-zinc-100 to-zinc-50;
+  }
+}

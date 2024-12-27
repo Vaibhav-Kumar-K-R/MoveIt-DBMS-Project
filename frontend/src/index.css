@@ -7,3 +7,28 @@
     --radius: 0.5rem;
   }
 }
+
+@keyframes line-fill {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+.animate-line {
+  background-color: #18181b; /* bg-zinc-800 equivalent */
+  position: relative;
+}
+
+.animate-line::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  background-color: #18181b; /* bg-zinc-800 */
+  animation: line-fill 1s ease-out forwards;
+}

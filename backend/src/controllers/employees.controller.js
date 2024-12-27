@@ -4,6 +4,24 @@ import OrderStop from "../models/order-stop.model.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 
+const getEmployee = async (req, res, next) => {
+  try {
+    const employee = await Employee.findById(req.employeeId).select(
+      "-password -__v"
+    );
+
+    if (!employee) {
+      return res.status(404).json({
+        message: "Employee doesn't exist. Please Sign-up",
+      });
+    }
+
+    return res.status(200).json(employee);
+  } catch (error) {
+    next(error);
+  }
+};
+
 const signInEmployee = async (req, res, next) => {
   try {
     const { email, password } = req.body;
@@ -26,7 +44,7 @@ const signInEmployee = async (req, res, next) => {
     const token = jwt.sign(
       { employeeId: employee._id },
       process.env.JWT_SECRET,
-      { expiresIn: "1d" },
+      { expiresIn: "1d" }
     );
 
     res.cookie("employee_auth_token", token, {
@@ -103,6 +121,7 @@ const addOrderStop = async (req, res, next) => {
 };
 
 export default {
+  getEmployee,
   signInEmployee,
   addOrderStop,
 };

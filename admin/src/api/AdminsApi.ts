@@ -29,13 +29,9 @@ export const useAdminAuth = () => {
 };
 
 export const useLoginUserRequestMutation = () => {
-  const loginUserRequestMutation = async (formData: LoginFormData) => {
+  const loginUserRequestMutation = async (loginData: LoginFormData) => {
     try {
-      const response = await axiosInstance.post("/admin/sign-in", formData, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await axiosInstance.post("/admin/sign-in", loginData);
 
       return response.data;
     } catch (error: any) {
@@ -45,7 +41,7 @@ export const useLoginUserRequestMutation = () => {
 
   const navigate = useNavigate();
   const {
-    mutateAsync: loginUser,
+    mutateAsync: loginAdmin,
     isLoading,
     data,
     reset,
@@ -63,7 +59,7 @@ export const useLoginUserRequestMutation = () => {
   });
 
   return {
-    loginUser,
+    loginAdmin,
     isLoading,
     data,
   };

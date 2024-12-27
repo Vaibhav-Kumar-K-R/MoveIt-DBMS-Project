@@ -13,6 +13,8 @@ warehouseRouter.post(
 
 warehouseRouter.use(warehouseAuthMiddleware.verifyWarehouseToken);
 
+warehouseRouter.get("/me", warehousesController.getWarehouse);
+
 warehouseRouter.post(
   "/departure/:orderStopId",
   warehouseValidateMiddleware.validateOrderDepartureRequest,

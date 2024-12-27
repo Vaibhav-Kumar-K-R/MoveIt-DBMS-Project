@@ -13,6 +13,12 @@ const getAdmin = async (req, res, next) => {
   try {
     const admin = await Admin.findById(req.adminId).select("-password -__v");
 
+    if (!admin) {
+      return res.status(404).json({
+        message: "Admin doesn't exist. Please Sign-up",
+      });
+    }
+
     return res.status(200).json(admin);
   } catch (error) {
     next(error);
@@ -83,7 +89,7 @@ const createManagerProfile = async (req, res, next) => {
               public_id: profileImgDetails.public_id,
             },
           }
-        : req.body,
+        : req.body
     );
 
     res.status(201).json({
@@ -119,7 +125,7 @@ const updateManagerWorkStatus = async (req, res, next) => {
       },
       {
         work_status: updatedStatus,
-      },
+      }
     );
 
     res.status(200).json({
@@ -175,7 +181,7 @@ const updateWarehouseStatus = async (req, res, next) => {
       },
       {
         status: updatedStatus,
-      },
+      }
     );
 
     res.status(200).json({
@@ -190,7 +196,7 @@ const updateWarehouseStatus = async (req, res, next) => {
 const getWarehouseList = async (_req, res, next) => {
   try {
     let warehouseList = await Warehouse.find({}).select(
-      "-createdAt -updatedAt -__v -_id",
+      "-createdAt -updatedAt -__v -_id"
     );
 
     if (warehouseList.length == 0) {
@@ -212,7 +218,7 @@ const getWarehousebyState = async (req, res, next) => {
   try {
     const { state } = req.params;
     let stateWarehouse = await Warehouse.find({ state }).select(
-      "-createdAt -updatedAt -__v -_id  -password",
+      "-createdAt -updatedAt -__v -_id  -password"
     );
 
     if (stateWarehouse.length == 0) {
@@ -258,7 +264,7 @@ const addVehicle = async (req, res, next) => {
               public_id: vehicleImgDetails.public_id,
             },
           }
-        : req.body,
+        : req.body
     );
 
     res.status(201).json({
@@ -296,7 +302,7 @@ const updateVehicleStatus = async (req, res, next) => {
       },
       {
         curr_status: updatedStatus,
-      },
+      }
     );
 
     res.status(200).json({

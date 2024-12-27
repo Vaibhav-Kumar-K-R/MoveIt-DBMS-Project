@@ -22,7 +22,7 @@ import Redirect from "../redirect/Redirect";
 import { toast } from "sonner";
 
 const LoginPage = () => {
-  const { loginUser, isLoading: isLoginRequestLoading } =
+  const { loginAdmin, isLoading: isLoginRequestLoading } =
     useLoginUserRequestMutation();
   const {
     isSignedIn,
@@ -53,11 +53,11 @@ const LoginPage = () => {
   }
 
   const onSubmit = async (data: LoginFormData) => {
-    loginUser(data);
+    loginAdmin(data);
   };
 
   return (
-    <div className="flex md:flex-row h-screen items-center justify-center gap-5 bg-gradient-to-tl from-zinc-100 to-zinc-50 relative">
+    <div className="flex md:flex-row h-screen items-center justify-center gap-5 bg-main relative">
       <div className="absolute top-4 left-7">
         <AppLogo />
       </div>

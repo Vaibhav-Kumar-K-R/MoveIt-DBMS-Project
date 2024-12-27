@@ -5,9 +5,9 @@ import { Link } from "react-router-dom";
 
 const NotFound = () => {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-4 select-none">
+    <div className="min-h-screen flex flex-col items-center justify-center px-4 select-none bg-main">
       <div className="max-w-md w-full text-center space-y-6">
-        <h1 className="text-[7rem] md:text-[180px] font-bold text-sky-100 leading-none select-none">
+        <h1 className="text-[7rem] md:text-[180px] font-bold text-zinc-300 leading-none select-none">
           404
         </h1>
 
@@ -22,7 +22,7 @@ const NotFound = () => {
 
         <div className="space-y-2">
           <h2 className="text-[2.3rem] font-bold">Oops, page not found</h2>
-          <p className="text-muted-foreground text-lg">
+          <p className="text-muted-foreground text-sm font-semibold">
             This page is missing or you assembled the link incorrectly
           </p>
         </div>

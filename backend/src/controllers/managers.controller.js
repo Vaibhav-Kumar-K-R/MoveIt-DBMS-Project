@@ -3,6 +3,24 @@ import Employee from "../models/employee.model.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
+const getManager = async (req, res, next) => {
+  try {
+    const manager = await Manager.findById(req.managerId).select(
+      "-password -__v"
+    );
+
+    if (!manager) {
+      return res.status(404).json({
+        message: "Manager not found",
+      });
+    }
+
+    return res.status(200).json(manager);
+  } catch (error) {
+    next(error);
+  }
+};
+
 const getEmployeesUnderManager = async (req, res, next) => {
   try {
     const managerId = req.managerId;
@@ -96,7 +114,7 @@ const addEmployee = async (req, res, next) => {
         : {
             ...req.body,
             manager_id: req.managerId,
-          },
+          }
     );
 
     res.status(201).json({
@@ -140,6 +158,7 @@ const removeEmployee = async (req, res, next) => {
 };
 
 export default {
+  getManager,
   getEmployeesUnderManager,
   signInManager,
   addEmployee,
