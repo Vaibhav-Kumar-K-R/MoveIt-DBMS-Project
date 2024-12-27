@@ -13,17 +13,17 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 
 const VendorsSignUp = () => {
   const [signUpData, setSignUpData] = useState<VendorsSignUpData>({
-    name: "John Doe",
-    email: "johndoe@example.com",
-    phone: "+1234567890",
-    password: "••••••••",
-    confirm_password: "••••••••",
-    shop_name: "John's Shop",
-    shop_description: "A cozy little shop for all your needs.",
-    address: "123 Main Street",
-    city: "Springfield",
-    state: "Illinois",
-    pin_code: "627042",
+    name: "",
+    email: "",
+    phone: "",
+    password: "",
+    confirm_password: "",
+    shop_name: "",
+    shop_description: "",
+    address: "",
+    city: "",
+    state: "",
+    pin_code: "",
   });
 
   const updateSignUpData = (data: Partial<VendorsSignUpData>) => {

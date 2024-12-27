@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import NotFound from "./pages/not-found/NotFound";
 import Login from "./pages/login/Login";
 import ProtectedRoute from "./auth/ProtectedRoute";
@@ -26,6 +26,7 @@ const AppRoutes = () => {
       {/* Public Route for Login */}
       <Route path="/login" element={<Login />} />
 
+      <Route path="/" element={<Navigate to="/dashboard" />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

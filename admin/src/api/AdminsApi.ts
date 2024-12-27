@@ -66,7 +66,7 @@ export const useLoginUserRequestMutation = () => {
 };
 
 export const useGetStatsRequest = () => {
-  const GetStatsRequest = async () => {
+  const getStatsRequest = async () => {
     try {
       const response = await axiosInstance.get("/admin/get-stats");
 
@@ -77,8 +77,8 @@ export const useGetStatsRequest = () => {
   };
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: "GetStatsRequest",
-    queryFn: GetStatsRequest,
+    queryKey: "getStatsRequest",
+    queryFn: getStatsRequest,
   });
 
   return {

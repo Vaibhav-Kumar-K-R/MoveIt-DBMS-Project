@@ -47,12 +47,12 @@ const PersonalDetailsSection = ({
           <h1 className="text-xl font-bold mb-2">Personal Details</h1>
 
           <div className="flex flex-col gap-3">
-            <div className="flex items-start w-full gap-4">
+            <div className="flex items-start w-full gap-3 flex-col">
               <FormField
                 control={form.control}
                 name="name"
                 render={({ field }) => (
-                  <FormItem className="flex-1">
+                  <FormItem className="flex-1 w-full">
                     <FormLabel>Name *</FormLabel>
                     <FormControl>
                       <div className="flex items-center border rounded-md px-3 py-2">
@@ -77,7 +77,7 @@ const PersonalDetailsSection = ({
                 control={form.control}
                 name="email"
                 render={({ field }) => (
-                  <FormItem className="flex-1">
+                  <FormItem className="flex-1 w-full">
                     <FormLabel>Email *</FormLabel>
                     <FormControl>
                       <div className="flex items-center border rounded-md px-3 py-2">
@@ -129,12 +129,12 @@ const PersonalDetailsSection = ({
               )}
             />
 
-            <div className="flex items-start w-full gap-4">
+            <div className="flex items-start w-full gap-3 flex-col">
               <FormField
                 control={form.control}
                 name="password"
                 render={({ field }) => (
-                  <FormItem className="flex-1">
+                  <FormItem className="flex-1 w-full">
                     <FormLabel>Password *</FormLabel>
                     <FormControl>
                       <div className="flex items-center border rounded-md px-3 py-2">
@@ -149,7 +149,7 @@ const PersonalDetailsSection = ({
                     <FormDescription>
                       Please enter your Password
                     </FormDescription>
-                    <FormMessage className="text-red-400" />
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -158,7 +158,7 @@ const PersonalDetailsSection = ({
                 control={form.control}
                 name="confirm_password"
                 render={({ field }) => (
-                  <FormItem className="flex-1">
+                  <FormItem className="flex-1 w-full">
                     <FormLabel>Confirm Password *</FormLabel>
                     <FormControl>
                       <div className="flex items-center border rounded-md px-3 py-2">
@@ -173,7 +173,7 @@ const PersonalDetailsSection = ({
                     <FormDescription>
                       Please confirm your Password
                     </FormDescription>
-                    <FormMessage className="text-red-400" />
+                    <FormMessage />
                   </FormItem>
                 )}
               />

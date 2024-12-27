@@ -45,9 +45,9 @@ const SummarySection = ({ signUpData }: SummarySectionProps) => {
             </div>
           </div>
           <div className="flex items-center w-full gap-3">
-            <Mail className="text-zinc-600" />
+            <Mail className="text-zinc-600 size-6" />
             <Separator orientation="vertical" />
-            <div className="text-sm">
+            <div className="text-sm flex-1">
               <p className="font-semibold">Email</p>
               <p className="text-zinc-500">{signUpData.email}</p>
             </div>
@@ -85,9 +85,9 @@ const SummarySection = ({ signUpData }: SummarySectionProps) => {
             </div>
           </div>
           <div className="flex items-center w-full gap-3">
-            <Podcast className="text-zinc-600" />
+            <Podcast className="text-zinc-600 size-6" />
             <Separator orientation="vertical" />
-            <div className="text-sm">
+            <div className="text-sm flex-1">
               <p className="font-semibold">Description</p>
               <p className="text-zinc-500">{signUpData.shop_description}</p>
             </div>

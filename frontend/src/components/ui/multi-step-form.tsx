@@ -25,11 +25,11 @@ const MultiStepForm = ({ className, formHeader }: MultiStepFormProps) => {
   return (
     <div
       className={cn(
-        "flex flex-col items-center justify-center gap-6 p-5",
+        "flex flex-col items-center justify-center gap-6 p-5 relative",
         className
       )}
     >
-      <div className="flex flex-col gap-3 items-center justify-center w-full">
+      <div className="flex flex-col gap-3 items-center justify-center w-full sticky top-0 bg-white">
         {formHeader}
         <div className="flex items-center justify-center w-full gap-2">
           {Array.from({ length: stepsLength }).map((_, index) => (
@@ -62,6 +62,7 @@ const MultiStepForm = ({ className, formHeader }: MultiStepFormProps) => {
             </Fragment>
           ))}
         </div>
+        <Separator className="shadow-md" />
       </div>
 
       <div className="flex flex-col justify-start w-full">
@@ -76,7 +77,7 @@ type MultiStepFormButtonsProps = {
   isLastStep: boolean;
   back: () => void;
   next: () => void;
-  isLoading: boolean;
+  isLoading?: boolean;
 };
 
 const MultiStepFormButtons = ({
