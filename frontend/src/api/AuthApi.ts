@@ -1,8 +1,9 @@
 import axiosInstance from "@/lib/axios";
+import { AuthType } from "@/types/auth";
 import { useQuery } from "react-query";
 
 export const useIsLoggedInRequest = () => {
-  const isLoggedInRequest = async () => {
+  const isLoggedInRequest = async (): Promise<AuthType> => {
     try {
       const response = await axiosInstance.get("/auth/me");
 
@@ -16,8 +17,6 @@ export const useIsLoggedInRequest = () => {
     queryKey: "isLoggedInRequest",
     queryFn: isLoggedInRequest,
   });
-
-  console.log(data);
 
   return {
     isSignedIn: data?.isAuthenticated,
