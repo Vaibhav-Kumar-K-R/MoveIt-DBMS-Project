@@ -1,5 +1,6 @@
 import axiosInstance from "@/lib/axios";
 import { LoginFormData } from "@/pages/login/types";
+import { createWarehouseFormData } from "@/pages/warehouses/types";
 import { useMutation, useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -107,5 +108,45 @@ export const useGetWarehousesRequest = () => {
     response: data,
     isLoading,
     isError,
+  };
+};
+export const useCreateWarehouseMutation = () => {
+  const createWarehouseMutation = async (
+    warehouseData: createWarehouseFormData,
+  ) => {
+    try {
+      const response = await axiosInstance.post(
+        "/admin/create-warehouse",
+        warehouseData,
+      );
+      return response.data;
+    } catch (error: any) {
+      throw new Error(error.message);
+    }
+  };
+
+  const {
+    mutateAsync: createWarehouse,
+    isLoading,
+    data,
+    reset,
+  } = useMutation({
+    mutationKey: "createWarehouse",
+    mutationFn: createWarehouseMutation,
+    onSuccess: () => {
+      toast.success("Warehouse created successfully ");
+
+      reset();
+    },
+    onError: (error: any) => {
+      toast.error(error?.toString());
+      reset();
+    },
+  });
+
+  return {
+    createWarehouse,
+    isLoading,
+    response: data,
   };
 };
