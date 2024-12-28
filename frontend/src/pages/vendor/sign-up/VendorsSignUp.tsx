@@ -4,12 +4,16 @@ import PersonalDetailsSection from "./components/PersonalDetailsSection";
 import ShopDetailsSection from "./components/ShopDetailsSection";
 import AddressDetailsSection from "./components/AddressDetailsSection";
 import MultiStepFormContextProvider from "@/context/MultiStepFormContext";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { VendorsSignUpData } from "./types";
 import SummarySection from "./components/SummarySection";
 import AppLogo from "@/components/AppLogo";
 import { Card, CardHeader } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useIsLoggedInRequest } from "@/api/AuthApi";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
+import Redirect from "@/pages/redirect/Redirect";
 
 const VendorsSignUp = () => {
   const [signUpData, setSignUpData] = useState<VendorsSignUpData>({
@@ -25,6 +29,27 @@ const VendorsSignUp = () => {
     state: "",
     pin_code: "",
   });
+  const {
+    isSignedIn,
+    isLoading: isAuthLoading,
+    isError: isAuthError,
+  } = useIsLoggedInRequest();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isSignedIn) {
+      navigate("/", { replace: true });
+      toast("You are already signed in", { icon: "🚨" });
+    }
+
+    if (isAuthError) {
+      toast("Sign in as vendor", { icon: "🚨" });
+    }
+  }, [isSignedIn, isAuthError, navigate]);
+
+  if (isAuthLoading) {
+    return <Redirect />;
+  }
 
   const updateSignUpData = (data: Partial<VendorsSignUpData>) => {
     setSignUpData((prevSignUpData) => ({
