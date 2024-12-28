@@ -1,11 +1,12 @@
 import { LoginFormData } from "@/forms/login/types";
 import axiosInstance from "@/lib/axios";
+import { EmployeeType } from "@/types/employee";
 import { useMutation, useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 export const useEmployeeAuth = () => {
-  const employeeAuth = async () => {
+  const employeeAuth = async (): Promise<EmployeeType> => {
     try {
       const response = await axiosInstance.get("/employee/me");
 

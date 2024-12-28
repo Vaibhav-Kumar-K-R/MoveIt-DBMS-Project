@@ -1,5 +1,5 @@
 import axiosInstance from "@/lib/axios";
-import { CustomerOrderDetail } from "@/types/api-types";
+import { CustomerOrderDetail } from "@/types/customer";
 import { useQuery } from "react-query";
 
 /**

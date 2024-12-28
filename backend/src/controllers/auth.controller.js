@@ -17,6 +17,13 @@ const getAuthStatus = async (req, res, next) => {
 
     res.status(200).json({
       isAuthenticated: true,
+      role: employee
+        ? "employee"
+        : manager
+        ? "manager"
+        : vendor
+        ? "vendor"
+        : "warehouse",
     });
   } catch (error) {
     next(error);

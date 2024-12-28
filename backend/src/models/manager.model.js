@@ -11,6 +11,10 @@ const managerSchema = new mongoose.Schema(
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     phone: { type: String, required: true },
+    address: { type: String, required: true },
+    pincode: { type: String, required: true },
+    city: { type: String, required: true },
+    state: { type: String, required: true },
     dob: { type: String, required: true },
     salary: { type: Number, required: true },
     work_status: {
@@ -19,7 +23,7 @@ const managerSchema = new mongoose.Schema(
       default: "working",
     },
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
 managerSchema.pre("save", async function (next) {
