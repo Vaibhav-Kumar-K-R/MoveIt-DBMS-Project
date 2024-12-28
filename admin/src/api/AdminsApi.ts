@@ -87,3 +87,25 @@ export const useGetStatsRequest = () => {
     isError,
   };
 };
+export const useGetWarehousesRequest = () => {
+  const getWarehousesRequest = async () => {
+    try {
+      const response = await axiosInstance.get("/admin/warehouses");
+
+      return response.data;
+    } catch (error: any) {
+      throw new Error("You need to be logged in to access this page");
+    }
+  };
+
+  const { data, isLoading, isError } = useQuery({
+    queryKey: "getWarehousesRequest",
+    queryFn: getWarehousesRequest,
+  });
+
+  return {
+    response: data,
+    isLoading,
+    isError,
+  };
+};

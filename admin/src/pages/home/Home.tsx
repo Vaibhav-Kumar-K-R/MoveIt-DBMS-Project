@@ -31,7 +31,7 @@ const Home = () => {
   return (
     <div className="space-y-4 px-4">
       <h1 className="text-3xl  font-bold">Dashboard</h1>
-      <div className="grid gap-4  sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-4 p-1  sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3">
         {cards.map((card, index) => (
           <Card key={index}>
             <CardHeader className="flex  flex-row items-center justify-between space-y-0 pb-2">

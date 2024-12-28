@@ -10,7 +10,7 @@ const Redirect = ({ className }: RedirectProps) => {
     <div
       className={cn(
         "flex items-center justify-center h-screen animate-pulse bg-main",
-        className
+        className,
       )}
     >
       <AppLogo />
