@@ -12,7 +12,9 @@ const AppRoutes = () => {
     <Routes>
       <Route path="/" element={<AppLayout />}>
         <Route index element={<Home />} />
-        {/* Other pages which needs layout */}
+        <Route path="/services" element={<Home />} />
+        <Route path="/products" element={<Home />} />
+        <Route path="/contact" element={<Home />} />
       </Route>
 
       <Route path="/employee/*" element={<EmployeeRoutes />} />

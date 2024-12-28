@@ -1,7 +1,11 @@
+import { Separator } from "@/components/ui/separator";
+import Hero from "./components/Hero";
+
 const Home = () => {
   return (
-    <div>
-      <h1>Home</h1>
+    <div className="space-y-2">
+      <Hero />
+      <Separator />
     </div>
   );
 };

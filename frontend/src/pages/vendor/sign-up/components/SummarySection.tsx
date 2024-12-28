@@ -1,4 +1,5 @@
 import {
+  LocateFixedIcon,
   Lock,
   Mail,
   Map,
@@ -14,6 +15,7 @@ import { Separator } from "@/components/ui/separator";
 import { MultiStepFormButtons } from "@/components/ui/multi-step-form";
 import { useMultiStepFormContext } from "@/context/MultiStepFormContext";
 import { useVendorSignUpRequest } from "@/api/VendorsApi";
+import { formatPhoneNumber } from "@/helpers/format-phone-number";
 
 type SummarySectionProps = {
   signUpData: VendorsSignUpData;
@@ -57,7 +59,7 @@ const SummarySection = ({ signUpData }: SummarySectionProps) => {
             <Separator orientation="vertical" />
             <div className="text-sm">
               <p className="font-semibold">Phone</p>
-              <p className="text-zinc-500">{signUpData.phone}</p>
+              <p className="text-zinc-500">{formatPhoneNumber(signUpData.phone)}</p>
             </div>
           </div>
           <div className="flex items-center w-full gap-3">
@@ -99,6 +101,16 @@ const SummarySection = ({ signUpData }: SummarySectionProps) => {
 
       <div className="flex flex-col gap-3">
         <h3 className="text-lg font-semibold">Address Details</h3>
+        <div className="grid grid-cols-1 gap-y-4">
+          <div className="flex items-center w-full gap-3">
+            <LocateFixedIcon className="text-zinc-600 size-6" />
+            <Separator orientation="vertical" />
+            <div className="text-sm flex-1">
+              <p className="font-semibold">Full Address</p>
+              <p className="text-zinc-500">{signUpData.address}</p>
+            </div>
+          </div>
+        </div>
         <div className="grid grid-cols-2 gap-y-4">
           <div className="flex items-center w-full gap-3">
             <Map className="text-zinc-600" />
