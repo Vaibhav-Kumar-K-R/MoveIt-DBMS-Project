@@ -9,6 +9,7 @@ import { connectDB } from "./config/db.js";
 import { setUpCloudinary } from "./config/cloudinary.js";
 
 // Router endpoints
+import authRouter from "./routes/auth.route.js";
 import vendorRouter from "./routes/vendors.route.js";
 import customerRouter from "./routes/customers.route.js";
 import adminRouter from "./routes/admins.route.js";
@@ -28,7 +29,7 @@ app.use(
   cors({
     origin: process.env.FRONTEND_URL,
     credentials: true,
-  }),
+  })
 );
 app.use(cookieParser());
 
@@ -40,6 +41,7 @@ app.get("/health", (_req, res) => {
 });
 
 // Route endpoints
+app.use("/api/auth", authRouter);
 app.use("/api/vendor", vendorRouter);
 app.use("/api/customer", customerRouter);
 app.use("/api/admin", adminRouter);

@@ -15,6 +15,11 @@ import { Mail, Lock, Loader2 } from "lucide-react";
 import PasswordInput from "@/components/ui/password-input";
 import { formSchema, LoginFormData } from "./types";
 import AppLogo from "@/components/AppLogo";
+import { useIsLoggedInRequest } from "@/api/AuthApi";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import Redirect from "@/pages/redirect/Redirect";
+import { toast } from "sonner";
 
 type LoginPageProps = {
   onSave: (data: LoginFormData) => void;
@@ -36,6 +41,27 @@ const LoginForm = ({
       password: "",
     },
   });
+  const {
+    isSignedIn,
+    isLoading: isAuthLoading,
+    isError: isAuthError,
+  } = useIsLoggedInRequest();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isSignedIn) {
+      navigate("/", { replace: true });
+      toast("You are already signed in", { icon: "🚨" });
+    }
+
+    if (isAuthError) {
+      toast("Login to your account", { icon: "🚨" });
+    }
+  }, [isSignedIn, isAuthError, navigate]);
+
+  if (isAuthLoading) {
+    return <Redirect />;
+  }
 
   return (
     <div className="flex md:flex-row h-screen items-center justify-center gap-5 bg-main relative">
