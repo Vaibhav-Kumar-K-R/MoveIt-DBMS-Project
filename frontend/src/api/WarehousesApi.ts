@@ -1,6 +1,6 @@
 import { LoginFormData } from "@/forms/login/types";
 import axiosInstance from "@/lib/axios";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
@@ -67,5 +67,47 @@ export const useWarehouseLoginRequest = () => {
     error,
     isSuccess,
     data,
+  };
+};
+
+export const useWarehouseLogoutRequest = () => {
+  const warehouseLogoutRequest = async () => {
+    try {
+      const response = await axiosInstance.post("/warehouse/auth/sign-out");
+
+      return response.data;
+    } catch (error: any) {
+      throw new Error(error.message);
+    }
+  };
+
+  const queryClient = useQueryClient();
+  const {
+    mutateAsync: logoutWarehouse,
+    isLoading,
+    data,
+    error,
+  } = useMutation({
+    mutationKey: "warehouseLogoutRequest",
+    mutationFn: warehouseLogoutRequest,
+    onSuccess: () => {
+      toast("Logged out successfully", { icon: "🚀" });
+
+      // Reset queries on logout
+      queryClient.resetQueries();
+
+      // Clear cache data on logout
+      queryClient.clear();
+    },
+    onError: (error: any) => {
+      toast(error.message, { icon: "🚨" });
+    },
+  });
+
+  return {
+    logoutWarehouse,
+    isLoading,
+    data,
+    error,
   };
 };
