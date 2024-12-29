@@ -64,6 +64,21 @@ const signInWarehouse = async (req, res, next) => {
   }
 };
 
+const signOutWarehouse = async (req, res, next) => {
+  try {
+    res.clearCookie("warehouse_auth_token", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+    });
+
+    res.status(200).json({
+      message: "Signed out successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const departureOrderStop = async (req, res, next) => {
   try {
     const { orderStopId } = req.params;
@@ -189,6 +204,7 @@ const deleteOrderStop = async (req, res, next) => {
 export default {
   getWarehouse,
   signInWarehouse,
+  signOutWarehouse,
   verifyOrderStop,
   departureOrderStop,
   deleteOrderStop,

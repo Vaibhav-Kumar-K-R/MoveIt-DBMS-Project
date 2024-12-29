@@ -90,6 +90,21 @@ const signInVendor = async (req, res, next) => {
   }
 };
 
+const signOutVendor = async (req, res, next) => {
+  try {
+    res.clearCookie("vendor_auth_token", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+    });
+
+    return res.status(200).json({
+      message: "Vendor Signed Out successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const createOrder = async (req, res, next) => {
   try {
     // Generate a unique tracking ID and shipping ID using UUID
@@ -193,6 +208,7 @@ export default {
   getVendor,
   signUpVendor,
   signInVendor,
+  signOutVendor,
   createOrder,
   cancelOrder,
   updateProfile,

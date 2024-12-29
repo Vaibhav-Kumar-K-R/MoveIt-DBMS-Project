@@ -10,10 +10,7 @@ employeeRouter.use(employeeAuthMiddleware.verifyEmployeeToken);
 
 employeeRouter.get("/me", employeesController.getEmployee);
 
-employeeRouter.post(
-  "/auth/sign-out",
-  employeesController.signOutEmployee
-);
+employeeRouter.post("/auth/sign-out", employeesController.signOutEmployee);
 
 employeeRouter.post(
   "/add-order-stop/:shippingId/:warehouseId",
