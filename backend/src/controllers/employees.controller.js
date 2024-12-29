@@ -62,6 +62,21 @@ const signInEmployee = async (req, res, next) => {
   }
 };
 
+const signOutEmployee = async (req, res, next) => {
+  try {
+    res.clearCookie("employee_auth_token", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+    });
+
+    return res.status(200).json({
+      message: "Employee Signed Out successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const addOrderStop = async (req, res, next) => {
   try {
     const { shippingId, warehouseId } = req.params;
@@ -123,5 +138,6 @@ const addOrderStop = async (req, res, next) => {
 export default {
   getEmployee,
   signInEmployee,
+  signOutEmployee,
   addOrderStop,
 };

@@ -1,4 +1,4 @@
-import { useEmployeeAuth } from "@/api/EmployeesApi";
+import { useEmployeeAuth, useEmployeeLogoutRequest } from "@/api/EmployeesApi";
 import AuthButton from "@/components/AuthButton";
 import { buttonVariants } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -9,13 +9,20 @@ import { Link } from "react-router-dom";
 
 const EmployeeAuthButton = () => {
   const { employee, isLoading } = useEmployeeAuth();
+  const { logoutEmployee, isLoading: isLogoutLoading } =
+    useEmployeeLogoutRequest();
 
   if (isLoading || !employee) {
     return null;
   }
 
   return (
-    <AuthButton {...employee} imageUrl={employee.profile_img.profile_img_url}>
+    <AuthButton
+      {...employee}
+      imageUrl={employee.profile_img.profile_img_url}
+      logOut={logoutEmployee}
+      isLogoutLoading={isLogoutLoading}
+    >
       <div>
         <p className="text-sm text-zinc-500 flex justify-between items-center gap-2">
           <span className="flex items-center gap-2 font-semibold text-zinc-800">

@@ -9,21 +9,19 @@ import { Toaster } from "sonner";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      retry: 1, // Number of retry attempts on failure (default is 3)
-      refetchOnWindowFocus: false, // Prevent refetching when window regains focus
-      staleTime: 60000, // Data stays fresh for 60 seconds
-      cacheTime: 300000, // Data is cached for 5 minutes
+      retry: 1,
+      refetchOnWindowFocus: true,
     },
   },
 });
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <Router>
-      <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={queryClient}>
+      <Router>
         <App />
         <Toaster closeButton richColors />
-      </QueryClientProvider>
-    </Router>
+      </Router>
+    </QueryClientProvider>
   </StrictMode>
 );
