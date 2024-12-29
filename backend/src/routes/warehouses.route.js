@@ -15,6 +15,8 @@ warehouseRouter.use(warehouseAuthMiddleware.verifyWarehouseToken);
 
 warehouseRouter.get("/me", warehousesController.getWarehouse);
 
+warehouseRouter.post("/auth/sign-out", warehousesController.signOutWarehouse);
+
 warehouseRouter.post(
   "/departure/:orderStopId",
   warehouseValidateMiddleware.validateOrderDepartureRequest,

@@ -85,6 +85,21 @@ const signInManager = async (req, res, next) => {
   }
 };
 
+const signOutManager = async (req, res, next) => {
+  try {
+    res.clearCookie("manager_auth_token", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+    });
+
+    return res.status(200).json({
+      message: "Manager logged out successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const addEmployee = async (req, res, next) => {
   try {
     let employee = await Employee.findOne({ email: req.body.email });
@@ -161,6 +176,7 @@ export default {
   getManager,
   getEmployeesUnderManager,
   signInManager,
+  signOutManager,
   addEmployee,
   removeEmployee,
 };

@@ -22,6 +22,8 @@ vendorRouter.use(vendorAuthMiddleware.verifyVendorToken);
 
 vendorRouter.get("/me", vendorsController.getVendor);
 
+vendorRouter.post("/auth/sign-out", vendorsController.signOutVendor);
+
 vendorRouter.post(
   "/create-order",
   vendorValidateMiddleware.validateCreateOrderRequest,

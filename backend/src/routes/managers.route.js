@@ -16,6 +16,8 @@ managerRouter.use(managerAuthMiddleware.verifyManagerToken);
 
 managerRouter.get("/me", managersController.getManager);
 
+managerRouter.post("/auth/sign-out", managersController.signOutManager);
+
 managerRouter.get(
   "/get-employees",
   managersController.getEmployeesUnderManager,

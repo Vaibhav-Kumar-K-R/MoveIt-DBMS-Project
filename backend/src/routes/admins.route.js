@@ -16,6 +16,8 @@ adminRouter.use(adminAuthMiddleware.verifyAdminToken);
 
 adminRouter.get("/me", adminController.getAdmin);
 
+adminRouter.post("/auth/sign-out", adminController.signOutAdmin);
+
 adminRouter.post(
   "/create-manager",
   upload.single("managerProfileImg"),

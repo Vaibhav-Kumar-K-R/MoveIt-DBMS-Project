@@ -20,7 +20,8 @@ const getOrder = async (req, res, next) => {
       order_id: order._id,
       isVerified: true,
     })
-      .select("-__v").populate({
+      .select("-__v")
+      .populate({
         path: "warehouse_id",
         select: "name city state address pincode",
       })

@@ -11,7 +11,9 @@ import { uploadImage } from "../config/cloudinary.js";
 
 const getAdmin = async (req, res, next) => {
   try {
-    const admin = await Admin.findById(req.adminId).select("-password -_id -createdAt -updatedAt -__v");
+    const admin = await Admin.findById(req.adminId).select(
+      "-password -_id -createdAt -updatedAt -__v",
+    );
 
     if (!admin) {
       return res.status(404).json({
@@ -57,6 +59,21 @@ const signInAdmin = async (req, res, next) => {
     return res.status(200).json({
       adminId: admin._id,
       message: "Admin Signed In successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const signOutAdmin = async (req, res, next) => {
+  try {
+    res.clearCookie("admin_auth_token", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+    });
+
+    return res.status(200).json({
+      message: "Admin Signed Out successfully",
     });
   } catch (error) {
     next(error);
@@ -367,6 +384,7 @@ const getStats = async (req, res, next) => {
 export default {
   getAdmin,
   signInAdmin,
+  signOutAdmin,
   createManagerProfile,
   createWarehouseProfile,
   getWarehouseList,
