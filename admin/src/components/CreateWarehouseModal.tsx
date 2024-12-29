@@ -4,16 +4,9 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import {
-  createWarehouseFormSchema,
-  createWarehouseFormData,
-} from "@/pages/warehouses/types";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
   FormControl,
@@ -22,21 +15,15 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-interface CreateWarehouse {
-  name: string;
-  address: string;
-  pincode: string;
-  city: string;
-  state: string;
-  email: string;
-  password: string;
-  phone: string;
-  manager_id: string;
-}
+import {
+  createWarehouseFormSchema,
+  createWarehouseFormData,
+} from "@/pages/warehouses/types";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useCreateWarehouseMutation } from "@/api/AdminsApi";
+
 interface CreateWarehouseModalProps {
   isOpen: boolean;
   onClose: (value: boolean) => void;
@@ -46,7 +33,6 @@ export default function CreateWarehouseModal({
   isOpen,
   onClose,
 }: CreateWarehouseModalProps) {
-  const navigate = useNavigate();
   const { isLoading: isCreateWarehouseLoading, createWarehouse } =
     useCreateWarehouseMutation();
   const form = useForm<createWarehouseFormData>({
@@ -67,8 +53,6 @@ export default function CreateWarehouseModal({
 
   const onSubmit = async (data: createWarehouseFormData) => {
     createWarehouse(data);
-    onClose(false);
-    navigate("/dashboard/warehouses", { replace: true });
   };
 
   return (
@@ -77,7 +61,7 @@ export default function CreateWarehouseModal({
         <DialogHeader>
           <DialogTitle>Enter Warehouse details</DialogTitle>
           <DialogDescription>
-            Enter the warehouse details here. Click save when you're done.
+            Enter the warehouse details here. Click create when you're done.
           </DialogDescription>
         </DialogHeader>
         <div className="h-[200px] px-3 relative overflow-y-scroll">
@@ -132,7 +116,7 @@ export default function CreateWarehouseModal({
                   </FormItem>
                 )}
               />
-
+              {/* Pincode */}
               <FormField
                 control={form.control}
                 name="pincode"
@@ -156,7 +140,7 @@ export default function CreateWarehouseModal({
                   </FormItem>
                 )}
               />
-
+              {/* City */}
               <FormField
                 control={form.control}
                 name="city"
@@ -282,6 +266,7 @@ export default function CreateWarehouseModal({
                   </FormItem>
                 )}
               />
+              {/* Manager Id */}
               <FormField
                 control={form.control}
                 name="manager_id"

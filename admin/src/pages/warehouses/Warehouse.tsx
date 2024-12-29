@@ -6,17 +6,22 @@ import {
   CardDescription,
   CardFooter,
 } from "@/components/ui/card";
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { useGetWarehousesRequest } from "@/api/AdminsApi";
-import Redirect from "@/pages/redirect/Redirect";
+import FilterWarehouse from "@/components/FilterWarehouse";
 import CreateWarehouseModal from "@/components/CreateWarehouseModal";
+import UpdateWarehouseModal from "@/components/UpdateWarehouseModal";
+import Redirect from "@/pages/redirect/Redirect";
+import { useState } from "react";
+import { useGetWarehousesRequest } from "@/api/AdminsApi";
 import WarehouseType from "./types";
 
 export default function Warehouse() {
   const { response, isLoading } = useGetWarehousesRequest();
-  const [iscreatingWarehouse, setIsCreatingWarehouse] = useState(false);
-
+  const [isCreatingWarehouse, setIsCreatingWarehouse] = useState(false);
+  const [isEditingWarehouse, setIsEdittingWarehouse] = useState(false);
+  const [editWarehouseEmail, setEditWarehouseEmail] = useState<string>("");
+  const [editWarehouseStatus, setEditWarehouseStatus] = useState<string>("");
+  
   if (isLoading) {
     return <Redirect />;
   }
@@ -28,26 +33,27 @@ export default function Warehouse() {
         <Button
           onClick={() => {
             setIsCreatingWarehouse(true);
-            console.log("dg");
           }}
         >
           Add New Warehouse
         </Button>
       </div>
+      <FilterWarehouse />
+      <h1 className="text-2xl font-semibold ">All warehouses</h1>
       <div className="grid gap-6 sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
         {response.warehouses.map((warehouse: WarehouseType) => (
           <Card key={warehouse._id} className="flex flex-col">
             <CardHeader className="flex-grow">
               <CardTitle>{warehouse.name}</CardTitle>
-              <CardDescription>
-                {warehouse.address}, {warehouse.city}, {warehouse.state} -{" "}
+              <CardDescription className="capitalize">
+                {warehouse.address}, {warehouse.city}, {warehouse.state}-{" "}
                 {warehouse.pincode}
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="aspect-video relative mb-4">
                 <img
-                  src="https://lh3.googleusercontent.com/Rb4xxWc_kQyy7rYlg7ijtS9BI3jgc2saJlQDrU0j7r53xSsX5UWE5_MRGTHTx6lJ22VyphV4dsK2n4lHXj4e=-rw"
+                  src="https://placehold.co/600x400?text=Hello\nWorld"
                   alt={warehouse.name}
                   className="absolute inset-0 w-full h-full object-cover rounded-md"
                 />
@@ -60,8 +66,15 @@ export default function Warehouse() {
                   <strong>Phone:</strong> {warehouse.phone}
                 </p>
                 <p>
-                  <strong>Manager ID:</strong> {warehouse.manager_id}
+                  <strong>Manager name:</strong> {warehouse.manager_id.name}
                 </p>
+                <p>Manager profile</p>
+                <img
+                  src={warehouse.manager_id.profile_img_url}
+                  className="w-[100px] h-[100px]"
+                  alt="profile"
+                />
+
                 <p>
                   <strong>Status:</strong>{" "}
                   <span
@@ -73,19 +86,36 @@ export default function Warehouse() {
               </div>
             </CardContent>
             <CardFooter>
-              <Button variant="outline" size="sm" className="w-full">
-                Edit
+              <Button
+                onClick={() => {
+                  setEditWarehouseEmail(warehouse.email);
+                  setIsEdittingWarehouse(true);
+                  setEditWarehouseStatus(warehouse.status);
+                }}
+                variant="outline"
+                size="sm"
+                className="w-full"
+              >
+                Update status
               </Button>
             </CardFooter>
           </Card>
         ))}
       </div>
 
-      {iscreatingWarehouse && (
+      {isCreatingWarehouse && (
         <CreateWarehouseModal
-          isOpen={iscreatingWarehouse}
+          isOpen={isCreatingWarehouse}
           onClose={setIsCreatingWarehouse}
         ></CreateWarehouseModal>
+      )}
+      {isEditingWarehouse && (
+        <UpdateWarehouseModal
+          status={editWarehouseStatus}
+          email={editWarehouseEmail}
+          isOpen={isEditingWarehouse}
+          onClose={setIsEdittingWarehouse}
+        />
       )}
     </div>
   );

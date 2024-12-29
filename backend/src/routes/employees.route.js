@@ -13,7 +13,7 @@ employeeRouter.get("/me", employeesController.getEmployee);
 employeeRouter.post(
   "/add-order-stop/:shippingId/:warehouseId",
   employeeAuthMiddleware.verifyDriver,
-  employeesController.addOrderStop
+  employeesController.addOrderStop,
 );
 
 export default employeeRouter;

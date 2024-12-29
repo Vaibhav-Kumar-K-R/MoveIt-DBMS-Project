@@ -9,7 +9,7 @@ import mongoose, { get } from "mongoose";
 const getWarehouse = async (req, res, next) => {
   try {
     const warehouse = await Warehouse.findById(req.warehouseId).select(
-      "-password -__v"
+      "-password -__v",
     );
 
     if (!warehouse) {
@@ -46,7 +46,7 @@ const signInWarehouse = async (req, res, next) => {
     const token = jwt.sign(
       { warehouseId: warehouse._id },
       process.env.JWT_SECRET,
-      { expiresIn: "1d" }
+      { expiresIn: "1d" },
     );
 
     res.cookie("warehouse_auth_token", token, {

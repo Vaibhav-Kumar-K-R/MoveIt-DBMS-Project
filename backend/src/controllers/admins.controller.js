@@ -11,7 +11,7 @@ import { uploadImage } from "../config/cloudinary.js";
 
 const getAdmin = async (req, res, next) => {
   try {
-    const admin = await Admin.findById(req.adminId).select("-password -__v");
+    const admin = await Admin.findById(req.adminId).select("-password -_id -createdAt -updatedAt -__v");
 
     if (!admin) {
       return res.status(404).json({
@@ -89,7 +89,7 @@ const createManagerProfile = async (req, res, next) => {
               public_id: profileImgDetails.public_id,
             },
           }
-        : req.body
+        : req.body,
     );
 
     res.status(201).json({
@@ -125,7 +125,7 @@ const updateManagerWorkStatus = async (req, res, next) => {
       },
       {
         work_status: updatedStatus,
-      }
+      },
     );
 
     res.status(200).json({
@@ -147,7 +147,10 @@ const createWarehouseProfile = async (req, res, next) => {
       });
     }
 
-    warehouse = await Warehouse.create(req.body);
+    warehouse = await Warehouse.create({
+      ...req.body,
+      state: req.body.state.toLowerCase(),
+    });
 
     return res.status(201).json({
       warehouse_id: warehouse._id,
@@ -161,27 +164,19 @@ const createWarehouseProfile = async (req, res, next) => {
 const updateWarehouseStatus = async (req, res, next) => {
   try {
     let warehouse = await Warehouse.findOne({ email: req.body.email });
-    let updatedStatus = req.body.status;
     if (!warehouse) {
       return res.status(400).json({
         message: "Warehouse under given email does not exist!!",
       });
     }
 
-    if (
-      Warehouse.schema.path("status").enumValues.indexOf(updatedStatus) === -1
-    ) {
-      return res.status(400).json({
-        message: "Invalid work status",
-      });
-    }
     warehouse = await Warehouse.findOneAndUpdate(
       {
         email: req.body.email,
       },
       {
-        status: updatedStatus,
-      }
+        status: warehouse.status === "open" ? "close" : "open",
+      },
     );
 
     res.status(200).json({
@@ -195,9 +190,10 @@ const updateWarehouseStatus = async (req, res, next) => {
 
 const getWarehouseList = async (_req, res, next) => {
   try {
-    let warehouseList = await Warehouse.find({}).select(
-      "-createdAt -updatedAt -__v -_id"
-    );
+    let warehouseList = await Warehouse.find({}).select("-password").populate({
+      path: "manager_id",
+      select: "-password -manager_id -__v -createdAt -updatedAt ",
+    });
 
     if (warehouseList.length == 0) {
       return res.status(400).json({
@@ -218,7 +214,7 @@ const getWarehousebyState = async (req, res, next) => {
   try {
     const { state } = req.params;
     let stateWarehouse = await Warehouse.find({ state }).select(
-      "-createdAt -updatedAt -__v -_id  -password"
+      "-createdAt -updatedAt -__v -_id  -password",
     );
 
     if (stateWarehouse.length == 0) {
@@ -264,7 +260,7 @@ const addVehicle = async (req, res, next) => {
               public_id: vehicleImgDetails.public_id,
             },
           }
-        : req.body
+        : req.body,
     );
 
     res.status(201).json({
@@ -302,7 +298,7 @@ const updateVehicleStatus = async (req, res, next) => {
       },
       {
         curr_status: updatedStatus,
-      }
+      },
     );
 
     res.status(200).json({

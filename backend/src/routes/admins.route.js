@@ -30,6 +30,7 @@ adminRouter.patch(
 
 adminRouter.post(
   "/create-warehouse",
+  upload.single("warehouseProfileImg"),
   adminMiddlware.validateCreateWarehouseRequest,
   adminController.createWarehouseProfile,
 );

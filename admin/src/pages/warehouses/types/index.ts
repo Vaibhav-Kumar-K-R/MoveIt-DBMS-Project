@@ -9,7 +9,18 @@ export default interface WarehouseType {
   email: string;
   phone: string;
   status: string;
-  manager_id: string;
+  manager_id: {
+    profile_img: {
+      profile_img_url: string;
+    };
+    name: string;
+    profile_img_url: string;
+    email?: string;
+    phone?: string;
+    dob?: string;
+    salary?: string;
+    work_status?: string;
+  };
 }
 
 export const createWarehouseFormSchema = z.object({
