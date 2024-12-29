@@ -1,7 +1,7 @@
 import { LoginFormData } from "@/forms/login/types";
 import axiosInstance from "@/lib/axios";
 import { VendorsSignUpData } from "@/pages/vendor/sign-up/types";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
@@ -107,5 +107,49 @@ export const useVendorSignUpRequest = () => {
     vendor: data,
     isLoading,
     isError: !!error,
+  };
+};
+
+export const useVendorLogoutRequest = () => {
+  const vendorLogoutRequest = async () => {
+    try {
+      const response = await axiosInstance.post("/vendor/auth/sign-out");
+
+      return response.data;
+    } catch (error: any) {
+      throw new Error(error.message);
+    }
+  };
+
+  const queryClient = useQueryClient();
+  const {
+    mutateAsync: logoutVendor,
+    isLoading,
+    data,
+    error,
+  } = useMutation({
+    mutationKey: "vendorLogoutRequest",
+    mutationFn: vendorLogoutRequest,
+    onSuccess: () => {
+      toast("Logged out successfully", { icon: "🚀" });
+
+      // Reset queries on logout
+      queryClient.resetQueries({
+        queryKey: ["vendorAuth", "isLoggedInRequest"],
+      });
+
+      // Clear cache data on logout
+      queryClient.clear();
+    },
+    onError: (error: any) => {
+      toast(error.message, { icon: "🚨" });
+    },
+  });
+
+  return {
+    logoutVendor,
+    isLoading,
+    data,
+    error,
   };
 };
