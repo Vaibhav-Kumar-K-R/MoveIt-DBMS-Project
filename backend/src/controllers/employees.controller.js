@@ -7,7 +7,7 @@ import bcrypt from "bcryptjs";
 const getEmployee = async (req, res, next) => {
   try {
     const employee = await Employee.findById(req.employeeId).select(
-      "-password -__v"
+      "-password -__v",
     );
 
     if (!employee) {
@@ -44,7 +44,7 @@ const signInEmployee = async (req, res, next) => {
     const token = jwt.sign(
       { employeeId: employee._id },
       process.env.JWT_SECRET,
-      { expiresIn: "1d" }
+      { expiresIn: "1d" },
     );
 
     res.cookie("employee_auth_token", token, {

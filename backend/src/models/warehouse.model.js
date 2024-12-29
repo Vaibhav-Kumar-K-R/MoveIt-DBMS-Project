@@ -5,6 +5,10 @@ const warehouseSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
     address: { type: String, required: true },
+    profile_img: {
+      profile_img_url: { type: String, default: "/images/default-user.png" },
+      public_id: { type: String },
+    },
     pincode: { type: String, required: true },
     city: { type: String, required: true },
     state: { type: String, required: true },

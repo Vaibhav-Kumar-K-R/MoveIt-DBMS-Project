@@ -20,10 +20,10 @@ const getAuthStatus = async (req, res, next) => {
       role: employee
         ? "employee"
         : manager
-        ? "manager"
-        : vendor
-        ? "vendor"
-        : "warehouse",
+          ? "manager"
+          : vendor
+            ? "vendor"
+            : "warehouse",
     });
   } catch (error) {
     next(error);
