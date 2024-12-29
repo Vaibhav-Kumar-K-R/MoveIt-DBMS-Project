@@ -20,9 +20,12 @@ const getOrder = async (req, res, next) => {
       order_id: order._id,
       isVerified: true,
     })
-      .select("-__v")
+      .select("-__v").populate({
+        path: "warehouse_id",
+        select: "name city state address pincode",
+      })
       .sort({
-        arrival_datetime: 1,
+        arrival_datetime: -1,
       });
 
     return res.status(200).json({

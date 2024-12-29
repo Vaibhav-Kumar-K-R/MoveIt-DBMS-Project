@@ -6,6 +6,7 @@ import EmployeeRoutes from "./pages/employee/EmployeeRoutes";
 import ManagerRoutes from "./pages/manager/ManagerRoutes";
 import VendorRoutes from "./pages/vendor/VendorRoutes";
 import WarehouseRoutes from "./pages/warehouse/WarehouseRoutes";
+import TrackingSummary from "./pages/tracking/TrackingSummary";
 
 const AppRoutes = () => {
   return (
@@ -15,6 +16,7 @@ const AppRoutes = () => {
         <Route path="/services" element={<Home />} />
         <Route path="/products" element={<Home />} />
         <Route path="/contact" element={<Home />} />
+        <Route path="tracking/:trackingId" element={<TrackingSummary />} />
       </Route>
 
       <Route path="/employee/*" element={<EmployeeRoutes />} />

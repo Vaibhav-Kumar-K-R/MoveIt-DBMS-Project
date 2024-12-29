@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { TrackingFormType, trackingFormSchema } from "./types";
+import { useNavigate } from "react-router-dom";
 
 const TrackingForm = () => {
   const form = useForm<TrackingFormType>({
@@ -18,9 +19,10 @@ const TrackingForm = () => {
       trackingId: "TRACKING_",
     },
   });
+  const navigate = useNavigate();
 
   const onSubmit = async (data: TrackingFormType) => {
-    console.log(data);
+    navigate(`/tracking/${data.trackingId}`);
   };
 
   return (
