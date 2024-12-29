@@ -1,4 +1,4 @@
-import { LogOut, Phone } from "lucide-react";
+import { Loader2, LogOut, Phone } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
@@ -12,8 +12,9 @@ type AuthButtonProps = {
   email: string;
   phone: string;
   imageUrl: string;
-  logOut?: () => void;
   children?: React.ReactNode;
+  logOut?: () => void;
+  isLogoutLoading?: boolean;
 };
 
 const AuthButton = ({
@@ -21,8 +22,9 @@ const AuthButton = ({
   email,
   phone,
   imageUrl,
-  logOut,
   children,
+  logOut,
+  isLogoutLoading,
 }: AuthButtonProps) => {
   const avatarColor = avatarFallbackColor();
 
@@ -64,9 +66,20 @@ const AuthButton = ({
               </div>
             </div>
             {children}
-            <Button onClick={logOut} className="w-full">
-              Logout
-              <LogOut />
+            <Button
+              onClick={logOut}
+              className="w-full"
+              disabled={isLogoutLoading}
+            >
+              {isLogoutLoading ? (
+                <span className="flex items-center gap-2">
+                  <Loader2 className="animate-spin" /> Logging you out...
+                </span>
+              ) : (
+                <span className="flex items-center gap-2">
+                  Logout <LogOut />
+                </span>
+              )}
             </Button>
           </div>
         </PopoverContent>

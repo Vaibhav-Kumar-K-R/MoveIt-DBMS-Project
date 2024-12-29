@@ -31,7 +31,7 @@ const Profile = () => {
   const { employee: profile, isLoading } = useEmployeeAuth();
 
   if (isLoading) {
-    return <Redirect />
+    return <Redirect />;
   }
 
   if (!profile) {
@@ -39,7 +39,7 @@ const Profile = () => {
   }
 
   return (
-    <div className="px-5 py-7">
+    <div className="md:px-5 py-7">
       <h1 className="text-[1.4rem] font-bold">My Profile</h1>
       <Separator className="my-4" />
       <div className="space-y-7">
@@ -58,7 +58,7 @@ const Profile = () => {
               <div className="flex flex-col">
                 <p className="font-semibold text-[1.2rem]">{profile.name}</p>
                 <p className="text-zinc-500 text-sm">
-                  {EMPLOYEE_ROLES[profile.role]} | {profile.licence_number}
+                  {EMPLOYEE_ROLES[profile.role]}
                 </p>
               </div>
             </div>

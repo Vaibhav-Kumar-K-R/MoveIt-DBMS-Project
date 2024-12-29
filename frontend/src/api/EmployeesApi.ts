@@ -1,7 +1,7 @@
 import { LoginFormData } from "@/forms/login/types";
 import axiosInstance from "@/lib/axios";
 import { EmployeeType } from "@/types/employee";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
@@ -68,5 +68,49 @@ export const useEmployeeLoginRequest = () => {
     error,
     isSuccess,
     data,
+  };
+};
+
+export const useEmployeeLogoutRequest = () => {
+  const employeeLogoutRequest = async () => {
+    try {
+      const response = await axiosInstance.post("/employee/auth/sign-out");
+
+      return response.data;
+    } catch (error: any) {
+      throw new Error(error.message);
+    }
+  };
+
+  const queryClient = useQueryClient();
+  const {
+    mutateAsync: logoutEmployee,
+    isLoading,
+    error,
+    isSuccess,
+  } = useMutation({
+    mutationKey: "employeeLogoutRequest",
+    mutationFn: employeeLogoutRequest,
+    onSuccess: async () => {
+      // Reset queries on logout
+      await queryClient.resetQueries({
+        queryKey: ["employeeAuth", "isLoggedInRequest"],
+      });
+
+      // Clear cache data on logout
+      queryClient.clear();
+
+      toast("Logged out successfully", { icon: "🚀" });
+    },
+    onError: (error: any) => {
+      toast(error.message, { icon: "🚨" });
+    },
+  });
+
+  return {
+    logoutEmployee,
+    isLoading,
+    error,
+    isSuccess,
   };
 };
