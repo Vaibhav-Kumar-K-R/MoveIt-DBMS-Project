@@ -92,10 +92,15 @@ export const useEmployeeLogoutRequest = () => {
     mutationKey: "employeeLogoutRequest",
     mutationFn: employeeLogoutRequest,
     onSuccess: async () => {
-      // Reset queries on logout
-      await queryClient.resetQueries({
-        queryKey: ["employeeAuth", "isLoggedInRequest"],
-      });
+      // Invalidate queries on logout
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: "employeeAuth",
+        }),
+        queryClient.invalidateQueries({
+          queryKey: "isLoggedInRequest",
+        }),
+      ]);
 
       // Clear cache data on logout
       queryClient.clear();

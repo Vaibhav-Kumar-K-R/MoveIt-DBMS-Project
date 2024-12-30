@@ -22,7 +22,7 @@ const MobileNav = () => {
   };
 
   return (
-    <div>
+    <div className="md:hidden">
       <Sheet>
         <SheetTrigger>
           <Menu />
@@ -37,14 +37,18 @@ const MobileNav = () => {
               {[
                 { path: "/", label: "Home", icon: <Home /> },
                 { path: "/services", label: "Services", icon: <HandPlatter /> },
-                { path: "/products", label: "Products", icon: <ShoppingCart /> },
+                {
+                  path: "/products",
+                  label: "Products",
+                  icon: <ShoppingCart />,
+                },
                 { path: "/contact", label: "Contact", icon: <Phone /> },
               ].map(({ path, label, icon }, index) => (
                 <NavLink key={index} to={path} className={navStyles}>
                   <SheetClose className="flex items-center gap-2">
                     {icon}
                     {label}
-                    </SheetClose>
+                  </SheetClose>
                 </NavLink>
               ))}
             </SheetDescription>

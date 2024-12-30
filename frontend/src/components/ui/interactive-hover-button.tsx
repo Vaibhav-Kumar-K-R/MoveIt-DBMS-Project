@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 
 interface InteractiveHoverButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  text?: string;
+  text?: string | React.ReactNode;
 }
 
 const InteractiveHoverButton = React.forwardRef<
@@ -16,7 +16,7 @@ const InteractiveHoverButton = React.forwardRef<
       ref={ref}
       className={cn(
         "group relative w-32 cursor-pointer overflow-hidden rounded-full border border-slate-200 bg-white p-2 text-center font-semibold dark:border-slate-800 dark:bg-slate-950",
-        className,
+        className
       )}
       {...props}
     >
@@ -27,7 +27,7 @@ const InteractiveHoverButton = React.forwardRef<
         <span>{text}</span>
         <ArrowRight />
       </div>
-      <div className="absolute left-[20%] top-[40%] h-2 w-2 scale-[1] rounded-lg bg-slate-900 transition-all duration-300 group-hover:left-[0%] group-hover:top-[0%] group-hover:h-full group-hover:w-full group-hover:scale-[1.8] group-hover:bg-slate-900 dark:bg-slate-50 dark:group-hover:bg-slate-50"></div>
+      <div className="absolute left-[20%] top-[40%] h-0 w-0 scale-[1] rounded-lg bg-slate-900 transition-all duration-300 group-hover:left-[0%] group-hover:top-[0%] group-hover:h-full group-hover:w-full group-hover:scale-[1.8] group-hover:bg-slate-900 dark:bg-slate-50 dark:group-hover:bg-slate-50"></div>
     </button>
   );
 });

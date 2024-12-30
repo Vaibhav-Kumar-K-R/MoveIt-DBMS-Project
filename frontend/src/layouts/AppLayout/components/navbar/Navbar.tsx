@@ -6,6 +6,7 @@ import VendorAuthButton from "@/pages/vendor/auth/VendorAuthButton";
 import WarehouseAuthButton from "@/pages/warehouse/auth/WarehouseAuthButton";
 import MainNav from "./MainNav";
 import MobileNav from "./MobileNav";
+import AuthOptions from "./AuthOptions";
 
 const Navbar = () => {
   const { role } = useIsLoggedInRequest();
@@ -16,9 +17,7 @@ const Navbar = () => {
         <AppLogo />
       </div>
 
-      <div className="hidden md:block">
-        <MainNav />
-      </div>
+      <MainNav />
 
       <div className="flex items-center gap-4">
         {role === "employee" ? (
@@ -30,11 +29,10 @@ const Navbar = () => {
         ) : role === "warehouse" ? (
           <WarehouseAuthButton />
         ) : (
-          <></>
+          <AuthOptions />
         )}
-        <div className="md:hidden">
-          <MobileNav />
-        </div>
+
+        <MobileNav />
       </div>
     </nav>
   );
