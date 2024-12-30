@@ -17,9 +17,7 @@ const Navbar = () => {
         <AppLogo />
       </div>
 
-      <div className="hidden md:block">
-        <MainNav />
-      </div>
+      <MainNav />
 
       <div className="flex items-center gap-4">
         {role === "employee" ? (
@@ -33,9 +31,8 @@ const Navbar = () => {
         ) : (
           <AuthOptions />
         )}
-        <div className="md:hidden">
-          <MobileNav />
-        </div>
+
+        <MobileNav />
       </div>
     </nav>
   );

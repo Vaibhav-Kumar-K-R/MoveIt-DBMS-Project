@@ -10,7 +10,7 @@ const MainNav = () => {
   };
 
   return (
-    <div>
+    <div className="hidden md:block">
       <ul className="flex gap-2 transition-all duration-300">
         <li>
           <NavLink to={"/"} className={navStyles}>

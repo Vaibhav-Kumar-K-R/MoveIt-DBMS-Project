@@ -1,7 +1,12 @@
 import { useMultiStepForm } from "@/hooks/useMultiStepForm";
 import { createContext, ReactElement, useContext } from "react";
 
-type MultiStepFormContext = {
+type MultiStepFormProviderProps = {
+  children: React.ReactNode;
+  stepsArray: ReactElement[];
+};
+
+type MultiStepFormContextType = {
   controls: {
     currStepIndex: number;
     step: ReactElement;
@@ -14,17 +19,14 @@ type MultiStepFormContext = {
   };
 };
 
-const MultiStepFormContext = createContext<MultiStepFormContext | undefined>(
-  undefined
-);
+const MultiStepFormContext = createContext<
+  MultiStepFormContextType | undefined
+>(undefined);
 
 const MultiStepFormContextProvider = ({
   children,
   stepsArray,
-}: {
-  children: React.ReactNode;
-  stepsArray: ReactElement[];
-}) => {
+}: MultiStepFormProviderProps) => {
   const controls = useMultiStepForm(stepsArray);
 
   return (

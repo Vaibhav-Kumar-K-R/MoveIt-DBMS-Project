@@ -90,11 +90,18 @@ export const useWarehouseLogoutRequest = () => {
   } = useMutation({
     mutationKey: "warehouseLogoutRequest",
     mutationFn: warehouseLogoutRequest,
-    onSuccess: () => {
+    onSuccess: async () => {
       toast("Logged out successfully", { icon: "🚀" });
 
-      // Reset queries on logout
-      queryClient.resetQueries();
+      // Invalidate queries on logout
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: "vendorAuth",
+        }),
+        queryClient.invalidateQueries({
+          queryKey: "isLoggedInRequest",
+        }),
+      ]);
 
       // Clear cache data on logout
       queryClient.clear();

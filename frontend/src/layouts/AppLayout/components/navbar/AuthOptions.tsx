@@ -23,7 +23,7 @@ import { Link } from "react-router-dom";
 const AuthOptions = () => {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="">
+      <DropdownMenuTrigger>
         <InteractiveHoverButton
           className="sm:block text-[.9rem] text-zinc-800 w-20 sm:w-36 flex items-center justify-center"
           text={
