@@ -17,7 +17,7 @@ const orderSchema = new mongoose.Schema(
       product_price: { type: Number, required: true },
       delivery_charge: { type: Number, required: true },
       gst: { type: Number, required: true },
-      total_price: { type: Number },
+      total_price: { type: Number, default: 0 },
     },
     weight: { type: Number, required: true },
     customer_name: { type: String, required: true },
@@ -26,6 +26,7 @@ const orderSchema = new mongoose.Schema(
     customer_address: { type: String, required: true },
     order_placed_date: { type: Date, default: Date.now },
     order_delivered_date: { type: Date, default: null },
+    order_cancelled_date: { type: Date, default: null },
     status: {
       type: String,
       enum: [
@@ -39,21 +40,9 @@ const orderSchema = new mongoose.Schema(
       default: "placed",
     },
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
 const Order = mongoose.model("Order", orderSchema);
-
-orderSchema.pre("save", async function (next) {
-  if (this.isModified("price_details")) {
-    const price =
-      this.price_details.product_price + this.price_details.delivery_charge;
-    const gstAmount = price * this.price_details.gst;
-
-    this.price_details.total_price = price + gstAmount;
-  }
-
-  next();
-});
 
 export default Order;

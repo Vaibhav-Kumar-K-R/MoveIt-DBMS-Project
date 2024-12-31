@@ -13,9 +13,15 @@ employeeRouter.get("/me", employeesController.getEmployee);
 employeeRouter.post("/auth/sign-out", employeesController.signOutEmployee);
 
 employeeRouter.post(
-  "/add-order-stop/:shippingId/:warehouseId",
+  "/add-tracking/:shippingId/:warehouseId",
   employeeAuthMiddleware.verifyDriver,
-  employeesController.addOrderStop,
+  employeesController.addTracking,
+);
+
+employeeRouter.post(
+  "/delivery/:shippingId",
+  employeeAuthMiddleware.verifyDeliveryBoy,
+  employeesController.orderDelivery,
 );
 
 export default employeeRouter;

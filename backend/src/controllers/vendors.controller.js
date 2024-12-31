@@ -111,6 +111,16 @@ const createOrder = async (req, res, next) => {
     const trackingId = `TRACKING_${uuidv4().split("-")[0]}`;
     const shippingId = `SHIPPING_${uuidv4().split("-")[0]}`;
 
+    const { price_details } = req.body;
+
+    const amount =
+      Number(price_details.product_price) +
+      Number(price_details.delivery_charge);
+    const gstAmount = amount * Number(price_details.gst);
+
+    price_details.total_price = (amount + gstAmount).toFixed(2);
+    req.body.price_details = price_details;
+
     const order = await Order.create({
       ...req.body,
       tracking_id: trackingId,
@@ -130,7 +140,6 @@ const createOrder = async (req, res, next) => {
 const cancelOrder = async (req, res, next) => {
   try {
     const { shippingId } = req.params;
-
     const order = await Order.findOne({ shipping_id: shippingId });
 
     if (!order) {
@@ -139,13 +148,16 @@ const cancelOrder = async (req, res, next) => {
       });
     }
 
-    if (order.status === "cancelled") {
+    const invalidStatuses = ["cancelled", "delivered", "out_for_delivery"];
+    if (invalidStatuses.includes(order.status)) {
       return res.status(400).json({
-        message: "Order already cancelled",
+        message: `Order already ${order.status}`,
       });
     }
 
     order.status = "cancelled";
+    order.order_cancelled_date = new Date();
+
     await order.save();
 
     return res.status(200).json({
@@ -175,7 +187,7 @@ const updateProfile = async (req, res, next) => {
     if (profileImage) {
       profileImgDetails = await uploadImage(
         profileImage,
-        vendor.profile_img?.public_id,
+        vendor.profile_img?.public_id
       );
 
       updatedVendor = await Vendor.findByIdAndUpdate(
@@ -187,7 +199,7 @@ const updateProfile = async (req, res, next) => {
             public_id: profileImgDetails.public_id,
           },
         },
-        { new: true },
+        { new: true }
       );
     } else {
       updatedVendor = await Vendor.findByIdAndUpdate(vendorId, req.body, {

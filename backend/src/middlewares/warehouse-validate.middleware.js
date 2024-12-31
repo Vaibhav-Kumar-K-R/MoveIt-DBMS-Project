@@ -22,7 +22,7 @@ const validateOrderDepartureRequest = (req, res, next) => {
       vehicleId: z.string().refine((id) => mongoose.isValidObjectId(id), {
         message: "Invalid ObjectId for vehicle",
       }),
-      driverId: z.string().refine((id) => mongoose.isValidObjectId(id), {
+      employeeId: z.string().refine((id) => mongoose.isValidObjectId(id), {
         message: "Invalid ObjectId for vehicle",
       }),
     });

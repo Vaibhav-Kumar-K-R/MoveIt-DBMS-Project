@@ -18,19 +18,24 @@ warehouseRouter.get("/me", warehousesController.getWarehouse);
 warehouseRouter.post("/auth/sign-out", warehousesController.signOutWarehouse);
 
 warehouseRouter.post(
-  "/departure/:orderStopId",
+  "/departure/:shippingId",
   warehouseValidateMiddleware.validateOrderDepartureRequest,
-  warehousesController.departureOrderStop,
+  warehousesController.departureTracking,
+);
+
+warehouseRouter.post(
+  "/out-for-delivery/:shippingId",
+  warehousesController.outForDeliveryOrder,
 );
 
 warehouseRouter.patch(
-  "/verify/:orderStopId",
-  warehousesController.verifyOrderStop,
+  "/verify/:trackingId",
+  warehousesController.verifyTracking,
 );
 
 warehouseRouter.delete(
-  "/delete/:orderStopId",
-  warehousesController.deleteOrderStop,
+  "/delete/:trackingId",
+  warehousesController.deleteTracking,
 );
 
 export default warehouseRouter;

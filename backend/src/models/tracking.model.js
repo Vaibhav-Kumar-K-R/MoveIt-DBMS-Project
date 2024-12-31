@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const orderStopSchema = new mongoose.Schema(
+const tracking = new mongoose.Schema(
   {
     order_id: {
       type: mongoose.Schema.Types.ObjectId,
@@ -12,20 +12,18 @@ const orderStopSchema = new mongoose.Schema(
       ref: "Warehouse",
       required: true,
     },
-    arrival_datetime: { type: Date, default: null },
-    departure_datetime: { type: Date, default: null },
-    driver_id: { type: mongoose.Schema.Types.ObjectId, ref: "Employee" },
+    employee_id: { type: mongoose.Schema.Types.ObjectId, ref: "Employee" },
     vehicle_id: { type: mongoose.Schema.Types.ObjectId, ref: "Vehicle" },
-    curr_status: {
+    status: {
       type: String,
-      enum: ["arrived", "departed"],
+      enum: ["arrived", "departed", "out_for_delivery"],
       default: "arrived",
     },
     isVerified: { type: Boolean, default: false },
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
-const OrderStop = mongoose.model("OrderStop", orderStopSchema);
+const Tracking = mongoose.model("Tracking", tracking);
 
-export default OrderStop;
+export default Tracking;
