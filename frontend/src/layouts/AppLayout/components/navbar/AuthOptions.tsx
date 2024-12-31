@@ -41,14 +41,14 @@ const AuthOptions = () => {
             <span>Vendor Options</span>
           </DropdownMenuSubTrigger>
           <DropdownMenuSubContent className="w-48 bg-zinc-100">
-            <DropdownMenuItem className="hover:bg-zinc-200">
+            <DropdownMenuItem className="bg-zinc-100 focus:bg-zinc-200">
               <Link to="/vendor/login" className="flex items-center gap-2">
                 <LogIn className="h-4 w-4" />
                 <span>Sign in as Vendor</span>
               </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator className="bg-zinc-200" />
-            <DropdownMenuItem className="hover:bg-zinc-200">
+            <DropdownMenuItem className="bg-zinc-100 focus:bg-zinc-200">
               <Link to="/vendor/sign-up" className="flex items-center gap-2">
                 <UserPlus className="h-4 w-4" />
                 <span>Sign up as Vendor</span>
@@ -59,7 +59,7 @@ const AuthOptions = () => {
 
         <DropdownMenuSeparator className="bg-zinc-200" />
 
-        <DropdownMenuItem className="hover:bg-zinc-200">
+        <DropdownMenuItem className="bg-zinc-100 focus:bg-zinc-200">
           <Link to="/manager/login" className="flex items-center gap-2">
             <UserCog className="h-4 w-4" />
             <span>Sign in as Manager</span>
@@ -68,7 +68,7 @@ const AuthOptions = () => {
 
         <DropdownMenuSeparator className="bg-zinc-200" />
 
-        <DropdownMenuItem className="hover:bg-zinc-200">
+        <DropdownMenuItem className="bg-zinc-100 focus:bg-zinc-200">
           <Link to="/warehouse/login" className="flex items-center gap-2">
             <Warehouse className="h-4 w-4" />
             <span>Sign in as Warehouse</span>
@@ -77,7 +77,7 @@ const AuthOptions = () => {
 
         <DropdownMenuSeparator className="bg-zinc-200" />
 
-        <DropdownMenuItem className="hover:bg-zinc-200">
+        <DropdownMenuItem className="bg-zinc-100 focus:bg-zinc-200">
           <Link to="/employee/login" className="flex items-center gap-2">
             <Users className="h-4 w-4" />
             <span>Sign in as Employee</span>

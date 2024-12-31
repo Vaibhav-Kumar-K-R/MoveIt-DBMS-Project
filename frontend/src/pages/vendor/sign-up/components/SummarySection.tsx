@@ -16,7 +16,8 @@ import { MultiStepFormButtons } from "@/components/ui/multi-step-form";
 import { useMultiStepFormContext } from "@/context/MultiStepFormContext";
 import { useVendorSignUpRequest } from "@/api/VendorsApi";
 import { formatPhoneNumber } from "@/helpers/format-phone-number";
-import { MiniInformationCard } from "@/components/ui/MiniInformationCard";
+import MiniInformationCard from "@/components/MiniInformationCard";
+
 type SummarySectionProps = {
   signUpData: VendorsSignUpData;
 };
@@ -38,18 +39,18 @@ const SummarySection = ({ signUpData }: SummarySectionProps) => {
       <div className="flex flex-col gap-3">
         <h3 className="text-lg font-semibold">Personal Details</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-4">
-          <div className="flex items-center w-full gap-3">
-            <MiniInformationCard Icon={User2} title={"Name"} information={signUpData.name} />
-          </div>
-          <div className="flex items-center w-full gap-3">
-            <MiniInformationCard Icon={Mail} title={"Email"} information={signUpData.email} />
-          </div>
-          <div className="flex items-center w-full gap-3">
-            <MiniInformationCard Icon={Phone} title={"Phone"} information={formatPhoneNumber(signUpData.phone)} />
-          </div>
-          <div className="flex items-center w-full gap-3">
-            <MiniInformationCard Icon={Lock} title={"Password"} information={"••••••••"} />
-          </div>
+          {[
+            { icon: User2, title: "Name", information: signUpData.name },
+            { icon: Mail, title: "Email", information: signUpData.email },
+            {
+              icon: Phone,
+              title: "Phone",
+              information: formatPhoneNumber(signUpData.phone),
+            },
+            { icon: Lock, title: "Password", information: "••••••••" },
+          ].map((item) => (
+            <MiniInformationCard key={item.title} {...item} />
+          ))}
         </div>
       </div>
 
@@ -58,12 +59,20 @@ const SummarySection = ({ signUpData }: SummarySectionProps) => {
       <div className="flex flex-col gap-3">
         <h3 className="text-lg font-semibold">Shop Details</h3>
         <div className="grid grid-cols-1 gap-y-4">
-          <div className="flex items-center w-full gap-3">
-            <MiniInformationCard Icon={Store} title={"Shop Name"} information={signUpData.shop_name} />
-          </div>
-          <div className="flex items-center w-full gap-3">
-             <MiniInformationCard Icon={Podcast} title={"Description"} information={signUpData.shop_description} />
-          </div>
+          {[
+            {
+              icon: Store,
+              title: "Shop Name",
+              information: signUpData.shop_name,
+            },
+            {
+              icon: Podcast,
+              title: "Description",
+              information: signUpData.shop_description,
+            },
+          ].map((item) => (
+            <MiniInformationCard key={item.title} {...item} />
+          ))}
         </div>
       </div>
 
@@ -72,20 +81,20 @@ const SummarySection = ({ signUpData }: SummarySectionProps) => {
       <div className="flex flex-col gap-3">
         <h3 className="text-lg font-semibold">Address Details</h3>
         <div className="grid grid-cols-1 gap-y-4">
-          <div className="flex items-center w-full gap-3">
-             <MiniInformationCard Icon={LocateFixedIcon} title={"Full Address"} information={signUpData.address} />
-          </div>
+          <MiniInformationCard
+            icon={LocateFixedIcon}
+            title={"Full Address"}
+            information={signUpData.address}
+          />
         </div>
         <div className="grid grid-cols-2 gap-y-4">
-          <div className="flex items-center w-full gap-3">
-            <MiniInformationCard Icon={Map} title={"City"} information={signUpData.city} />
-          </div>
-          <div className="flex items-center w-full gap-3">
-             <MiniInformationCard Icon={MapPin} title={"State"} information={signUpData.state} />
-          </div>
-          <div className="flex items-center w-full gap-3">
-            <MiniInformationCard Icon={Pin} title={"Pin Code"} information={signUpData.pin_code} />
-          </div>
+          {[
+            { icon: Map, title: "City", information: signUpData.city },
+            { icon: MapPin, title: "State", information: signUpData.state },
+            { icon: Pin, title: "Pin Code", information: signUpData.pin_code },
+          ].map((item) => (
+            <MiniInformationCard key={item.title} {...item} />
+          ))}
         </div>
       </div>
 

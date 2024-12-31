@@ -21,7 +21,7 @@ const RightSection = ({
         </>
       )}
       <Separator />
-      <TrackingHistoryTimeline tracking={tracking} />
+      <TrackingHistoryTimeline tracking={tracking} order={order} />
     </div>
   );
 };
