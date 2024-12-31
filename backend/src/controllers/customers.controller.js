@@ -1,4 +1,4 @@
-import OrderStop from "../models/order-stop.model.js";
+import Tracking from "../models/tracking.model.js";
 import Order from "../models/order.model.js";
 
 const getOrder = async (req, res, next) => {
@@ -16,7 +16,7 @@ const getOrder = async (req, res, next) => {
       });
     }
 
-    const orderStops = await OrderStop.find({
+    const tracking = await Tracking.find({
       order_id: order._id,
       isVerified: true,
     })
@@ -31,7 +31,7 @@ const getOrder = async (req, res, next) => {
 
     return res.status(200).json({
       order,
-      tracking: orderStops,
+      tracking,
     });
   } catch (error) {
     next(error);

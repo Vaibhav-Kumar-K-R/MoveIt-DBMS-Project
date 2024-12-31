@@ -1,15 +1,16 @@
 import Warehouse from "../models/warehouse.model.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import OrderStop from "../models/order-stop.model.js";
+import Tracking from "../models/tracking.model.js";
 import Vehicle from "../models/vehicle.model.js";
 import Employee from "../models/employee.model.js";
-import mongoose, { get } from "mongoose";
+import mongoose from "mongoose";
+import Order from "../models/order.model.js";
 
 const getWarehouse = async (req, res, next) => {
   try {
     const warehouse = await Warehouse.findById(req.warehouseId).select(
-      "-password -__v",
+      "-password -__v"
     );
 
     if (!warehouse) {
@@ -46,7 +47,7 @@ const signInWarehouse = async (req, res, next) => {
     const token = jwt.sign(
       { warehouseId: warehouse._id },
       process.env.JWT_SECRET,
-      { expiresIn: "1d" },
+      { expiresIn: "1d" }
     );
 
     res.cookie("warehouse_auth_token", token, {
@@ -79,29 +80,56 @@ const signOutWarehouse = async (req, res, next) => {
   }
 };
 
-const departureOrderStop = async (req, res, next) => {
+const departureTracking = async (req, res, next) => {
   try {
-    const { orderStopId } = req.params;
+    const { shippingId } = req.params;
+    const { vehicleId, employeeId } = req.body;
 
-    if (!mongoose.Types.ObjectId.isValid(orderStopId)) {
+    const order = await Order.findOne({ shipping_id: shippingId });
+
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    const invalidStatuses = ["cancelled", "delivered", "out_for_delivery"];
+    if (invalidStatuses.includes(order.status)) {
+      return res.status(400).json({ message: `Order already ${order.status}` });
+    }
+
+    const latestTracking = await Tracking.findOne({
+      order_id: order._id,
+      warehouse_id: req.warehouseId,
+    }).sort({ createdAt: -1 });
+
+    if (
+      !latestTracking ||
+      latestTracking.warehouse_id != req.warehouseId ||
+      latestTracking.status !== "arrived"
+    ) {
       return res.status(400).json({
-        message: "Invalid order stop id",
+        message: "Order not yet arrived",
       });
     }
 
-    const { vehicleId, driverId } = req.body;
-
-    const orderStop = await OrderStop.findById(orderStopId);
-
-    if (!orderStop) {
-      return res.status(404).json({
-        message: "Order stop not found",
+    if (!latestTracking.isVerified) {
+      return res.status(400).json({
+        message: "Previous Tracking not yet verified",
       });
+    }
+
+    const existingDeparture = await Tracking.findOne({
+      order_id: order._id,
+      warehouse_id: req.warehouseId,
+      status: "departed",
+    });
+
+    if (existingDeparture) {
+      return res.status(400).json({ message: "Order already departed" });
     }
 
     const [vehicle, employee] = await Promise.all([
       Vehicle.findById(vehicleId),
-      Employee.findById(driverId),
+      Employee.findById(employeeId),
     ]);
 
     if (!vehicle || !employee) {
@@ -111,90 +139,157 @@ const departureOrderStop = async (req, res, next) => {
     }
 
     if (employee.role !== "driver") {
-      return res.status(400).json({
-        message: "Employee is not a driver",
-      });
+      return res.status(400).json({ message: "Employee is not a driver" });
     }
 
-    orderStop.departure_datetime = Date.now();
-    orderStop.vehicle_id = vehicleId;
-    orderStop.driver_id = driverId;
-    orderStop.curr_status = "departed";
-
-    await orderStop.save();
-
-    res.status(200).json({
-      message: "Order stop departed successfully",
+    await Tracking.create({
+      order_id: order._id,
+      warehouse_id: req.warehouseId,
+      employee_id: employeeId,
+      vehicle_id: vehicleId,
+      status: "departed",
+      isVerified: true,
     });
+
+    res.status(200).json({ message: "Departure recorded successfully" });
   } catch (error) {
     next(error);
   }
 };
 
-const verifyOrderStop = async (req, res, next) => {
+const outForDeliveryOrder = async (req, res, next) => {
   try {
-    const { orderStopId } = req.params;
+    const { shippingId } = req.params;
 
-    if (!mongoose.Types.ObjectId.isValid(orderStopId)) {
-      return res.status(400).json({
-        message: "Invalid order stop id",
-      });
-    }
+    const order = await Order.findOne({ shipping_id: shippingId });
 
-    const orderStop = await OrderStop.findById(orderStopId);
-
-    if (!orderStop) {
+    if (!order) {
       return res.status(404).json({
-        message: "Order stop not found",
+        message: "Order not found",
       });
     }
 
-    if (orderStop.isVerified) {
+    const invalidStatuses = ["cancelled", "delivered"];
+    if (invalidStatuses.includes(order.status)) {
       return res.status(400).json({
-        message: "Order stop already verified",
+        message: `Order already ${order.status}`,
       });
     }
 
-    orderStop.isVerified = true;
-    await orderStop.save();
+    const latestTracking = await Tracking.findOne({
+      order_id: order._id,
+      warehouse_id: req.warehouseId,
+    }).sort({ createdAt: -1 });
+
+    if (
+      !latestTracking ||
+      latestTracking.warehouse_id != req.warehouseId ||
+      latestTracking.status !== "arrived"
+    ) {
+      return res.status(400).json({
+        message: "Order not yet departed",
+      });
+    }
+
+    if (!latestTracking.isVerified) {
+      return res.status(400).json({
+        message: "Previous Tracking not yet verified",
+      });
+    }
+
+    const existingOutForDelivery = await Tracking.findOne({
+      order_id: order._id,
+      warehouse_id: req.warehouseId,
+      status: "out_for_delivery",
+    });
+
+    if (existingOutForDelivery) {
+      return res.status(400).json({
+        message: "Order already out for delivery",
+      });
+    }
+
+    await Tracking.create({
+      order_id: order._id,
+      warehouse_id: req.warehouseId,
+      status: "out_for_delivery",
+      isVerified: true,
+    });
+
+    order.status = "out_for_delivery";
+    await order.save();
 
     res.status(200).json({
-      message: "Order stop verified successfully",
+      message: "Out for delivery recorded successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+const verifyTracking = async (req, res, next) => {
+  try {
+    const { trackingId } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(trackingId)) {
+      return res.status(400).json({
+        message: "Invalid tracking id",
+      });
+    }
+
+    const tracking = await Tracking.findById(trackingId);
+
+    if (!tracking) {
+      return res.status(404).json({
+        message: "Tracking not found",
+      });
+    }
+
+    if (tracking.isVerified) {
+      return res.status(400).json({
+        message: "Tracking already verified",
+      });
+    }
+
+    tracking.isVerified = true;
+    await tracking.save();
+
+    res.status(200).json({
+      message: "Tracking verified successfully",
     });
   } catch (error) {
     next(error);
   }
 };
 
-const deleteOrderStop = async (req, res, next) => {
+const deleteTracking = async (req, res, next) => {
   try {
-    const { orderStopId } = req.params;
+    const { trackingId } = req.params;
 
-    if (!mongoose.Types.ObjectId.isValid(orderStopId)) {
+    if (!mongoose.Types.ObjectId.isValid(trackingId)) {
       return res.status(400).json({
-        message: "Invalid order stop id",
+        message: "Invalid tracking id",
       });
     }
 
     // Can delete the order stop only if it is not verified
-    const orderStop = await OrderStop.findById(orderStopId);
+    const tracking = await Tracking.findById(trackingId);
 
-    if (!orderStop) {
+    if (!tracking) {
       return res.status(404).json({
-        message: "Order stop not found",
+        message: "Tracking not found",
       });
     }
 
-    if (orderStop.isVerified) {
+    if (tracking.isVerified) {
       return res.status(400).json({
-        message: "Order stop already verified and cannot be deleted",
+        message: "Tracking already verified and cannot be deleted",
       });
     }
 
-    await orderStop.deleteOne();
+    await tracking.deleteOne();
 
     res.status(200).json({
-      message: "Order stop deleted successfully",
+      message: "Tracking deleted successfully",
     });
   } catch (error) {
     next(error);
@@ -205,7 +300,8 @@ export default {
   getWarehouse,
   signInWarehouse,
   signOutWarehouse,
-  verifyOrderStop,
-  departureOrderStop,
-  deleteOrderStop,
+  departureTracking,
+  outForDeliveryOrder,
+  verifyTracking,
+  deleteTracking,
 };

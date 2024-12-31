@@ -19,7 +19,7 @@ const ProductDescription = ({ order }: ProductDescriptionProps) => {
 
       <div>
         <h3 className="text-sm text-muted-foreground">Price</h3>
-        <p className="font-medium">₹ {order.price}</p>
+        <p className="font-medium">₹ {order.price_details.total_price}</p>
       </div>
 
       <div>

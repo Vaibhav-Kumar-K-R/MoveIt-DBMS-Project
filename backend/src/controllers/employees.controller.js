@@ -1,13 +1,13 @@
 import Employee from "../models/employee.model.js";
 import Order from "../models/order.model.js";
-import OrderStop from "../models/order-stop.model.js";
+import Tracking from "../models/tracking.model.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 
 const getEmployee = async (req, res, next) => {
   try {
     const employee = await Employee.findById(req.employeeId).select(
-      "-password -__v",
+      "-password -__v"
     );
 
     if (!employee) {
@@ -44,7 +44,7 @@ const signInEmployee = async (req, res, next) => {
     const token = jwt.sign(
       { employeeId: employee._id },
       process.env.JWT_SECRET,
-      { expiresIn: "1d" },
+      { expiresIn: "1d" }
     );
 
     res.cookie("employee_auth_token", token, {
@@ -77,10 +77,9 @@ const signOutEmployee = async (req, res, next) => {
   }
 };
 
-const addOrderStop = async (req, res, next) => {
+const addTracking = async (req, res, next) => {
   try {
     const { shippingId, warehouseId } = req.params;
-
     const order = await Order.findOne({
       shipping_id: shippingId,
     });
@@ -88,17 +87,6 @@ const addOrderStop = async (req, res, next) => {
     if (!order) {
       return res.status(404).json({
         message: "Order not found",
-      });
-    }
-
-    let orderStop = await OrderStop.findOne({
-      order_id: order._id,
-      warehouse_id: warehouseId,
-    });
-
-    if (orderStop) {
-      return res.status(400).json({
-        message: "Order stop already added",
       });
     }
 
@@ -120,15 +108,84 @@ const addOrderStop = async (req, res, next) => {
       });
     }
 
-    orderStop = await OrderStop.create({
+    const latestTracking = await Tracking.findOne({
       order_id: order._id,
       warehouse_id: warehouseId,
-      arrival_datetime: Date.now(),
+    })
+      .sort({ createdAt: -1 })
+      .limit(1);
+
+    if (latestTracking) {
+      if (
+        latestTracking.status === "arrived" &&
+        latestTracking.employee_id !== req.employeeId
+      ) {
+        return res.status(400).json({
+          message: "Order not yet departed",
+        });
+      }
+    }
+
+    let tracking = await Tracking.findOne({
+      order_id: order._id,
+      warehouse_id: warehouseId,
+      status: "arrived",
+    });
+
+    if (tracking) {
+      return res.status(400).json({
+        message: "Tracking already notified",
+      });
+    }
+
+    tracking = await Tracking.create({
+      order_id: order._id,
+      warehouse_id: warehouseId,
+      status: "arrived",
+      employee_id: req.employeeId,
     });
 
     res.status(201).json({
-      orderStopId: orderStop._id,
+      orderStopId: tracking._id,
       message: "Order stop added successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const orderDelivery = async (req, res, next) => {
+  try {
+    const { shippingId } = req.params;
+    const order = await Order.findOne({
+      shipping_id: shippingId,
+    });
+
+    if (!order) {
+      return res.status(404).json({
+        message: "Order not found",
+      });
+    }
+
+    if (order.status === "cancelled") {
+      return res.status(400).json({
+        message: "Order already cancelled",
+      });
+    }
+
+    if (order.status === "delivered") {
+      return res.status(400).json({
+        message: "Order already delivered",
+      });
+    }
+
+    order.status = "delivered";
+    order.order_delivered_date = new Date();
+
+    await order.save();
+
+    res.status(200).json({
+      message: "Order delivered successfully",
     });
   } catch (error) {
     next(error);
@@ -139,5 +196,6 @@ export default {
   getEmployee,
   signInEmployee,
   signOutEmployee,
-  addOrderStop,
+  addTracking,
+  orderDelivery,
 };
