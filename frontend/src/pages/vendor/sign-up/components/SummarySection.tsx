@@ -16,7 +16,7 @@ import { MultiStepFormButtons } from "@/components/ui/multi-step-form";
 import { useMultiStepFormContext } from "@/context/MultiStepFormContext";
 import { useVendorSignUpRequest } from "@/api/VendorsApi";
 import { formatPhoneNumber } from "@/helpers/format-phone-number";
-
+import { MiniInformationCard } from "@/components/ui/MiniInformationCard";
 type SummarySectionProps = {
   signUpData: VendorsSignUpData;
 };
@@ -39,36 +39,16 @@ const SummarySection = ({ signUpData }: SummarySectionProps) => {
         <h3 className="text-lg font-semibold">Personal Details</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-4">
           <div className="flex items-center w-full gap-3">
-            <User2 className="text-zinc-600" />
-            <Separator orientation="vertical" />
-            <div className="text-sm">
-              <p className="font-semibold">Name</p>
-              <p className="text-zinc-500">{signUpData.name}</p>
-            </div>
+            <MiniInformationCard Icon={User2} title={"Name"} information={signUpData.name} />
           </div>
           <div className="flex items-center w-full gap-3">
-            <Mail className="text-zinc-600 size-6" />
-            <Separator orientation="vertical" />
-            <div className="text-sm flex-1">
-              <p className="font-semibold">Email</p>
-              <p className="text-zinc-500">{signUpData.email}</p>
-            </div>
+            <MiniInformationCard Icon={Mail} title={"Email"} information={signUpData.email} />
           </div>
           <div className="flex items-center w-full gap-3">
-            <Phone className="text-zinc-600" />
-            <Separator orientation="vertical" />
-            <div className="text-sm">
-              <p className="font-semibold">Phone</p>
-              <p className="text-zinc-500">{formatPhoneNumber(signUpData.phone)}</p>
-            </div>
+            <MiniInformationCard Icon={Phone} title={"Phone"} information={formatPhoneNumber(signUpData.phone)} />
           </div>
           <div className="flex items-center w-full gap-3">
-            <Lock className="text-zinc-600" />
-            <Separator orientation="vertical" />
-            <div className="text-sm">
-              <p className="font-semibold">Password</p>
-              <p className="text-zinc-500">••••••••</p>
-            </div>
+            <MiniInformationCard Icon={Lock} title={"Password"} information={"••••••••"} />
           </div>
         </div>
       </div>
@@ -79,20 +59,10 @@ const SummarySection = ({ signUpData }: SummarySectionProps) => {
         <h3 className="text-lg font-semibold">Shop Details</h3>
         <div className="grid grid-cols-1 gap-y-4">
           <div className="flex items-center w-full gap-3">
-            <Store className="text-zinc-600" />
-            <Separator orientation="vertical" />
-            <div className="text-sm">
-              <p className="font-semibold">Shop Name</p>
-              <p className="text-zinc-500">{signUpData.shop_name}</p>
-            </div>
+            <MiniInformationCard Icon={Store} title={"Shop Name"} information={signUpData.shop_name} />
           </div>
           <div className="flex items-center w-full gap-3">
-            <Podcast className="text-zinc-600 size-6" />
-            <Separator orientation="vertical" />
-            <div className="text-sm flex-1">
-              <p className="font-semibold">Description</p>
-              <p className="text-zinc-500">{signUpData.shop_description}</p>
-            </div>
+             <MiniInformationCard Icon={Podcast} title={"Description"} information={signUpData.shop_description} />
           </div>
         </div>
       </div>
@@ -103,38 +73,18 @@ const SummarySection = ({ signUpData }: SummarySectionProps) => {
         <h3 className="text-lg font-semibold">Address Details</h3>
         <div className="grid grid-cols-1 gap-y-4">
           <div className="flex items-center w-full gap-3">
-            <LocateFixedIcon className="text-zinc-600 size-6" />
-            <Separator orientation="vertical" />
-            <div className="text-sm flex-1">
-              <p className="font-semibold">Full Address</p>
-              <p className="text-zinc-500">{signUpData.address}</p>
-            </div>
+             <MiniInformationCard Icon={LocateFixedIcon} title={"Full Address"} information={signUpData.address} />
           </div>
         </div>
         <div className="grid grid-cols-2 gap-y-4">
           <div className="flex items-center w-full gap-3">
-            <Map className="text-zinc-600" />
-            <Separator orientation="vertical" />
-            <div className="text-sm">
-              <p className="font-semibold">City</p>
-              <p className="text-zinc-500">{signUpData.city}</p>
-            </div>
+            <MiniInformationCard Icon={Map} title={"City"} information={signUpData.city} />
           </div>
           <div className="flex items-center w-full gap-3">
-            <MapPin className="text-zinc-600" />
-            <Separator orientation="vertical" />
-            <div className="text-sm">
-              <p className="font-semibold">State</p>
-              <p className="text-zinc-500">{signUpData.state}</p>
-            </div>
+             <MiniInformationCard Icon={MapPin} title={"State"} information={signUpData.state} />
           </div>
           <div className="flex items-center w-full gap-3">
-            <Pin className="text-zinc-600" />
-            <Separator orientation="vertical" />
-            <div className="text-sm">
-              <p className="font-semibold">Pin Code</p>
-              <p className="text-zinc-500">{signUpData.pin_code}</p>
-            </div>
+            <MiniInformationCard Icon={Pin} title={"Pin Code"} information={signUpData.pin_code} />
           </div>
         </div>
       </div>
