@@ -16,7 +16,7 @@ import { MultiStepFormButtons } from "@/components/ui/multi-step-form";
 import { useMultiStepFormContext } from "@/context/MultiStepFormContext";
 import { useVendorSignUpRequest } from "@/api/VendorsApi";
 import { formatPhoneNumber } from "@/helpers/format-phone-number";
-
+import { MiniInformationCard } from "@/components/ui/MiniInformationCard";
 type SummarySectionProps = {
   signUpData: VendorsSignUpData;
 };
@@ -39,12 +39,7 @@ const SummarySection = ({ signUpData }: SummarySectionProps) => {
         <h3 className="text-lg font-semibold">Personal Details</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-4">
           <div className="flex items-center w-full gap-3">
-            <User2 className="text-zinc-600" />
-            <Separator orientation="vertical" />
-            <div className="text-sm">
-              <p className="font-semibold">Name</p>
-              <p className="text-zinc-500">{signUpData.name}</p>
-            </div>
+            <MiniInformationCard Icon={User2} title={"Name"} information={signUpData.name} />
           </div>
           <div className="flex items-center w-full gap-3">
             <Mail className="text-zinc-600 size-6" />
