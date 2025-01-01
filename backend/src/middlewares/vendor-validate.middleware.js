@@ -41,29 +41,30 @@ const validateVendorSignInRequest = (req, res, next) => {
 const validateCreateOrderRequest = (req, res, next) => {
   try {
     const createOrderSchema = z.object({
-      product_name: z.string().min(3).max(50),
-      product_description: z.string().min(3).max(250),
-      quantity: z.coerce.number().min(1),
-      product_img_url: z.string().url(),
+      product_name: z.string().min(3, "Product name is required"),
+      product_description: z
+        .string()
+        .min(3, "Product description is required")
+        .max(250, "Product description must be at most 250 characters"),
+      quantity: z.coerce.number().min(1, "Quantity must be at least 1"),
+      product_img_url: z.string().url("Invalid URL"),
       price_details: z.object({
-        product_price: z.coerce.number().min(1),
-        delivery_charge: z.coerce.number().min(1),
-        gst: z.coerce.number().min(0).max(1),
+        product_price: z.coerce.number().min(1, "Product price is required"),
+        delivery_charge: z.coerce
+          .number()
+          .min(1, "Delivery charge is required"),
+        gst: z.coerce.number().min(0).max(1, "GST must be between 0 and 1"),
       }),
-      weight: z.coerce.number().gt(0),
-      customer_name: z.string().min(3).max(50),
-      customer_email: z.string().email(),
-      customer_phone: z.string().min(10).max(10),
-      customer_address: z.string().min(3).max(100),
+      weight: z.coerce.number().gt(0, "Weight is required"),
+      customer_name: z.string().min(3, "Customer name is required"),
+      customer_email: z.string().email("Invalid email address"),
+      customer_phone: z
+        .string()
+        .min(10, "Phone number must be 10 digits")
+        .max(10, "Phone number must be 10 digits")
+        .regex(/^\d{10}$/, "Invalid phone number"),
+      customer_address: z.string().min(3, "Address is required"),
       order_placed_date: z.coerce.date(),
-      order_delivered_date: z.date().optional(),
-      status: z.enum([
-        "placed",
-        "in_transit",
-        "out_for_delivery",
-        "delivered",
-        "cancelled",
-      ]),
     });
 
     createOrderSchema.parse(req.body);
