@@ -17,7 +17,7 @@ const orderSchema = new mongoose.Schema(
       product_price: { type: Number, required: true },
       delivery_charge: { type: Number, required: true },
       gst: { type: Number, required: true },
-      total_price: { type: Number, default: 0 },
+      total_price: { type: Number, required: true },
     },
     weight: { type: Number, required: true },
     customer_name: { type: String, required: true },
