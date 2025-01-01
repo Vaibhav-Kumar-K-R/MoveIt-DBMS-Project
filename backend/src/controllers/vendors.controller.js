@@ -126,6 +126,7 @@ const createOrder = async (req, res, next) => {
       tracking_id: trackingId,
       shipping_id: shippingId,
       vendor_id: req.vendorId,
+      status: "placed",
     });
 
     return res.status(201).json({

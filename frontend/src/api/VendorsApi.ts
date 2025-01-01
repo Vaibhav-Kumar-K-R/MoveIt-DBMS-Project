@@ -1,5 +1,6 @@
 import { LoginFormData } from "@/forms/login/types";
 import axiosInstance from "@/lib/axios";
+import { OrderFormType } from "@/pages/vendor/dashboard/order-form/types";
 import { VendorsSignUpData } from "@/pages/vendor/sign-up/types";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
@@ -156,5 +157,47 @@ export const useVendorLogoutRequest = () => {
     isLoading,
     data,
     error,
+  };
+};
+
+export const useCreateOrderRequest = () => {
+  const createOrderRequest = async (orderData: OrderFormType) => {
+    try {
+      const response = await axiosInstance.post(
+        "/vendor/create-order",
+        orderData
+      );
+
+      return response.data;
+    } catch (error: any) {
+      throw new Error(error.message);
+    }
+  };
+
+  const {
+    mutateAsync: createOrder,
+    data,
+    isLoading,
+    error,
+    isSuccess,
+  } = useMutation({
+    mutationKey: "createOrderRequest",
+    mutationFn: createOrderRequest,
+  });
+
+  if (isSuccess) {
+    toast.success("Order created successfully", { icon: "🚀" });
+  }
+
+  if (error) {
+    toast.error(error.toString(), { icon: "🚨" });
+  }
+
+  return {
+    createOrder,
+    isLoading,
+    data,
+    error,
+    isSuccess,
   };
 };

@@ -44,6 +44,8 @@ export type Order = {
   order_placed_date: Date;
   order_delivered_date: Date | null;
   status: string;
+  createdAt: Date;
+  updatedAt: Date;
 };
 
 export type CustomerOrderDetail = {

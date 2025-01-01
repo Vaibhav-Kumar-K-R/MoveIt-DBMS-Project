@@ -27,7 +27,12 @@ const TrackingSectionHeader = ({
           as on {formatDate(order.order_placed_date)}
         </p>
         <p className="text-xs text-muted-foreground">
-          Last updated on {formatDate(tracking[tracking.length - 1].updatedAt)}
+          Last updated on{" "}
+          {formatDate(
+            order.order_delivered_date ||
+              tracking?.[tracking.length - 1]?.updatedAt ||
+              order.updatedAt
+          )}
         </p>
       </div>
     </>
