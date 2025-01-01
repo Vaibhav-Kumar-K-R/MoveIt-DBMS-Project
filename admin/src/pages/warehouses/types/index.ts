@@ -15,11 +15,7 @@ export default interface WarehouseType {
     };
     name: string;
     profile_img_url: string;
-    email?: string;
-    phone?: string;
-    dob?: string;
-    salary?: string;
-    work_status?: string;
+    phone: string;
   };
 }
 

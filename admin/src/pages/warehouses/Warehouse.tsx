@@ -6,6 +6,7 @@ import {
   CardDescription,
   CardFooter,
 } from "@/components/ui/card";
+
 import { Button } from "@/components/ui/button";
 import FilterWarehouse from "@/components/FilterWarehouse";
 import CreateWarehouseModal from "@/components/CreateWarehouseModal";
@@ -22,6 +23,8 @@ export default function Warehouse() {
   const [editWarehouseEmail, setEditWarehouseEmail] = useState<string>("");
   const [editWarehouseStatus, setEditWarehouseStatus] = useState<string>("");
   
+
+
   if (isLoading) {
     return <Redirect />;
   }
@@ -46,8 +49,7 @@ export default function Warehouse() {
             <CardHeader className="flex-grow">
               <CardTitle>{warehouse.name}</CardTitle>
               <CardDescription className="capitalize">
-                {warehouse.address}, {warehouse.city}, {warehouse.state}-{" "}
-                {warehouse.pincode}
+                {warehouse.address}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -58,15 +60,27 @@ export default function Warehouse() {
                   className="absolute inset-0 w-full h-full object-cover rounded-md"
                 />
               </div>
-              <div className="space-y-2 text-sm">
+              <div className="space-y-2 ">
                 <p>
-                  <strong>Email:</strong> {warehouse.email}
+                  <strong>City:</strong>{warehouse.city}
                 </p>
                 <p>
-                  <strong>Phone:</strong> {warehouse.phone}
+                  <strong>Pincode:</strong>{warehouse.pincode}
+                </p>
+                <p className="capitalize">
+                  <strong>State:</strong>{warehouse.state}
+                </p>
+                <p className="lg:text-sm">
+                  <strong>Email:</strong> <a href="mailto:">{warehouse.email}</a>
+                </p>
+                <p>
+                  <strong>Phone:</strong> <a href="tel:">{warehouse.phone}</a>
                 </p>
                 <p>
                   <strong>Manager name:</strong> {warehouse.manager_id.name}
+                </p>
+                <p>
+                  <strong>Manager contact number:</strong> {warehouse.manager_id.phone}
                 </p>
                 <p>Manager profile</p>
                 <img

@@ -10,8 +10,9 @@ import {
   CardDescription,
   CardFooter,
 } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton"
 import WarehouseType from "@/pages/warehouses/types";
-import Redirect from "@/pages/redirect/Redirect";
+
 function FilterWarehouse() {
   const [stateName, setStateName] = useState<string>("");
   const { response, isLoading, isError } =
@@ -26,7 +27,10 @@ function FilterWarehouse() {
     }
   }, [response]);
   if (isLoading) {
-    return <Redirect></Redirect>;
+    return <div className="flex justify-center">
+      <Skeleton className="w-full px-4 h-[50px] " />
+    </div>
+;
   }
 
   return (

@@ -164,10 +164,24 @@ const createWarehouseProfile = async (req, res, next) => {
       });
     }
 
-    warehouse = await Warehouse.create({
-      ...req.body,
-      state: req.body.state.toLowerCase(),
-    });
+    
+    const profileImage = req.file;
+    let profileImgDetails = null;
+
+    if (profileImage) {
+      profileImgDetails = await uploadImage(profileImage);
+    }
+
+    warehouse = await Warehouse.create( profileImgDetails
+        ? {
+            ...req.body,
+            profile_img: {
+              profile_img_url: profileImgDetails.secure_url,
+              public_id: profileImgDetails.public_id,
+            },
+            state:req.body.state.toLowerCase()
+          }
+        : {...req.body,state:req.body.state.toLowerCase()});
 
     return res.status(201).json({
       warehouse_id: warehouse._id,
