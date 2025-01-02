@@ -1,6 +1,6 @@
 import axiosInstance from "@/lib/axios";
 import { LoginFormData } from "@/pages/login/types";
-import { createWarehouseFormData } from "@/pages/warehouses/types";
+import { CreateWarehouseFormData } from "@/pages/warehouses/types";
 import { useMutation, useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -118,12 +118,17 @@ export const useGetWarehousesRequest = () => {
 
 export const useCreateWarehouseMutation = () => {
   const createWarehouseMutation = async (
-    warehouseData: createWarehouseFormData,
+    warehouseData: CreateWarehouseFormData
   ): Promise<createWarehouseResponseType> => {
     try {
       const response = await axiosInstance.post(
         "/admin/create-warehouse",
         warehouseData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
       );
       return response.data;
     } catch (error: any) {
@@ -161,7 +166,7 @@ export const useFilterWarehousesRequest = (state: string) => {
   const filterWarehousesRequest = async () => {
     try {
       const response = await axiosInstance.get(
-        `/admin/warehouse/${state.trim()}`,
+        `/admin/warehouse/${state.trim()}`
       );
       return response.data;
     } catch (error: any) {
@@ -186,12 +191,12 @@ export const useFilterWarehousesRequest = (state: string) => {
 
 export const useUpdateWarehouseMutation = () => {
   const updateWarehouseMutation = async (
-    email: string,
+    email: string
   ): Promise<updateWarehouseResponseType> => {
     try {
       const response = await axiosInstance.patch(
         "/admin/update-warehouse-status/",
-        { email },
+        { email }
       );
       return response.data;
     } catch (error: any) {

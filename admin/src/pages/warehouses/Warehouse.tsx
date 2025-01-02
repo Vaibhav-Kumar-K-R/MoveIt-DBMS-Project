@@ -6,7 +6,6 @@ import {
   CardDescription,
   CardFooter,
 } from "@/components/ui/card";
-
 import { Button } from "@/components/ui/button";
 import FilterWarehouse from "@/components/FilterWarehouse";
 import CreateWarehouseModal from "@/components/CreateWarehouseModal";
