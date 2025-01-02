@@ -20,6 +20,7 @@ export default interface WarehouseType {
 }
 
 export const createWarehouseFormSchema = z.object({
+  warehouseProfileImg: z.instanceof(File),
   name: z
     .string()
     .nonempty("Name is required")
@@ -59,4 +60,4 @@ export const createWarehouseFormSchema = z.object({
     .regex(/^[a-fA-F0-9]{24}$/, "Invalid Object Id"),
 });
 
-export type createWarehouseFormData = z.infer<typeof createWarehouseFormSchema>;
+export type CreateWarehouseFormData = z.infer<typeof createWarehouseFormSchema>;

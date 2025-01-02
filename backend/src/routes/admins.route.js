@@ -9,7 +9,15 @@ const adminRouter = express.Router();
 adminRouter.post(
   "/sign-in",
   adminMiddlware.validateAdminSignInRequest,
-  adminController.signInAdmin,
+  adminController.signInAdmin
+);
+
+adminRouter.post(
+  "/create-warehouse",
+  upload.single("warehouseProfileImg"),
+  adminAuthMiddleware.verifyAdminToken,
+  adminMiddlware.validateCreateWarehouseRequest,
+  adminController.createWarehouseProfile
 );
 
 adminRouter.use(adminAuthMiddleware.verifyAdminToken);
@@ -22,19 +30,12 @@ adminRouter.post(
   "/create-manager",
   upload.single("managerProfileImg"),
   adminMiddlware.validateCreateManagerRequest,
-  adminController.createManagerProfile,
+  adminController.createManagerProfile
 );
 
 adminRouter.patch(
   "/update-managerWork-status/",
-  adminController.updateManagerWorkStatus,
-);
-
-adminRouter.post(
-  "/create-warehouse",
-  upload.single("warehouseProfileImg"),
-  adminMiddlware.validateCreateWarehouseRequest,
-  adminController.createWarehouseProfile,
+  adminController.updateManagerWorkStatus
 );
 
 adminRouter.get("/warehouses", adminController.getWarehouseList);
@@ -43,19 +44,19 @@ adminRouter.get("/warehouse/:state", adminController.getWarehousebyState);
 
 adminRouter.patch(
   "/update-warehouse-status/",
-  adminController.updateWarehouseStatus,
+  adminController.updateWarehouseStatus
 );
 
 adminRouter.post(
   "/add-vehicle",
   upload.single("vehicleImg"),
   adminMiddlware.validateCreateVehicleRequest,
-  adminController.addVehicle,
+  adminController.addVehicle
 );
 
 adminRouter.patch(
   "/update-vehicle-status/",
-  adminController.updateVehicleStatus,
+  adminController.updateVehicleStatus
 );
 
 adminRouter.get("/get-stats", adminController.getStats);

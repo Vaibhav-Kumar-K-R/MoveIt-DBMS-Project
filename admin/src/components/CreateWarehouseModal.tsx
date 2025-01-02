@@ -18,7 +18,7 @@ import {
 import { Input } from "@/components/ui/input";
 import {
   createWarehouseFormSchema,
-  createWarehouseFormData,
+  CreateWarehouseFormData,
 } from "@/pages/warehouses/types";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -35,9 +35,10 @@ export default function CreateWarehouseModal({
 }: CreateWarehouseModalProps) {
   const { isLoading: isCreateWarehouseLoading, createWarehouse } =
     useCreateWarehouseMutation();
-  const form = useForm<createWarehouseFormData>({
+  const form = useForm<CreateWarehouseFormData>({
     resolver: zodResolver(createWarehouseFormSchema),
     defaultValues: {
+      warehouseProfileImg: undefined,
       name: "",
       address: "",
       pincode: "",
@@ -51,7 +52,21 @@ export default function CreateWarehouseModal({
     },
   });
 
-  const onSubmit = async (data: createWarehouseFormData) => {
+  const onSubmit = async (data: CreateWarehouseFormData) => {
+    const formData = new FormData();
+
+    formData.append("warehouseProfileImg", data.warehouseProfileImg);
+    formData.append("name", data.name);
+    formData.append("address", data.address);
+    formData.append("pincode", data.pincode);
+    formData.append("city", data.city);
+    formData.append("state", data.state);
+    formData.append("email", data.email);
+    formData.append("password", data.password);
+    formData.append("phone", data.phone);
+    formData.append("manager_id", data.manager_id);
+    formData.append("status", data.status);
+
     createWarehouse(data);
   };
 
@@ -67,6 +82,34 @@ export default function CreateWarehouseModal({
         <div className="h-[200px] px-3 relative overflow-y-scroll">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              {/* Warehouse Image */}
+              <FormField
+                control={form.control}
+                name="warehouseProfileImg"
+                render={({ field, fieldState }) => (
+                  <FormItem>
+                    <FormLabel
+                      className={fieldState.error ? "text-red-600" : ""}
+                    >
+                      Name
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        className={fieldState.error ? "border-red-600" : ""}
+                        type="file"
+                        accept="image/*"
+                        onChange={(event) =>
+                          field.onChange(
+                            event.target.files ? event.target.files[0] : null
+                          )
+                        }
+                      />
+                    </FormControl>
+                    <FormMessage className="text-red-600" />
+                  </FormItem>
+                )}
+              />
+
               {/* Name Field */}
               <FormField
                 control={form.control}
