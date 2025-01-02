@@ -105,6 +105,53 @@ const signOutVendor = async (req, res, next) => {
   }
 };
 
+const updateProfile = async (req, res, next) => {
+  try {
+    const vendorId = req.vendorId;
+    const profileImage = req.file;
+    let profileImgDetails = null;
+    let updatedVendor;
+
+    const vendor = await Vendor.findById(vendorId);
+
+    if (!vendor) {
+      return res.status(404).json({
+        message: "Vendor not found",
+      });
+    }
+
+    if (profileImage) {
+      profileImgDetails = await uploadImage(
+        profileImage,
+        vendor.profile_img?.public_id
+      );
+
+      updatedVendor = await Vendor.findByIdAndUpdate(
+        vendorId,
+        {
+          ...req.body,
+          profile_img: {
+            profile_img_url: profileImgDetails.secure_url,
+            public_id: profileImgDetails.public_id,
+          },
+        },
+        { new: true }
+      );
+    } else {
+      updatedVendor = await Vendor.findByIdAndUpdate(vendorId, req.body, {
+        new: true,
+      });
+    }
+
+    res.status(200).json({
+      vendorId,
+      message: "Profile updated successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const createOrder = async (req, res, next) => {
   try {
     // Generate a unique tracking ID and shipping ID using UUID
@@ -170,47 +217,15 @@ const cancelOrder = async (req, res, next) => {
   }
 };
 
-const updateProfile = async (req, res, next) => {
+const getRecentOrders = async (req, res, next) => {
   try {
-    const vendorId = req.vendorId;
-    const profileImage = req.file;
-    let profileImgDetails = null;
-    let updatedVendor;
+    const orders = await Order.find({ vendor_id: req.vendorId })
+      .sort({ createdAt: "desc" })
+      .limit(5)
+      .select("-__v");
 
-    const vendor = await Vendor.findById(vendorId);
-
-    if (!vendor) {
-      return res.status(404).json({
-        message: "Vendor not found",
-      });
-    }
-
-    if (profileImage) {
-      profileImgDetails = await uploadImage(
-        profileImage,
-        vendor.profile_img?.public_id
-      );
-
-      updatedVendor = await Vendor.findByIdAndUpdate(
-        vendorId,
-        {
-          ...req.body,
-          profile_img: {
-            profile_img_url: profileImgDetails.secure_url,
-            public_id: profileImgDetails.public_id,
-          },
-        },
-        { new: true }
-      );
-    } else {
-      updatedVendor = await Vendor.findByIdAndUpdate(vendorId, req.body, {
-        new: true,
-      });
-    }
-
-    res.status(200).json({
-      vendorId,
-      message: "Profile updated successfully",
+    return res.status(200).json({
+      orders,
     });
   } catch (error) {
     next(error);
@@ -222,7 +237,8 @@ export default {
   signUpVendor,
   signInVendor,
   signOutVendor,
+  updateProfile,
   createOrder,
   cancelOrder,
-  updateProfile,
+  getRecentOrders,
 };

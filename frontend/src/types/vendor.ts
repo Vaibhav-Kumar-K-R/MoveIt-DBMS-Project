@@ -1,3 +1,5 @@
+import { Order } from "./customer";
+
 export type Vendor = {
   profile_img: {
     profile_img_url: string;
@@ -16,3 +18,7 @@ export type Vendor = {
   createdAt: string;
   updatedAt: string;
 };
+
+export type RecentOrdersType = {
+  orders: Order[];
+}

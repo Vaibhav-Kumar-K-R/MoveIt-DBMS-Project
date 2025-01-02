@@ -2,6 +2,7 @@ import { LoginFormData } from "@/forms/login/types";
 import axiosInstance from "@/lib/axios";
 import { OrderFormType } from "@/pages/vendor/dashboard/order-form/types";
 import { VendorsSignUpData } from "@/pages/vendor/sign-up/types";
+import { RecentOrdersType } from "@/types/vendor";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -174,6 +175,7 @@ export const useCreateOrderRequest = () => {
     }
   };
 
+  const queryClient = useQueryClient();
   const {
     mutateAsync: createOrder,
     data,
@@ -183,6 +185,11 @@ export const useCreateOrderRequest = () => {
   } = useMutation({
     mutationKey: "createOrderRequest",
     mutationFn: createOrderRequest,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: "getRecentOrderRequest",
+      });
+    },
   });
 
   if (isSuccess) {
@@ -199,5 +206,34 @@ export const useCreateOrderRequest = () => {
     data,
     error,
     isSuccess,
+  };
+};
+
+export const useGetRecentOrdersRequest = () => {
+  const getRecentOrderRequest = async (): Promise<RecentOrdersType> => {
+    try {
+      const response = await axiosInstance.get("/vendor/recent-orders");
+
+      return response.data;
+    } catch (error: any) {
+      throw new Error(error.message);
+    }
+  };
+
+  const {
+    data: recentOrders,
+    isLoading,
+    isSuccess,
+    error,
+  } = useQuery({
+    queryKey: "getRecentOrderRequest",
+    queryFn: getRecentOrderRequest,
+  });
+
+  return {
+    recentOrders,
+    isLoading,
+    isSuccess,
+    error,
   };
 };
