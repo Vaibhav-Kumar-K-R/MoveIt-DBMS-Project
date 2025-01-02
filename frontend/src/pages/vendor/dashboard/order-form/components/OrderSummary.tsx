@@ -12,17 +12,14 @@ import {
   ShoppingBag,
   Truck,
 } from "lucide-react";
-import { OrderFormType } from "../types";
 import { useMultiStepFormContext } from "@/context/MultiStepFormContext";
 import { formatDate, formatTime } from "@/helpers/format-date";
 import { formatPhoneNumber } from "@/helpers/format-phone-number";
 import { useCreateOrderRequest } from "@/api/VendorsApi";
+import { useVendorDashboardContext } from "@/context/VendorDashboardContext";
 
-type OrderSummaryProps = {
-  orderData: OrderFormType;
-};
-
-const OrderSummary = ({ orderData }: OrderSummaryProps) => {
+const OrderSummary = () => {
+  const { orderData } = useVendorDashboardContext();
   const { createOrder, isLoading } = useCreateOrderRequest();
   const { controls } = useMultiStepFormContext();
 
