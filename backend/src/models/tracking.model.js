@@ -21,7 +21,7 @@ const tracking = new mongoose.Schema(
     },
     isVerified: { type: Boolean, default: false },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const Tracking = mongoose.model("Tracking", tracking);

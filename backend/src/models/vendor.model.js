@@ -18,7 +18,7 @@ const vendorSchema = new mongoose.Schema(
     shop_description: { type: String, required: true },
     pincode: { type: String, required: true },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 vendorSchema.pre("save", async function (next) {
