@@ -1,14 +1,14 @@
 import axiosInstance from "@/lib/axios";
 import { LoginFormData } from "@/pages/login/types";
-import { CreateWarehouseFormData } from "@/pages/warehouses/types";
+import { CreateWarehouseFormData } from "@/forms/types/index";
 import { useMutation, useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import {
-  AdminData,
-  createWarehouseResponseType,
-  updateWarehouseResponseType,
-} from "@/types";
+  CreateWarehouseResponseType,
+  UpdateWarehouseResponseType,
+} from "@/pages/warehouses/types/index";
+import { AdminData } from "@/types/index";
 export const useAdminAuth = () => {
   const adminAuth = async (): Promise<AdminData> => {
     try {
@@ -119,7 +119,7 @@ export const useGetWarehousesRequest = () => {
 export const useCreateWarehouseMutation = () => {
   const createWarehouseMutation = async (
     warehouseData: CreateWarehouseFormData,
-  ): Promise<createWarehouseResponseType> => {
+  ): Promise<CreateWarehouseResponseType> => {
     try {
       const response = await axiosInstance.post(
         "/admin/create-warehouse",
@@ -192,7 +192,7 @@ export const useFilterWarehousesRequest = (state: string) => {
 export const useUpdateWarehouseMutation = () => {
   const updateWarehouseMutation = async (
     email: string,
-  ): Promise<updateWarehouseResponseType> => {
+  ): Promise<UpdateWarehouseResponseType> => {
     try {
       const response = await axiosInstance.patch(
         "/admin/update-warehouse-status/",
@@ -226,5 +226,27 @@ export const useUpdateWarehouseMutation = () => {
     updateWarehouse,
     isLoading,
     response: data,
+  };
+};
+export const useGetWarehouseManagersListRequest = () => {
+  const warehouseManagersListRequest = async () => {
+    try {
+      const response = await axiosInstance.get("/admin/warehousemanagerList");
+
+      return response.data;
+    } catch (error: any) {
+      throw new Error("You need to be logged in to access this page");
+    }
+  };
+
+  const { data, isLoading, isError } = useQuery({
+    queryKey: "warehouseManagersListRequest",
+    queryFn: warehouseManagersListRequest,
+  });
+
+  return {
+    response: data,
+    isLoading,
+    isError,
   };
 };
