@@ -23,6 +23,8 @@ const orderSchema = new mongoose.Schema(
     customer_name: { type: String, required: true },
     customer_email: { type: String, required: true },
     customer_phone: { type: String, required: true },
+    customer_city: { type: String, required: true },
+    customer_state: { type: String, required: true },
     customer_address: { type: String, required: true },
     order_placed_date: { type: Date, default: Date.now },
     order_delivered_date: { type: Date, default: null },
