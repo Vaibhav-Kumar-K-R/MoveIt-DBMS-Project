@@ -3,8 +3,6 @@ import {
   WarehouseIcon,
   Home,
   UserRound,
-  Users,
-  User,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import ProfileButton from "@/layouts/components/ProfileButton";
@@ -53,7 +51,7 @@ export function AppSidebar() {
       <Sidebar>
         <SidebarContent>
           <SidebarGroup>
-            <SidebarGroupLabel className="text-xl w-full ">
+            <SidebarGroupLabel className="text-2xl text-center text-black w-full ">
               MoveIt - Admin
             </SidebarGroupLabel>
             <SidebarGroupContent className="mt-6">
