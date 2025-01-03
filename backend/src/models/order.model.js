@@ -9,6 +9,16 @@ const orderSchema = new mongoose.Schema(
       ref: "Vendor",
       required: true,
     },
+    warehouse: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Warehouse",
+      required: true,
+    },
+    warehouse_status: {
+      type: String,
+      enum: ["pending", "accepted", "rejected"],
+      default: "pending",
+    },
     product_name: { type: String, required: true },
     product_description: { type: String, required: true },
     quantity: { type: Number, required: true },
@@ -42,7 +52,7 @@ const orderSchema = new mongoose.Schema(
       default: "placed",
     },
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
 const Order = mongoose.model("Order", orderSchema);

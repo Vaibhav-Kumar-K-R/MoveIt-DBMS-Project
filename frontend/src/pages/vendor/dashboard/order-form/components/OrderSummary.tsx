@@ -2,13 +2,16 @@ import MiniInformationCard from "@/components/MiniInformationCard";
 import { MultiStepFormButtons } from "@/components/ui/multi-step-form";
 import { Separator } from "@/components/ui/separator";
 import {
+  Building2,
   Calendar,
   CreditCard,
   IndianRupee,
+  LocateFixed,
   Mail,
   MapPin,
   Package,
   Phone,
+  Pin,
   ShoppingBag,
   Truck,
 } from "lucide-react";
@@ -18,24 +21,33 @@ import { formatPhoneNumber } from "@/helpers/format-phone-number";
 import { useCreateOrderRequest, useEditOrderRequest } from "@/api/VendorsApi";
 import { OrderFormType } from "../types";
 import { formatIndianCurrency } from "@/helpers/format-currency";
+import { NearbyWarehouses } from "@/types/vendor";
+import { useMemo } from "react";
 
 type OrderSummaryProps = {
   orderData: OrderFormType;
   isEditing?: boolean;
   order_id?: string;
+  nearbyWarehouses: NearbyWarehouses | undefined;
 };
 
 const OrderSummary = ({
   orderData,
   isEditing,
   order_id,
+  nearbyWarehouses,
 }: OrderSummaryProps) => {
   const { createOrder, isLoading: isCreateOrderLoading } =
     useCreateOrderRequest();
   const { editOrder, isLoading: isEditOrderLoading } = useEditOrderRequest(
-    order_id as string,
+    order_id as string
   );
   const { controls } = useMultiStepFormContext();
+  const selectedWarehouse = useMemo(() => {
+    return nearbyWarehouses?.warehouses.find(
+      (warehouse) => warehouse._id === orderData.warehouse
+    );
+  }, [nearbyWarehouses, orderData]);
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -111,14 +123,14 @@ const OrderSummary = ({
               icon: IndianRupee,
               title: "Product Price",
               information: formatIndianCurrency(
-                orderData.price_details.product_price,
+                orderData.price_details.product_price
               ),
             },
             {
               icon: Truck,
               title: "Delivery Charge",
               information: formatIndianCurrency(
-                orderData.price_details.delivery_charge,
+                orderData.price_details.delivery_charge
               ),
             },
             {
@@ -151,14 +163,74 @@ const OrderSummary = ({
             },
             {
               icon: MapPin,
-              title: "Address",
-              information: orderData.customer_address,
+              title: "City",
+              information: orderData.customer_city,
+            },
+            {
+              icon: MapPin,
+              title: "State",
+              information: orderData.customer_state,
             },
           ].map((item) => (
             <MiniInformationCard key={item.title} {...item} />
           ))}
         </div>
+        <MiniInformationCard
+          icon={MapPin}
+          title={"Full Address"}
+          information={orderData.customer_address}
+        />
       </div>
+
+      <Separator className="my-4" />
+
+      {/* Nearby Warehouse Details */}
+      {selectedWarehouse && (
+        <div className="flex flex-col gap-3">
+          <h3 className="text-lg font-semibold">Selected Warehouse</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-4">
+            {[
+              {
+                icon: Building2,
+                title: "Name",
+                information: selectedWarehouse.name,
+              },
+              {
+                icon: Phone,
+                title: "Phone",
+                information: formatPhoneNumber(selectedWarehouse.phone),
+              },
+              {
+                icon: Pin,
+                title: "Pin Code",
+                information: selectedWarehouse.pincode,
+              },
+              {
+                icon: Mail,
+                title: "Email",
+                information: selectedWarehouse.email,
+              },
+              {
+                icon: MapPin,
+                title: "City",
+                information: selectedWarehouse.city,
+              },
+              {
+                icon: MapPin,
+                title: "State",
+                information: selectedWarehouse.state,
+              },
+            ].map((item) => (
+              <MiniInformationCard key={item.title} {...item} />
+            ))}
+          </div>
+          <MiniInformationCard
+            icon={LocateFixed}
+            title={"Full Address"}
+            information={selectedWarehouse.address}
+          />
+        </div>
+      )}
 
       <Separator className="my-4" />
 
@@ -169,7 +241,7 @@ const OrderSummary = ({
           icon={Calendar}
           title={"Order Placed Date"}
           information={`${formatDate(
-            orderData.order_placed_date,
+            orderData.order_placed_date
           )} | At ${formatTime(orderData.order_placed_date)}`}
         />
       </div>

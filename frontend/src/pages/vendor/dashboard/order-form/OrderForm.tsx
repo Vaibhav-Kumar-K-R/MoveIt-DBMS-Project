@@ -5,6 +5,7 @@ import ProductForm from "./components/ProductForm";
 import CustomerDetailsForm from "./components/CustomerDetailsForm";
 import OrderSummary from "./components/OrderSummary";
 import { OrderFormType } from "./types";
+import { useGetNearbyWarehouses, useVendorAuth } from "@/api/VendorsApi";
 
 type OrderFormProps = {
   orderData: OrderFormType;
@@ -23,10 +24,17 @@ const OrderForm = ({
   isEditing = false,
   order_id,
 }: OrderFormProps) => {
+  const { vendor } = useVendorAuth();
+  const { nearbyWarehouses } = useGetNearbyWarehouses(vendor?.state);
+
   return (
     <MultiStepFormContextProvider
       stepsArray={[
-        <ProductForm orderData={orderData} updateOrderData={updateOrderData} />,
+        <ProductForm
+          orderData={orderData}
+          nearbyWarehouses={nearbyWarehouses}
+          updateOrderData={updateOrderData}
+        />,
         <CustomerDetailsForm
           orderData={orderData}
           updateOrderData={updateOrderData}
@@ -35,6 +43,7 @@ const OrderForm = ({
           orderData={orderData}
           isEditing={isEditing}
           order_id={order_id}
+          nearbyWarehouses={nearbyWarehouses}
         />,
       ]}
     >

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import mongoose from "mongoose";
 
 const validateVendorSignUpRequest = (req, res, next) => {
   try {
@@ -41,6 +42,9 @@ const validateVendorSignInRequest = (req, res, next) => {
 const validateCreateOrderRequest = (req, res, next) => {
   try {
     const createOrderSchema = z.object({
+      warehouse: z.string().refine((id) => mongoose.isValidObjectId(id), {
+        message: "Invalid ObjectId for warehouse",
+      }),
       product_name: z.string().min(3, "Product name is required"),
       product_description: z
         .string()

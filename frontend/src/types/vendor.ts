@@ -1,4 +1,5 @@
 import { Order } from "./customer";
+import { Warehouse } from "./warehouse";
 
 export type Vendor = {
   profile_img: {
@@ -22,3 +23,7 @@ export type Vendor = {
 export type RecentOrdersType = {
   orders: Order[];
 };
+
+export type NearbyWarehouses = {
+  warehouses: Warehouse[];
+}
