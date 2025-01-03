@@ -21,6 +21,7 @@ import {
   Wallet,
   Coins,
   Weight,
+  Building2,
 } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -34,13 +35,26 @@ import { TimePicker } from "@/components/ui/time-picker";
 import { Calendar } from "@/components/ui/calendar";
 import { MultiStepFormButtons } from "@/components/ui/multi-step-form";
 import { useMultiStepFormContext } from "@/context/MultiStepFormContext";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { NearbyWarehouses } from "@/types/vendor";
 
 type ProductFormProps = {
   orderData: ProductFormType;
   updateOrderData: (data: ProductFormType) => void;
+  nearbyWarehouses: NearbyWarehouses | undefined;
 };
 
-const ProductForm = ({ orderData, updateOrderData }: ProductFormProps) => {
+const ProductForm = ({
+  orderData,
+  updateOrderData,
+  nearbyWarehouses,
+}: ProductFormProps) => {
   const form = useForm<ProductFormType>({
     resolver: zodResolver(productSchema),
     defaultValues: orderData,
@@ -257,6 +271,55 @@ const ProductForm = ({ orderData, updateOrderData }: ProductFormProps) => {
             )}
           />
 
+          {/* Warehouse */}
+          <FormField
+            control={form.control}
+            name="warehouse"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Warehouse *</FormLabel>
+                <div className="flex items-center border rounded-md px-3 py-2 h-16">
+                  <Building2 className="mr-2 text-gray-500" />
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger className="h-14">
+                        <SelectValue placeholder="Select a Nearby Warehouse" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {nearbyWarehouses?.warehouses.map((warehouse) => (
+                        <SelectItem
+                          key={warehouse._id}
+                          value={warehouse._id}
+                          className="cursor-pointer gap-2"
+                        >
+                          <div className="flex items-center">
+                            <img
+                              src={warehouse.profile_img.profile_img_url}
+                              alt={`${warehouse.name}`}
+                              className="size-12 rounded-full mr-2"
+                            />
+                            <div>
+                              <p className="font-semibold">{warehouse.name}</p>
+                              <p className="text-sm text-zinc-500">
+                                {warehouse.city}, {warehouse.state}
+                              </p>
+                            </div>
+                          </div>
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <FormDescription>Select the nearby warehouse.</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
           {/* Order Placed Date */}
           <FormField
             control={form.control}
@@ -270,7 +333,7 @@ const ProductForm = ({ orderData, updateOrderData }: ProductFormProps) => {
                       variant={"outline"}
                       className={cn(
                         "justify-start text-left font-normal w-full",
-                        !field.value && "text-muted-foreground",
+                        !field.value && "text-muted-foreground"
                       )}
                     >
                       <CalendarIcon className="mr-2 h-4 w-4" />

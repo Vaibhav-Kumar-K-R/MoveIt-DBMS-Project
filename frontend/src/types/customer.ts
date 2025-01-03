@@ -26,6 +26,7 @@ export type Order = {
   tracking_id: string;
   shipping_id: string;
   vendor: Vendor;
+  warehouse: string;
   product_name: string;
   product_description: string;
   quantity: number;

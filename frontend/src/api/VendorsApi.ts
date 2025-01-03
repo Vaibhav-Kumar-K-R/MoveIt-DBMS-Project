@@ -2,13 +2,13 @@ import { LoginFormData } from "@/forms/login/types";
 import axiosInstance from "@/lib/axios";
 import { OrderFormType } from "@/pages/vendor/dashboard/order-form/types";
 import { VendorsSignUpData } from "@/pages/vendor/sign-up/types";
-import { RecentOrdersType } from "@/types/vendor";
+import { NearbyWarehouses, RecentOrdersType, Vendor } from "@/types/vendor";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 export const useVendorAuth = () => {
-  const vendorAuth = async () => {
+  const vendorAuth = async (): Promise<Vendor> => {
     try {
       const response = await axiosInstance.get("/vendor/me");
 
@@ -36,7 +36,7 @@ export const useVendorLoginRequest = () => {
     try {
       const response = await axiosInstance.post(
         "/vendor/auth/sign-in",
-        loginData,
+        loginData
       );
 
       return response.data;
@@ -76,7 +76,7 @@ export const useVendorSignUpRequest = () => {
     try {
       const response = await axiosInstance.post(
         "/vendor/auth/sign-up",
-        signUpFormData,
+        signUpFormData
       );
 
       return response.data;
@@ -166,7 +166,7 @@ export const useCreateOrderRequest = () => {
     try {
       const response = await axiosInstance.post(
         "/vendor/create-order",
-        orderData,
+        orderData
       );
 
       return response.data;
@@ -214,7 +214,7 @@ export const useEditOrderRequest = (orderId: string) => {
     try {
       const response = await axiosInstance.post(
         `/vendor/edit-order/${orderId}`,
-        orderData,
+        orderData
       );
 
       return response.data;
@@ -283,6 +283,42 @@ export const useGetRecentOrdersRequest = () => {
 
   return {
     recentOrders,
+    isLoading,
+    isSuccess,
+    error,
+  };
+};
+
+export const useGetNearbyWarehouses = (state: string | undefined) => {
+  const queryParams = new URLSearchParams();
+
+  queryParams.append("state", state as string);
+
+  const getNearbyWarehouses = async (): Promise<NearbyWarehouses> => {
+    try {
+      const response = await axiosInstance.get(
+        `/vendor/nearby-warehouses?${queryParams.toString()}`
+      );
+
+      return response.data;
+    } catch (error: any) {
+      throw new Error(error.message);
+    }
+  };
+
+  const {
+    data: nearbyWarehouses,
+    isLoading,
+    isSuccess,
+    error,
+  } = useQuery({
+    queryKey: ["getNearbyWarehouses", state],
+    queryFn: getNearbyWarehouses,
+    enabled: !!state,
+  });
+
+  return {
+    nearbyWarehouses,
     isLoading,
     isSuccess,
     error,

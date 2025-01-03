@@ -35,7 +35,8 @@ const EditOrder = ({ order }: EditOrderProps) => {
     customer_state: order.customer_state,
     customer_address: order.customer_address,
     weight: order.weight,
-    order_placed_date: order.order_placed_date,
+    order_placed_date: new Date(order.order_placed_date),
+    warehouse: order.warehouse,
   });
 
   const updateOrderData = (data: Partial<OrderFormType>) => {

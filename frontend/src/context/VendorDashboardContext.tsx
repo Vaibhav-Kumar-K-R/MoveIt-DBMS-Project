@@ -35,6 +35,7 @@ const VendorDashboardContextProvider = ({
     customer_address: "",
     weight: 0,
     order_placed_date: new Date(),
+    warehouse: "",
   });
 
   const updateOrderData = (data: Partial<OrderFormType>) => {
@@ -63,7 +64,7 @@ export const useVendorDashboardContext = () => {
 
   if (context === undefined) {
     throw new Error(
-      "useVendorDashboardContext must be used within a VendorDashboardContextProvider",
+      "useVendorDashboardContext must be used within a VendorDashboardContextProvider"
     );
   }
 
