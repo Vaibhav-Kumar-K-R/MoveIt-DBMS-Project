@@ -34,7 +34,7 @@ export const useEmployeeLoginRequest = () => {
     try {
       const response = await axiosInstance.post(
         "/employee/auth/sign-in",
-        loginData
+        loginData,
       );
 
       return response.data;

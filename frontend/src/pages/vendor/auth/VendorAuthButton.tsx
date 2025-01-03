@@ -27,7 +27,7 @@ const VendorAuthButton = () => {
         className={cn(
           buttonVariants({
             className: "w-full border py-[1.2rem]",
-          })
+          }),
         )}
       >
         <UserCheck />

@@ -33,7 +33,7 @@ export const useManagerLoginRequest = () => {
     try {
       const response = await axiosInstance.post(
         "/manager/auth/sign-in",
-        loginData
+        loginData,
       );
 
       return response.data;

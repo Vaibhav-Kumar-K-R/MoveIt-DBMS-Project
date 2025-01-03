@@ -12,7 +12,7 @@ import { uploadImage } from "../config/cloudinary.js";
 const getAdmin = async (req, res, next) => {
   try {
     const admin = await Admin.findById(req.adminId).select(
-      "-password -_id -createdAt -updatedAt -__v"
+      "-password -_id -createdAt -updatedAt -__v",
     );
 
     if (!admin) {
@@ -106,7 +106,7 @@ const createManagerProfile = async (req, res, next) => {
               public_id: profileImgDetails.public_id,
             },
           }
-        : req.body
+        : req.body,
     );
 
     res.status(201).json({
@@ -142,7 +142,7 @@ const updateManagerWorkStatus = async (req, res, next) => {
       },
       {
         work_status: updatedStatus,
-      }
+      },
     );
 
     res.status(200).json({
@@ -181,7 +181,7 @@ const createWarehouseProfile = async (req, res, next) => {
             },
             state: req.body.state.toLowerCase(),
           }
-        : { ...req.body, state: req.body.state.toLowerCase() }
+        : { ...req.body, state: req.body.state.toLowerCase() },
     );
 
     return res.status(201).json({
@@ -208,7 +208,7 @@ const updateWarehouseStatus = async (req, res, next) => {
       },
       {
         status: warehouse.status === "open" ? "close" : "open",
-      }
+      },
     );
 
     res.status(200).json({
@@ -246,7 +246,7 @@ const getWarehousebyState = async (req, res, next) => {
   try {
     const { state } = req.params;
     let stateWarehouse = await Warehouse.find({ state }).select(
-      "-createdAt -updatedAt -__v -_id  -password"
+      "-createdAt -updatedAt -__v -_id  -password",
     );
 
     if (stateWarehouse.length == 0) {
@@ -292,7 +292,7 @@ const addVehicle = async (req, res, next) => {
               public_id: vehicleImgDetails.public_id,
             },
           }
-        : req.body
+        : req.body,
     );
 
     res.status(201).json({
@@ -330,7 +330,7 @@ const updateVehicleStatus = async (req, res, next) => {
       },
       {
         curr_status: updatedStatus,
-      }
+      },
     );
 
     res.status(200).json({

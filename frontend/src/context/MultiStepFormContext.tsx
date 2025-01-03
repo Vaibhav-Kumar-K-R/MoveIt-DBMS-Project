@@ -45,7 +45,7 @@ export const useMultiStepFormContext = () => {
 
   if (!context) {
     throw new Error(
-      "useMultiStepFormContext must be used within a MultiStepFormContextProvider"
+      "useMultiStepFormContext must be used within a MultiStepFormContextProvider",
     );
   }
 

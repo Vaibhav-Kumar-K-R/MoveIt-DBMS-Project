@@ -31,7 +31,7 @@ const TrackingSectionHeader = ({
           {formatDate(
             order.order_delivered_date ||
               tracking?.[tracking.length - 1]?.updatedAt ||
-              order.updatedAt
+              order.updatedAt,
           )}
         </p>
       </div>

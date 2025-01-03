@@ -92,14 +92,14 @@ const OrderSummary = () => {
               icon: DollarSign,
               title: "Product Price",
               information: `$${orderData.price_details.product_price.toFixed(
-                2
+                2,
               )}`,
             },
             {
               icon: Truck,
               title: "Delivery Charge",
               information: `$${orderData.price_details.delivery_charge.toFixed(
-                2
+                2,
               )}`,
             },
             {
@@ -150,7 +150,7 @@ const OrderSummary = () => {
           icon={Calendar}
           title={"Order Placed Date"}
           information={`${formatDate(
-            orderData.order_placed_date
+            orderData.order_placed_date,
           )} | At ${formatTime(orderData.order_placed_date)}`}
         />
       </div>

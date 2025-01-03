@@ -21,4 +21,4 @@ export type Vendor = {
 
 export type RecentOrdersType = {
   orders: Order[];
-}
+};
