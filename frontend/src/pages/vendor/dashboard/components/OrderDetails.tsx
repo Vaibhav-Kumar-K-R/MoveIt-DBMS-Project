@@ -81,14 +81,14 @@ const OrderDetails = ({ order }: OrderDetailsProps) => {
               icon: IndianRupee,
               title: "Product Price",
               information: formatIndianCurrency(
-                order.price_details.product_price
+                order.price_details.product_price,
               ),
             },
             {
               icon: Truck,
               title: "Delivery Charge",
               information: formatIndianCurrency(
-                order.price_details.delivery_charge
+                order.price_details.delivery_charge,
               ),
             },
             {
@@ -100,7 +100,7 @@ const OrderDetails = ({ order }: OrderDetailsProps) => {
               icon: IndianRupee,
               title: "Net Price",
               information: formatIndianCurrency(
-                order.price_details.total_price
+                order.price_details.total_price,
               ),
             },
           ].map((item) => (
@@ -146,7 +146,7 @@ const OrderDetails = ({ order }: OrderDetailsProps) => {
           icon={Calendar}
           title={"Order Placed Date"}
           information={`${formatDate(
-            order.order_placed_date
+            order.order_placed_date,
           )} | At ${formatTime(order.order_placed_date)}`}
         />
       </div>

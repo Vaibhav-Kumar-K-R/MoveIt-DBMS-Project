@@ -159,7 +159,7 @@ const createOrder = async (req, res, next) => {
     const shippingId = `SHIPPING_${uuidv4().split("-")[0]}`;
 
     req.body.price_details.total_price = calculateTotalAmount(
-      req.body.price_details
+      req.body.price_details,
     );
 
     const order = await Order.create({
@@ -184,7 +184,7 @@ const editOrder = async (req, res, next) => {
     const { orderId } = req.params;
 
     req.body.price_details.total_price = calculateTotalAmount(
-      req.body.price_details
+      req.body.price_details,
     );
 
     const order = await Order.findOneAndUpdate({ _id: orderId }, req.body, {

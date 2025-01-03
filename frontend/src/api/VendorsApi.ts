@@ -36,7 +36,7 @@ export const useVendorLoginRequest = () => {
     try {
       const response = await axiosInstance.post(
         "/vendor/auth/sign-in",
-        loginData
+        loginData,
       );
 
       return response.data;
@@ -76,7 +76,7 @@ export const useVendorSignUpRequest = () => {
     try {
       const response = await axiosInstance.post(
         "/vendor/auth/sign-up",
-        signUpFormData
+        signUpFormData,
       );
 
       return response.data;
@@ -166,7 +166,7 @@ export const useCreateOrderRequest = () => {
     try {
       const response = await axiosInstance.post(
         "/vendor/create-order",
-        orderData
+        orderData,
       );
 
       return response.data;
@@ -214,7 +214,7 @@ export const useEditOrderRequest = (orderId: string) => {
     try {
       const response = await axiosInstance.post(
         `/vendor/edit-order/${orderId}`,
-        orderData
+        orderData,
       );
 
       return response.data;

@@ -63,7 +63,10 @@ const RecentOrderDetails = () => {
                     {index + 1}
                   </TableCell>
                   <DialogTrigger asChild>
-                    <TableCell key={order._id} className="font-medium cursor-pointer hover:underline">
+                    <TableCell
+                      key={order._id}
+                      className="font-medium cursor-pointer hover:underline"
+                    >
                       {order.product_name}
                     </TableCell>
                   </DialogTrigger>

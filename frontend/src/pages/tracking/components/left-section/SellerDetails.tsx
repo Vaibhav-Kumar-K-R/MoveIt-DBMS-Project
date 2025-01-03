@@ -20,9 +20,7 @@ const SellerDetails = ({ order }: SellerDetailsProps) => {
 
       <div>
         <h3 className="text-sm text-muted-foreground">Seller Support</h3>
-        <p className="font-medium">
-          {formatPhoneNumber(order.vendor.phone)}
-        </p>
+        <p className="font-medium">{formatPhoneNumber(order.vendor.phone)}</p>
         <p className="text-sm text-muted-foreground">{order.vendor.email}</p>
       </div>
     </div>
