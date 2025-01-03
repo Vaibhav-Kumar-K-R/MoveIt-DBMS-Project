@@ -10,15 +10,21 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Mail, User } from "lucide-react";
+import { Building2, Mail, MapIcon, User } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useMultiStepFormContext } from "@/context/MultiStepFormContext";
 import { MultiStepFormButtons } from "@/components/ui/multi-step-form";
-import { useVendorDashboardContext } from "@/context/VendorDashboardContext";
 
-const CustomerDetailsForm = () => {
-  const { orderData, updateOrderData } = useVendorDashboardContext();
+type CustomerDetailsFormProps = {
+  orderData: CustomerFormType;
+  updateOrderData: (data: CustomerFormType) => void;
+};
+
+const CustomerDetailsForm = ({
+  orderData,
+  updateOrderData,
+}: CustomerDetailsFormProps) => {
   const form = useForm<CustomerFormType>({
     resolver: zodResolver(customerSchema),
     defaultValues: orderData,
@@ -28,7 +34,6 @@ const CustomerDetailsForm = () => {
 
   const onSubmit = (data: CustomerFormType) => {
     updateOrderData(data);
-    console.log(data);
 
     if (!isLastStep) return next();
   };
@@ -133,6 +138,64 @@ const CustomerDetailsForm = () => {
                 <FormDescription>
                   Please enter customer phone number
                 </FormDescription>
+                <FormMessage className="text-red-400" />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="customer_city"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel
+                  className={
+                    form.formState.errors.customer_city ? "text-red-400" : ""
+                  }
+                >
+                  Customer City *
+                </FormLabel>
+                <FormControl>
+                  <div className="flex items-center border rounded-md px-3 py-2">
+                    <Building2 className="mr-2 text-gray-500" />
+                    <Input
+                      className="placeholder:text-sm placeholder:text-muted-foreground w-full"
+                      placeholder="e.g. Mysore"
+                      type="text"
+                      {...field}
+                    />
+                  </div>
+                </FormControl>
+                <FormDescription>Please enter customer City</FormDescription>
+                <FormMessage className="text-red-400" />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="customer_state"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel
+                  className={
+                    form.formState.errors.customer_state ? "text-red-400" : ""
+                  }
+                >
+                  Customer State *
+                </FormLabel>
+                <FormControl>
+                  <div className="flex items-center border rounded-md px-3 py-2">
+                    <MapIcon className="mr-2 text-gray-500" />
+                    <Input
+                      className="placeholder:text-sm placeholder:text-muted-foreground w-full"
+                      placeholder="e.g. Karnataka"
+                      type="text"
+                      {...field}
+                    />
+                  </div>
+                </FormControl>
+                <FormDescription>Please enter customer City</FormDescription>
                 <FormMessage className="text-red-400" />
               </FormItem>
             )}

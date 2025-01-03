@@ -158,15 +158,9 @@ const createOrder = async (req, res, next) => {
     const trackingId = `TRACKING_${uuidv4().split("-")[0]}`;
     const shippingId = `SHIPPING_${uuidv4().split("-")[0]}`;
 
-    const { price_details } = req.body;
-
-    const amount =
-      Number(price_details.product_price) +
-      Number(price_details.delivery_charge);
-    const gstAmount = amount * Number(price_details.gst);
-
-    price_details.total_price = (amount + gstAmount).toFixed(2);
-    req.body.price_details = price_details;
+    req.body.price_details.total_price = calculateTotalAmount(
+      req.body.price_details,
+    );
 
     const order = await Order.create({
       ...req.body,
@@ -179,6 +173,33 @@ const createOrder = async (req, res, next) => {
     return res.status(201).json({
       orderId: order._id,
       message: "Order created successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const editOrder = async (req, res, next) => {
+  try {
+    const { orderId } = req.params;
+
+    req.body.price_details.total_price = calculateTotalAmount(
+      req.body.price_details,
+    );
+
+    const order = await Order.findOneAndUpdate({ _id: orderId }, req.body, {
+      new: true,
+    });
+
+    if (!order) {
+      return res.status(404).json({
+        message: "Order not found",
+      });
+    }
+
+    return res.status(200).json({
+      orderId: order._id,
+      message: "Order updated successfully",
     });
   } catch (error) {
     next(error);
@@ -232,6 +253,14 @@ const getRecentOrders = async (req, res, next) => {
   }
 };
 
+const calculateTotalAmount = (price_details) => {
+  const amount =
+    Number(price_details.product_price) + Number(price_details.delivery_charge);
+  const gstAmount = amount * Number(price_details.gst);
+
+  return (amount + gstAmount).toFixed(2);
+};
+
 export default {
   getVendor,
   signUpVendor,
@@ -239,6 +268,7 @@ export default {
   signOutVendor,
   updateProfile,
   createOrder,
+  editOrder,
   cancelOrder,
   getRecentOrders,
 };

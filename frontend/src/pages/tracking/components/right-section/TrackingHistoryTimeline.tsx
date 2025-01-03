@@ -52,9 +52,7 @@ const TrackingHistoryTimeline = ({
                   <span className="text-zinc-500">
                     {order.vendor.city}, {order.vendor.state}
                   </span>
-                  <span className="text-zinc-500">
-                    {order.vendor.pincode}
-                  </span>
+                  <span className="text-zinc-500">{order.vendor.pincode}</span>
                 </div>
               </TimelineDescription>
             </TimelineContent>

@@ -14,7 +14,7 @@ export const productSchema = z.object({
     gst: z.coerce.number().min(0).max(1, "GST must be between 0 and 1"),
   }),
   weight: z.coerce.number().gt(0, "Weight is required"),
-  order_placed_date: z.date(),
+  order_placed_date: z.coerce.date(),
 });
 
 export type ProductFormType = z.infer<typeof productSchema>;
@@ -27,6 +27,8 @@ export const customerSchema = z.object({
     .min(10, "Phone number must be 10 digits")
     .max(10, "Phone number must be 10 digits")
     .regex(/^\d{10}$/, "Invalid phone number"),
+  customer_city: z.string().min(3, "City is required"),
+  customer_state: z.string().min(3, "State is required"),
   customer_address: z.string().min(3, "Address is required"),
 });
 

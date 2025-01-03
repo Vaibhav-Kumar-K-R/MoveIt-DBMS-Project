@@ -40,6 +40,8 @@ export type Order = {
   customer_name: string;
   customer_email: string;
   customer_phone: string;
+  customer_city: string;
+  customer_state: string;
   customer_address: string;
   order_placed_date: Date;
   order_delivered_date: Date | null;

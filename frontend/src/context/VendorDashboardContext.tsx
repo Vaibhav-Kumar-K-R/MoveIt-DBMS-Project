@@ -30,6 +30,8 @@ const VendorDashboardContextProvider = ({
     customer_name: "",
     customer_email: "",
     customer_phone: "",
+    customer_city: "",
+    customer_state: "",
     customer_address: "",
     weight: 0,
     order_placed_date: new Date(),

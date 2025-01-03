@@ -15,7 +15,7 @@ export default interface WarehouseType {
     name: string;
     phone: string;
   };
-  profile_img:{
+  profile_img: {
     profile_img_url: string;
   };
 }
