@@ -51,7 +51,7 @@ export default function Warehouse() {
             <CardContent>
               <div className="aspect-video relative mb-4">
                 <img
-                  src="https://placehold.co/600x400?text=Hello\nWorld"
+                  src={warehouse.profile_img.profile_img_url}
                   alt={warehouse.name}
                   className="absolute inset-0 w-full h-full object-cover rounded-md"
                 />

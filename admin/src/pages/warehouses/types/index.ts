@@ -13,8 +13,10 @@ export default interface WarehouseType {
       profile_img_url: string;
     };
     name: string;
-    profile_img_url: string;
     phone: string;
+  };
+  profile_img:{
+    profile_img_url: string;
   };
 }
 
