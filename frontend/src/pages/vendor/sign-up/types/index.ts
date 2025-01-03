@@ -34,7 +34,7 @@ export const addressDetailsSchema = z.object({
   address: z.string().min(1, "Address is required"),
   city: z.string().min(1, "City is required"),
   state: z.string().min(3, "State is required"),
-  pin_code: z.string().length(6, "Pin code must be 6 digits"),
+  pincode: z.string().length(6, "Pin code must be 6 digits"),
 });
 
 export type AddressDetailsData = z.infer<typeof addressDetailsSchema>;

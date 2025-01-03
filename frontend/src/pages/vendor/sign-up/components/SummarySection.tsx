@@ -91,7 +91,7 @@ const SummarySection = ({ signUpData }: SummarySectionProps) => {
           {[
             { icon: Map, title: "City", information: signUpData.city },
             { icon: MapPin, title: "State", information: signUpData.state },
-            { icon: Pin, title: "Pin Code", information: signUpData.pin_code },
+            { icon: Pin, title: "Pin Code", information: signUpData.pincode },
           ].map((item) => (
             <MiniInformationCard key={item.title} {...item} />
           ))}

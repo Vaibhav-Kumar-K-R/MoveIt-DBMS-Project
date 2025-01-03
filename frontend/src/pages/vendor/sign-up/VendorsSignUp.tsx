@@ -27,7 +27,7 @@ const VendorsSignUp = () => {
     address: "",
     city: "",
     state: "",
-    pin_code: "",
+    pincode: "",
   });
   const {
     isSignedIn,

@@ -100,7 +100,7 @@ const AddressDetailsSection = ({
             </div>
             <FormField
               control={form.control}
-              name="pin_code"
+              name="pincode"
               render={({ field }) => (
                 <FormItem className="flex-1">
                   <FormLabel>Pin Code *</FormLabel>

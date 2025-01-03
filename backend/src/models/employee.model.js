@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 
 const employeeSchema = new mongoose.Schema(
   {
-    manager_id: { type: mongoose.Schema.Types.ObjectId, ref: "Manager" },
+    manager: { type: mongoose.Schema.Types.ObjectId, ref: "Manager" },
     name: { type: String, required: true },
     licence_number: { type: String, required: true, unique: true },
     profile_img: {
@@ -32,7 +32,7 @@ const employeeSchema = new mongoose.Schema(
       default: "employed",
     },
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
 employeeSchema.pre("save", async function (next) {

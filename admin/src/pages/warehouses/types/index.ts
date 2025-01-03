@@ -9,7 +9,7 @@ export default interface WarehouseType {
   email: string;
   phone: string;
   status: string;
-  manager_id: {
+  manager: {
     profile_img: {
       profile_img_url: string;
     };
@@ -54,7 +54,7 @@ export const createWarehouseFormSchema = z.object({
     .max(10, "Phone must be exactly 10 digits")
     .regex(/^\d{10}$/, "Phone must contain only digits"),
   status: z.enum(["open", "closed"]).default("open"),
-  manager_id: z
+  manager: z
     .string()
     .nonempty("Manager ID is required")
     .regex(/^[a-fA-F0-9]{24}$/, "Invalid Object Id"),

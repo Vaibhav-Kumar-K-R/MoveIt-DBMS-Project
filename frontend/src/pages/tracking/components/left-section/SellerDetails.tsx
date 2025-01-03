@@ -10,20 +10,20 @@ const SellerDetails = ({ order }: SellerDetailsProps) => {
     <div className="space-y-4">
       <div>
         <h3 className="text-sm text-muted-foreground">Seller Name</h3>
-        <p className="font-medium">{order.vendor_id.shop_name}</p>
+        <p className="font-medium">{order.vendor.shop_name}</p>
       </div>
 
       <div>
         <h3 className="text-sm text-muted-foreground">Seller Descritpion</h3>
-        <p className="font-medium">{order.vendor_id.shop_description}</p>
+        <p className="font-medium">{order.vendor.shop_description}</p>
       </div>
 
       <div>
         <h3 className="text-sm text-muted-foreground">Seller Support</h3>
         <p className="font-medium">
-          {formatPhoneNumber(order.vendor_id.phone)}
+          {formatPhoneNumber(order.vendor.phone)}
         </p>
-        <p className="text-sm text-muted-foreground">{order.vendor_id.email}</p>
+        <p className="text-sm text-muted-foreground">{order.vendor.email}</p>
       </div>
     </div>
   );

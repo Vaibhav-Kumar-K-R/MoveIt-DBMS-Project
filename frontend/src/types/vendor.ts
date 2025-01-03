@@ -14,7 +14,7 @@ export type Vendor = {
   state: string;
   shop_name: string;
   shop_description: string;
-  pin_code: string;
+  pincode: string;
   createdAt: string;
   updatedAt: string;
 };

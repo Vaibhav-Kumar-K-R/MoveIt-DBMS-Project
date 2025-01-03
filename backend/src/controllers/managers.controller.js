@@ -6,7 +6,7 @@ import jwt from "jsonwebtoken";
 const getManager = async (req, res, next) => {
   try {
     const manager = await Manager.findById(req.managerId).select(
-      "-password -__v",
+      "-password -__v"
     );
 
     if (!manager) {
@@ -33,7 +33,7 @@ const getEmployeesUnderManager = async (req, res, next) => {
     }
 
     const employees = await Employee.find({
-      manager_id: managerId,
+      manager: managerId,
     })
       .select("-password")
       .sort({ createdAt: -1 });
@@ -120,7 +120,7 @@ const addEmployee = async (req, res, next) => {
       profileImgDetails
         ? {
             ...req.body,
-            manager_id: req.managerId,
+            manager: req.managerId,
             profile_img: {
               profile_img_url: profileImgDetails.secure_url,
               public_id: profileImgDetails.public_id,
@@ -128,8 +128,8 @@ const addEmployee = async (req, res, next) => {
           }
         : {
             ...req.body,
-            manager_id: req.managerId,
-          },
+            manager: req.managerId,
+          }
     );
 
     res.status(201).json({
@@ -152,7 +152,7 @@ const removeEmployee = async (req, res, next) => {
       });
     }
 
-    if (employee.manager_id.toString() !== req.managerId) {
+    if (employee.manager.toString() !== req.managerId) {
       return res.status(400).json({
         message: "You are not authorized to remove this employee",
       });

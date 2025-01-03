@@ -78,15 +78,15 @@ export default function Warehouse() {
                   <strong>Phone:</strong> <a href="tel:">{warehouse.phone}</a>
                 </p>
                 <p>
-                  <strong>Manager name:</strong> {warehouse.manager_id.name}
+                  <strong>Manager name:</strong> {warehouse.manager.name}
                 </p>
                 <p>
                   <strong>Manager contact number:</strong>{" "}
-                  {warehouse.manager_id.phone}
+                  {warehouse.manager.phone}
                 </p>
                 <p>Manager profile</p>
                 <img
-                  src={warehouse.manager_id.profile_img_url}
+                  src={warehouse.manager.profile_img_url}
                   className="w-[100px] h-[100px]"
                   alt="profile"
                 />
