@@ -33,7 +33,7 @@ export const useWarehouseLoginRequest = () => {
     try {
       const response = await axiosInstance.post(
         "/warehouse/auth/sign-in",
-        loginData
+        loginData,
       );
 
       return response.data;

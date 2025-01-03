@@ -23,5 +23,5 @@ createRoot(document.getElementById("root")!).render(
         <Toaster closeButton richColors />
       </Router>
     </QueryClientProvider>
-  </StrictMode>
+  </StrictMode>,
 );

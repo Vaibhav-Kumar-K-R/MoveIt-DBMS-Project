@@ -28,7 +28,7 @@ const TrackingSummary = () => {
   }
 
   const { orderDetails, isLoading } = useGetCustomerOrderDetailsRequest(
-    trackingId as string
+    trackingId as string,
   );
 
   if (isLoading) {

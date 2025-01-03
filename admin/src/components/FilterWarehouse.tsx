@@ -10,7 +10,7 @@ import {
   CardDescription,
   CardFooter,
 } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton"
+import { Skeleton } from "@/components/ui/skeleton";
 import WarehouseType from "@/pages/warehouses/types";
 
 function FilterWarehouse() {
@@ -27,10 +27,11 @@ function FilterWarehouse() {
     }
   }, [response]);
   if (isLoading) {
-    return <div className="flex justify-center">
-      <Skeleton className="w-full px-4 h-[50px] " />
-    </div>
-;
+    return (
+      <div className="flex justify-center">
+        <Skeleton className="w-full px-4 h-[50px] " />
+      </div>
+    );
   }
 
   return (

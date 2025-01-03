@@ -26,7 +26,7 @@ const MultiStepForm = ({ className, formHeader }: MultiStepFormProps) => {
     <div
       className={cn(
         "flex flex-col items-center justify-center gap-6 p-5 relative",
-        className
+        className,
       )}
     >
       <div className="flex flex-col gap-3 items-center justify-center w-full sticky -top-[1px] bg-white">
@@ -41,7 +41,7 @@ const MultiStepForm = ({ className, formHeader }: MultiStepFormProps) => {
                     ? "bg-black text-zinc-100"
                     : "bg-zinc-200 text-zinc-800",
                   index < currStepIndex ? "bg-black/70 text-zinc-100" : "",
-                  index <= currStepIndex ? "cursor-pointer" : ""
+                  index <= currStepIndex ? "cursor-pointer" : "",
                 )}
                 onClick={() => handleGoto(index)}
               >
@@ -55,7 +55,7 @@ const MultiStepForm = ({ className, formHeader }: MultiStepFormProps) => {
                 <Separator
                   className={cn(
                     "flex-1 transition-all",
-                    index < currStepIndex ? "bg-black/40 animate-line" : ""
+                    index < currStepIndex ? "bg-black/40 animate-line" : "",
                   )}
                 />
               )}

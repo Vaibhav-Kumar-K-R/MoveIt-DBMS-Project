@@ -118,7 +118,7 @@ export const useGetWarehousesRequest = () => {
 
 export const useCreateWarehouseMutation = () => {
   const createWarehouseMutation = async (
-    warehouseData: CreateWarehouseFormData
+    warehouseData: CreateWarehouseFormData,
   ): Promise<createWarehouseResponseType> => {
     try {
       const response = await axiosInstance.post(
@@ -128,7 +128,7 @@ export const useCreateWarehouseMutation = () => {
           headers: {
             "Content-Type": "multipart/form-data",
           },
-        }
+        },
       );
       return response.data;
     } catch (error: any) {
@@ -166,7 +166,7 @@ export const useFilterWarehousesRequest = (state: string) => {
   const filterWarehousesRequest = async () => {
     try {
       const response = await axiosInstance.get(
-        `/admin/warehouse/${state.trim()}`
+        `/admin/warehouse/${state.trim()}`,
       );
       return response.data;
     } catch (error: any) {
@@ -191,12 +191,12 @@ export const useFilterWarehousesRequest = (state: string) => {
 
 export const useUpdateWarehouseMutation = () => {
   const updateWarehouseMutation = async (
-    email: string
+    email: string,
   ): Promise<updateWarehouseResponseType> => {
     try {
       const response = await axiosInstance.patch(
         "/admin/update-warehouse-status/",
-        { email }
+        { email },
       );
       return response.data;
     } catch (error: any) {

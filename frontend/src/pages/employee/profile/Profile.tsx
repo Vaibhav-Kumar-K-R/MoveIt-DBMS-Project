@@ -91,7 +91,7 @@ const Profile = () => {
                   icon={Tag}
                   title="Age"
                   information={calculateAge(
-                    profile.dob.split("-").reverse().join("-")
+                    profile.dob.split("-").reverse().join("-"),
                   )}
                 />
               </div>

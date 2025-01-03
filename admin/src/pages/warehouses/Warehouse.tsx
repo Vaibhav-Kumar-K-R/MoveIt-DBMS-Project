@@ -21,8 +21,6 @@ export default function Warehouse() {
   const [isEditingWarehouse, setIsEdittingWarehouse] = useState(false);
   const [editWarehouseEmail, setEditWarehouseEmail] = useState<string>("");
   const [editWarehouseStatus, setEditWarehouseStatus] = useState<string>("");
-  
-
 
   if (isLoading) {
     return <Redirect />;
@@ -61,16 +59,20 @@ export default function Warehouse() {
               </div>
               <div className="space-y-2 ">
                 <p>
-                  <strong>City:</strong>{warehouse.city}
+                  <strong>City:</strong>
+                  {warehouse.city}
                 </p>
                 <p>
-                  <strong>Pincode:</strong>{warehouse.pincode}
+                  <strong>Pincode:</strong>
+                  {warehouse.pincode}
                 </p>
                 <p className="capitalize">
-                  <strong>State:</strong>{warehouse.state}
+                  <strong>State:</strong>
+                  {warehouse.state}
                 </p>
                 <p className="lg:text-sm">
-                  <strong>Email:</strong> <a href="mailto:">{warehouse.email}</a>
+                  <strong>Email:</strong>{" "}
+                  <a href="mailto:">{warehouse.email}</a>
                 </p>
                 <p>
                   <strong>Phone:</strong> <a href="tel:">{warehouse.phone}</a>
@@ -79,7 +81,8 @@ export default function Warehouse() {
                   <strong>Manager name:</strong> {warehouse.manager_id.name}
                 </p>
                 <p>
-                  <strong>Manager contact number:</strong> {warehouse.manager_id.phone}
+                  <strong>Manager contact number:</strong>{" "}
+                  {warehouse.manager_id.phone}
                 </p>
                 <p>Manager profile</p>
                 <img
