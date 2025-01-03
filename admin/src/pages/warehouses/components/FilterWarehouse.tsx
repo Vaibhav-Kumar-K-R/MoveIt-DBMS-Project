@@ -36,11 +36,12 @@ function FilterWarehouse() {
 
   return (
     <div className="w-full flex-col flex gap-2 justify-start">
-      <div className="flex w-full">
+      <div className="flex gap-1 w-full flex-wrap">
         <Input
           ref={inputRef}
           type="text"
           placeholder="Search for warehouses by statename..."
+          className="w-11/12"
         />
         <Button
           onClick={() => {
@@ -54,6 +55,7 @@ function FilterWarehouse() {
       {isError && (
         <div className="text-center text-red-500">No warehouses found!!</div>
       )}
+      <br />
       <hr />
       {filteredWarehouses.length != 0 && (
         <h1 className="text-2xl font-semibold ">Filtered warehouses</h1>
@@ -72,7 +74,7 @@ function FilterWarehouse() {
               <CardContent>
                 <div className="aspect-video relative mb-4">
                   <img
-                    src="https://lh3.googleusercontent.com/Rb4xxWc_kQyy7rYlg7ijtS9BI3jgc2saJlQDrU0j7r53xSsX5UWE5_MRGTHTx6lJ22VyphV4dsK2n4lHXj4e=-rw"
+                    src={warehouse.profile_img.profile_img_url}
                     alt={warehouse.name}
                     className="absolute inset-0 w-full h-full object-cover rounded-md"
                   />
@@ -89,7 +91,7 @@ function FilterWarehouse() {
                   </p>
                   <p>Manager profile</p>
                   <img
-                    src={warehouse.manager.profile_img_url}
+                    src={warehouse.profile_img.profile_img_url}
                     className="w-[100px] h-[100px]"
                     alt="profile"
                   />

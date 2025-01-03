@@ -1,9 +1,4 @@
-import {
-  Truck,
-  WarehouseIcon,
-  Home,
-  UserRound,
-} from "lucide-react";
+import { Truck, WarehouseIcon, Home, UserRound } from "lucide-react";
 import { Link } from "react-router-dom";
 import ProfileButton from "@/layouts/components/ProfileButton";
 import { useLocation } from "react-router-dom";

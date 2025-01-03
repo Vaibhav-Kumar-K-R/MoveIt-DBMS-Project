@@ -6,6 +6,7 @@ import {
   CardDescription,
   CardFooter,
 } from "@/components/ui/card";
+import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import FilterWarehouse from "@/pages/warehouses/components/FilterWarehouse";
 import CreateWarehouseModal from "@/pages/warehouses/components/CreateWarehouseModal";
@@ -34,7 +35,7 @@ export default function Warehouse() {
             setIsCreatingWarehouse(true);
           }}
         >
-          Add New Warehouse
+          <Plus /> Add New Warehouse
         </Button>
       </div>
       <FilterWarehouse />

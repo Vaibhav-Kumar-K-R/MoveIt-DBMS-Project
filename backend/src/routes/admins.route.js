@@ -40,6 +40,8 @@ adminRouter.patch(
 
 adminRouter.get("/warehouses", adminController.getWarehouseList);
 
+adminRouter.get("/managers", adminController.getManagersList);
+
 adminRouter.get("/warehouse/:state", adminController.getWarehousebyState);
 
 adminRouter.get(

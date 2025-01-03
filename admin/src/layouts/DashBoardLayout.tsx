@@ -8,8 +8,8 @@ export default function DashBoardLayout() {
       <AppSidebar />
       <main className="w-full mt-1.5">
         <div className="w-full flex px-3 justify-between ">
-        <SidebarTrigger className="scale-150" />
-        <Logout></Logout>
+          <SidebarTrigger className="scale-150" />
+          <Logout></Logout>
         </div>
         <Outlet />
       </main>

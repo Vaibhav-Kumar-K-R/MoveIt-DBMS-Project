@@ -1,7 +1,10 @@
 import axiosInstance from "@/lib/axios";
 import { LoginFormData } from "@/pages/login/types";
-import { CreateWarehouseFormData } from "@/forms/types/index";
-import { useMutation, useQuery,useQueryClient } from "react-query";
+import {
+  CreateWarehouseFormData,
+  CreateManagerFormData,
+} from "@/forms/types/index";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import {
@@ -251,7 +254,7 @@ export const useGetWarehouseManagersListRequest = () => {
   };
 };
 
-export const useAdminLogoutRequest=()=>{
+export const useAdminLogoutRequest = () => {
   const adminLogoutRequest = async () => {
     try {
       const response = await axiosInstance.post("/admin/auth/sign-out");
@@ -259,14 +262,19 @@ export const useAdminLogoutRequest=()=>{
     } catch (error: any) {
       throw new Error("You need to be logged in to access this page");
     }
-  }
-  const queryClient=useQueryClient();
+  };
+  const queryClient = useQueryClient();
 
-  const {mutateAsync:logout,data,isError,isLoading}=useMutation({
-    mutationKey:"adminLogoutRequest",
-    mutationFn:adminLogoutRequest,
-    onSuccess:async()=>{
-      queryClient.invalidateQueries({queryKey:"adminAuth"});
+  const {
+    mutateAsync: logout,
+    data,
+    isError,
+    isLoading,
+  } = useMutation({
+    mutationKey: "adminLogoutRequest",
+    mutationFn: adminLogoutRequest,
+    onSuccess: async () => {
+      queryClient.invalidateQueries({ queryKey: "adminAuth" });
       await Promise.all([
         queryClient.invalidateQueries({
           queryKey: "adminAuth",
@@ -278,15 +286,82 @@ export const useAdminLogoutRequest=()=>{
       toast("Logged out successfully", { icon: "🚀" });
       queryClient.clear();
     },
-    onError:(error:any)=>{
-       toast(error.message, { icon: "🚨" });
-    }
-  })
+    onError: (error: any) => {
+      toast(error.message, { icon: "🚨" });
+    },
+  });
 
   return {
     logout,
-    response:data,
-    isLogoutLoading:isLoading,
-    isError
-  }
-}
+    response: data,
+    isLogoutLoading: isLoading,
+    isError,
+  };
+};
+
+export const useGetManagersRequest = () => {
+  const getManagersRequest = async () => {
+    try {
+      const response = await axiosInstance.get("/admin/managers");
+
+      return response.data;
+    } catch (error: any) {
+      throw new Error("You need to be logged in to access this page");
+    }
+  };
+
+  const { data, isLoading, isError } = useQuery({
+    queryKey: "getManagersRequest",
+    queryFn: getManagersRequest,
+  });
+
+  return {
+    response: data,
+    isLoading,
+    isError,
+  };
+};
+
+export const useCreateManagerMutation = () => {
+  const createManagerMutation = async (managerData: CreateManagerFormData) => {
+    try {
+      const response = await axiosInstance.post(
+        "/admin/create-manager",
+        managerData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        },
+      );
+      return response.data;
+    } catch (error: any) {
+      throw new Error(error.message);
+    }
+  };
+
+  const {
+    mutateAsync: createManager,
+    isLoading,
+    data,
+    reset,
+  } = useMutation({
+    mutationKey: "createManager",
+    mutationFn: createManagerMutation,
+    onSuccess: () => {
+      toast.success("Manager profile created successfully ");
+
+      reset();
+    },
+    onError: (error: any) => {
+      toast.error(error?.toString());
+      reset();
+    },
+  });
+
+  return {
+    createManager,
+    isLoading,
+    response: data,
+  };
+};

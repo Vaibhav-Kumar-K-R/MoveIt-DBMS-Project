@@ -242,6 +242,27 @@ const getWarehouseList = async (_req, res, next) => {
   }
 };
 
+const getManagersList = async (_req, res, next) => {
+  try {
+    let managerList = await Manager.find({}).select(
+      "-password -__v -createdAt -updatedAt",
+    );
+
+    if (managerList.length == 0) {
+      return res.status(400).json({
+        message: "No managers found !!",
+      });
+    }
+
+    return res.status(201).json({
+      managers: managerList,
+      total_count: managerList.length,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const getCreateWarehouseManagersList = async (_req, res, next) => {
   try {
     const warehouseManagers = await Warehouse.find().populate(
@@ -427,6 +448,7 @@ export default {
   createWarehouseProfile,
   getWarehouseList,
   getCreateWarehouseManagersList,
+  getManagersList,
   getWarehousebyState,
   addVehicle,
   getStats,
