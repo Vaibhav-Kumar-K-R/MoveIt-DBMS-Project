@@ -7,14 +7,13 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import FilterWarehouse from "@/components/FilterWarehouse";
-import CreateWarehouseModal from "@/components/CreateWarehouseModal";
-import UpdateWarehouseModal from "@/components/UpdateWarehouseModal";
+import FilterWarehouse from "@/pages/warehouses/components/FilterWarehouse";
+import CreateWarehouseModal from "@/pages/warehouses/components/CreateWarehouseModal";
+import UpdateWarehouseModal from "@/pages/warehouses/components/UpdateWarehouseModal";
 import Redirect from "@/pages/redirect/Redirect";
 import { useState } from "react";
 import { useGetWarehousesRequest } from "@/api/AdminsApi";
 import WarehouseType from "./types";
-
 export default function Warehouse() {
   const { response, isLoading } = useGetWarehousesRequest();
   const [isCreatingWarehouse, setIsCreatingWarehouse] = useState(false);
@@ -52,7 +51,7 @@ export default function Warehouse() {
             <CardContent>
               <div className="aspect-video relative mb-4">
                 <img
-                  src="https://placehold.co/600x400?text=Hello\nWorld"
+                  src={warehouse.profile_img.profile_img_url}
                   alt={warehouse.name}
                   className="absolute inset-0 w-full h-full object-cover rounded-md"
                 />
@@ -86,7 +85,7 @@ export default function Warehouse() {
                 </p>
                 <p>Manager profile</p>
                 <img
-                  src={warehouse.manager.profile_img_url}
+                  src={warehouse.manager.profile_img.profile_img_url}
                   className="w-[100px] h-[100px]"
                   alt="profile"
                 />

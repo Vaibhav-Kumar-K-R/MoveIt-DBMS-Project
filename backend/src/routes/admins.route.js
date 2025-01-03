@@ -42,6 +42,11 @@ adminRouter.get("/warehouses", adminController.getWarehouseList);
 
 adminRouter.get("/warehouse/:state", adminController.getWarehousebyState);
 
+adminRouter.get(
+  "/warehouseManagerList",
+  adminController.getCreateWarehouseManagersList,
+);
+
 adminRouter.patch(
   "/update-warehouse-status/",
   adminController.updateWarehouseStatus,

@@ -22,7 +22,7 @@ const warehouseSchema = new mongoose.Schema(
       required: true,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 warehouseSchema.pre("save", async function (next) {

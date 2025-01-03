@@ -6,7 +6,7 @@ import jwt from "jsonwebtoken";
 const getManager = async (req, res, next) => {
   try {
     const manager = await Manager.findById(req.managerId).select(
-      "-password -__v"
+      "-password -__v",
     );
 
     if (!manager) {
@@ -129,7 +129,7 @@ const addEmployee = async (req, res, next) => {
         : {
             ...req.body,
             manager: req.managerId,
-          }
+          },
     );
 
     res.status(201).json({
