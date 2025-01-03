@@ -36,7 +36,7 @@ export const useVendorLoginRequest = () => {
     try {
       const response = await axiosInstance.post(
         "/vendor/auth/sign-in",
-        loginData,
+        loginData
       );
 
       return response.data;
@@ -76,7 +76,7 @@ export const useVendorSignUpRequest = () => {
     try {
       const response = await axiosInstance.post(
         "/vendor/auth/sign-up",
-        signUpFormData,
+        signUpFormData
       );
 
       return response.data;
@@ -166,7 +166,7 @@ export const useCreateOrderRequest = () => {
     try {
       const response = await axiosInstance.post(
         "/vendor/create-order",
-        orderData,
+        orderData
       );
 
       return response.data;
@@ -202,6 +202,57 @@ export const useCreateOrderRequest = () => {
 
   return {
     createOrder,
+    isLoading,
+    data,
+    error,
+    isSuccess,
+  };
+};
+
+export const useEditOrderRequest = (orderId: string) => {
+  const editOrderRequest = async (orderData: OrderFormType) => {
+    try {
+      const response = await axiosInstance.post(
+        `/vendor/edit-order/${orderId}`,
+        orderData
+      );
+
+      return response.data;
+    } catch (error: any) {
+      throw new Error(error.message);
+    }
+  };
+
+  const queryClient = useQueryClient();
+  const {
+    mutateAsync: editOrder,
+    data,
+    isLoading,
+    error,
+    isSuccess,
+    reset,
+  } = useMutation({
+    mutationKey: [orderId, "editOrderRequest"],
+    mutationFn: editOrderRequest,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: "getRecentOrderRequest",
+      });
+    },
+  });
+
+  if (isSuccess) {
+    toast.success("Order updated successfully", { icon: "🚀" });
+    reset();
+  }
+
+  if (error) {
+    toast.error(error.toString(), { icon: "🚨" });
+    reset();
+  }
+
+  return {
+    editOrder,
     isLoading,
     data,
     error,

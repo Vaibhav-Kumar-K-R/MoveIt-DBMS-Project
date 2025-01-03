@@ -1,6 +1,9 @@
 import MiniInformationCard from "@/components/MiniInformationCard";
-import { MultiStepFormButtons } from "@/components/ui/multi-step-form";
 import { Separator } from "@/components/ui/separator";
+import { formatIndianCurrency } from "@/helpers/format-currency";
+import { formatDate, formatTime } from "@/helpers/format-date";
+import { formatPhoneNumber } from "@/helpers/format-phone-number";
+import { Order } from "@/types/customer";
 import {
   Calendar,
   CreditCard,
@@ -12,51 +15,18 @@ import {
   ShoppingBag,
   Truck,
 } from "lucide-react";
-import { useMultiStepFormContext } from "@/context/MultiStepFormContext";
-import { formatDate, formatTime } from "@/helpers/format-date";
-import { formatPhoneNumber } from "@/helpers/format-phone-number";
-import { useCreateOrderRequest, useEditOrderRequest } from "@/api/VendorsApi";
-import { OrderFormType } from "../types";
-import { formatIndianCurrency } from "@/helpers/format-currency";
 
-type OrderSummaryProps = {
-  orderData: OrderFormType;
-  isEditing?: boolean;
-  order_id?: string;
+type OrderDetailsProps = {
+  order: Order;
 };
 
-const OrderSummary = ({
-  orderData,
-  isEditing,
-  order_id,
-}: OrderSummaryProps) => {
-  const { createOrder, isLoading: isCreateOrderLoading } =
-    useCreateOrderRequest();
-  const { editOrder, isLoading: isEditOrderLoading } = useEditOrderRequest(
-    order_id as string
-  );
-  const { controls } = useMultiStepFormContext();
-
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    if (isEditing) {
-      editOrder(orderData);
-    } else {
-      createOrder(orderData);
-    }
-  };
-
+const OrderDetails = ({ order }: OrderDetailsProps) => {
   return (
-    <form onSubmit={onSubmit} className="flex flex-col w-full">
-      <h1 className="text-xl font-bold mb-2">Verify Order Details</h1>
+    <div>
+      <h1 className="text-xl font-bold mb-2">Order Details</h1>
 
       <div className="flex justify-center my-7">
-        <img
-          src={orderData.product_img_url}
-          alt="Product Image"
-          className="h-28"
-        />
+        <img src={order.product_img_url} alt="Product Image" className="h-28" />
       </div>
 
       <Separator className="my-4" />
@@ -70,12 +40,12 @@ const OrderSummary = ({
             {
               icon: ShoppingBag,
               title: "Product Name",
-              information: orderData.product_name,
+              information: order.product_name,
             },
             {
               icon: Package,
               title: "Description",
-              information: orderData.product_description,
+              information: order.product_description,
             },
           ].map((item) => (
             <MiniInformationCard key={item.title} {...item} />
@@ -87,12 +57,12 @@ const OrderSummary = ({
             {
               icon: Package,
               title: "Quantity",
-              information: `${orderData.quantity}`,
+              information: `${order.quantity}`,
             },
             {
               icon: Truck,
               title: "Weight",
-              information: `${orderData.weight} kg`,
+              information: `${order.weight} kg`,
             },
           ].map((item) => (
             <MiniInformationCard key={item.title} {...item} />
@@ -111,20 +81,27 @@ const OrderSummary = ({
               icon: IndianRupee,
               title: "Product Price",
               information: formatIndianCurrency(
-                orderData.price_details.product_price
+                order.price_details.product_price
               ),
             },
             {
               icon: Truck,
               title: "Delivery Charge",
               information: formatIndianCurrency(
-                orderData.price_details.delivery_charge
+                order.price_details.delivery_charge
               ),
             },
             {
               icon: CreditCard,
               title: "GST",
-              information: `${(orderData.price_details.gst * 100).toFixed(1)}%`,
+              information: `${(order.price_details.gst * 100).toFixed(1)}%`,
+            },
+            {
+              icon: IndianRupee,
+              title: "Net Price",
+              information: formatIndianCurrency(
+                order.price_details.total_price
+              ),
             },
           ].map((item) => (
             <MiniInformationCard key={item.title} {...item} />
@@ -142,17 +119,17 @@ const OrderSummary = ({
             {
               icon: Mail,
               title: "Email",
-              information: orderData.customer_email,
+              information: order.customer_email,
             },
             {
               icon: Phone,
               title: "Phone",
-              information: formatPhoneNumber(orderData.customer_phone),
+              information: formatPhoneNumber(order.customer_phone),
             },
             {
               icon: MapPin,
               title: "Address",
-              information: orderData.customer_address,
+              information: order.customer_address,
             },
           ].map((item) => (
             <MiniInformationCard key={item.title} {...item} />
@@ -169,17 +146,12 @@ const OrderSummary = ({
           icon={Calendar}
           title={"Order Placed Date"}
           information={`${formatDate(
-            orderData.order_placed_date
-          )} | At ${formatTime(orderData.order_placed_date)}`}
+            order.order_placed_date
+          )} | At ${formatTime(order.order_placed_date)}`}
         />
       </div>
-
-      <MultiStepFormButtons
-        {...controls}
-        isLoading={isEditOrderLoading || isCreateOrderLoading}
-      />
-    </form>
+    </div>
   );
 };
 
-export default OrderSummary;
+export default OrderDetails;

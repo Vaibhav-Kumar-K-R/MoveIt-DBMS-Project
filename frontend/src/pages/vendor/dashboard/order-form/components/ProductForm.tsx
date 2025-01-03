@@ -34,10 +34,13 @@ import { TimePicker } from "@/components/ui/time-picker";
 import { Calendar } from "@/components/ui/calendar";
 import { MultiStepFormButtons } from "@/components/ui/multi-step-form";
 import { useMultiStepFormContext } from "@/context/MultiStepFormContext";
-import { useVendorDashboardContext } from "@/context/VendorDashboardContext";
 
-const ProductForm = () => {
-  const { orderData, updateOrderData } = useVendorDashboardContext();
+type ProductFormProps = {
+  orderData: ProductFormType;
+  updateOrderData: (data: ProductFormType) => void;
+};
+
+const ProductForm = ({ orderData, updateOrderData }: ProductFormProps) => {
   const form = useForm<ProductFormType>({
     resolver: zodResolver(productSchema),
     defaultValues: orderData,
@@ -267,7 +270,7 @@ const ProductForm = () => {
                       variant={"outline"}
                       className={cn(
                         "justify-start text-left font-normal w-full",
-                        !field.value && "text-muted-foreground",
+                        !field.value && "text-muted-foreground"
                       )}
                     >
                       <CalendarIcon className="mr-2 h-4 w-4" />
