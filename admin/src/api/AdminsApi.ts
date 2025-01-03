@@ -1,7 +1,7 @@
 import axiosInstance from "@/lib/axios";
 import { LoginFormData } from "@/pages/login/types";
 import { CreateWarehouseFormData } from "@/forms/types/index";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery,useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import {
@@ -250,3 +250,43 @@ export const useGetWarehouseManagersListRequest = () => {
     isError,
   };
 };
+
+export const useAdminLogoutRequest=()=>{
+  const adminLogoutRequest = async () => {
+    try {
+      const response = await axiosInstance.post("/admin/auth/sign-out");
+      return response.data;
+    } catch (error: any) {
+      throw new Error("You need to be logged in to access this page");
+    }
+  }
+  const queryClient=useQueryClient();
+
+  const {mutateAsync:logout,data,isError,isLoading}=useMutation({
+    mutationKey:"adminLogoutRequest",
+    mutationFn:adminLogoutRequest,
+    onSuccess:async()=>{
+      queryClient.invalidateQueries({queryKey:"adminAuth"});
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: "adminAuth",
+        }),
+        queryClient.invalidateQueries({
+          queryKey: "isLoggedInRequest",
+        }),
+      ]);
+      toast("Logged out successfully", { icon: "🚀" });
+      queryClient.clear();
+    },
+    onError:(error:any)=>{
+       toast(error.message, { icon: "🚨" });
+    }
+  })
+
+  return {
+    logout,
+    response:data,
+    isLogoutLoading:isLoading,
+    isError
+  }
+}
