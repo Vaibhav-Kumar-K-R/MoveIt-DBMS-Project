@@ -32,6 +32,12 @@ vendorRouter.post(
   vendorsController.createOrder,
 );
 
+vendorRouter.post(
+  "/edit-order/:orderId",
+  vendorValidateMiddleware.validateCreateOrderRequest,
+  vendorsController.editOrder,
+);
+
 vendorRouter.patch("/cancel-order/:shippingId", vendorsController.cancelOrder);
 
 vendorRouter.put(

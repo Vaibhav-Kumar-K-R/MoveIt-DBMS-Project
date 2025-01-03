@@ -34,10 +34,13 @@ import { TimePicker } from "@/components/ui/time-picker";
 import { Calendar } from "@/components/ui/calendar";
 import { MultiStepFormButtons } from "@/components/ui/multi-step-form";
 import { useMultiStepFormContext } from "@/context/MultiStepFormContext";
-import { useVendorDashboardContext } from "@/context/VendorDashboardContext";
 
-const ProductForm = () => {
-  const { orderData, updateOrderData } = useVendorDashboardContext();
+type ProductFormProps = {
+  orderData: ProductFormType;
+  updateOrderData: (data: ProductFormType) => void;
+};
+
+const ProductForm = ({ orderData, updateOrderData }: ProductFormProps) => {
   const form = useForm<ProductFormType>({
     resolver: zodResolver(productSchema),
     defaultValues: orderData,

@@ -247,11 +247,11 @@ const getCreateWarehouseManagersList = async (_req, res, next) => {
     const warehouseManagers = await Warehouse.find().populate(
       "manager",
       "name",
-    ); 
-    
+    );
+
     let managerNames = warehouseManagers
-      .map((warehouse) => warehouse.manager?.name) 
-      .filter((name) => name); 
+      .map((warehouse) => warehouse.manager?.name)
+      .filter((name) => name);
 
     const unassignedManagers = await Manager.find({
       name: { $nin: managerNames },

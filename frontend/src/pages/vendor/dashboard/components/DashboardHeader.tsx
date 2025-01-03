@@ -7,10 +7,13 @@ import {
 } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Plus } from "lucide-react";
-import CreateOrderForm from "../order-form/CreateOrderForm";
+import OrderForm from "../order-form/OrderForm";
 import AppLogo from "@/components/AppLogo";
+import { useVendorDashboardContext } from "@/context/VendorDashboardContext";
 
 const DashboardHeader = () => {
+  const { orderData, updateOrderData } = useVendorDashboardContext();
+
   return (
     <div className="flex items-center justify-between">
       <div className="space-y-1">
@@ -28,7 +31,10 @@ const DashboardHeader = () => {
             <AppLogo />
           </DialogTitle>
           <ScrollArea className="max-h-[80vh] p-1">
-            <CreateOrderForm />
+            <OrderForm
+              orderData={orderData}
+              updateOrderData={updateOrderData}
+            />
           </ScrollArea>
         </DialogContent>
       </Dialog>

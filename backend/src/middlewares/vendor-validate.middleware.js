@@ -58,6 +58,8 @@ const validateCreateOrderRequest = (req, res, next) => {
       weight: z.coerce.number().gt(0, "Weight is required"),
       customer_name: z.string().min(3, "Customer name is required"),
       customer_email: z.string().email("Invalid email address"),
+      customer_city: z.string().min(3, "City is required"),
+      customer_state: z.string().min(3, "State is required"),
       customer_phone: z
         .string()
         .min(10, "Phone number must be 10 digits")
