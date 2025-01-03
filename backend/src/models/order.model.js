@@ -4,7 +4,7 @@ const orderSchema = new mongoose.Schema(
   {
     tracking_id: { type: String, unique: true, required: true },
     shipping_id: { type: String, unique: true, required: true },
-    vendor_id: {
+    vendor: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Vendor",
       required: true,
@@ -40,7 +40,7 @@ const orderSchema = new mongoose.Schema(
       default: "placed",
     },
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
 const Order = mongoose.model("Order", orderSchema);

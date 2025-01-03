@@ -123,7 +123,7 @@ const updateProfile = async (req, res, next) => {
     if (profileImage) {
       profileImgDetails = await uploadImage(
         profileImage,
-        vendor.profile_img?.public_id,
+        vendor.profile_img?.public_id
       );
 
       updatedVendor = await Vendor.findByIdAndUpdate(
@@ -135,7 +135,7 @@ const updateProfile = async (req, res, next) => {
             public_id: profileImgDetails.public_id,
           },
         },
-        { new: true },
+        { new: true }
       );
     } else {
       updatedVendor = await Vendor.findByIdAndUpdate(vendorId, req.body, {
@@ -172,7 +172,7 @@ const createOrder = async (req, res, next) => {
       ...req.body,
       tracking_id: trackingId,
       shipping_id: shippingId,
-      vendor_id: req.vendorId,
+      vendor: req.vendorId,
       status: "placed",
     });
 
@@ -219,7 +219,7 @@ const cancelOrder = async (req, res, next) => {
 
 const getRecentOrders = async (req, res, next) => {
   try {
-    const orders = await Order.find({ vendor_id: req.vendorId })
+    const orders = await Order.find({ vendor: req.vendorId })
       .sort({ createdAt: "desc" })
       .limit(5)
       .select("-__v");

@@ -7,7 +7,7 @@ import bcrypt from "bcryptjs";
 const getEmployee = async (req, res, next) => {
   try {
     const employee = await Employee.findById(req.employeeId).select(
-      "-password -__v",
+      "-password -__v"
     );
 
     if (!employee) {
@@ -44,7 +44,7 @@ const signInEmployee = async (req, res, next) => {
     const token = jwt.sign(
       { employeeId: employee._id },
       process.env.JWT_SECRET,
-      { expiresIn: "1d" },
+      { expiresIn: "1d" }
     );
 
     res.cookie("employee_auth_token", token, {
@@ -109,8 +109,8 @@ const addTracking = async (req, res, next) => {
     }
 
     const latestTracking = await Tracking.findOne({
-      order_id: order._id,
-      warehouse_id: warehouseId,
+      order: order._id,
+      warehouse: warehouseId,
     })
       .sort({ createdAt: -1 })
       .limit(1);
@@ -118,7 +118,7 @@ const addTracking = async (req, res, next) => {
     if (latestTracking) {
       if (
         latestTracking.status === "arrived" &&
-        latestTracking.employee_id !== req.employeeId
+        latestTracking.employee !== req.employeeId
       ) {
         return res.status(400).json({
           message: "Order not yet departed",
@@ -127,8 +127,8 @@ const addTracking = async (req, res, next) => {
     }
 
     let tracking = await Tracking.findOne({
-      order_id: order._id,
-      warehouse_id: warehouseId,
+      order: order._id,
+      warehouse: warehouseId,
       status: "arrived",
     });
 
@@ -139,10 +139,10 @@ const addTracking = async (req, res, next) => {
     }
 
     tracking = await Tracking.create({
-      order_id: order._id,
-      warehouse_id: warehouseId,
+      order: order._id,
+      warehouse: warehouseId,
       status: "arrived",
-      employee_id: req.employeeId,
+      employee: req.employeeId,
     });
 
     res.status(201).json({

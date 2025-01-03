@@ -47,7 +47,7 @@ export default function CreateWarehouseModal({
       email: "",
       password: "",
       phone: "",
-      manager_id: "",
+      manager: "",
       status: "open",
     },
   });
@@ -64,7 +64,7 @@ export default function CreateWarehouseModal({
     formData.append("email", data.email);
     formData.append("password", data.password);
     formData.append("phone", data.phone);
-    formData.append("manager_id", data.manager_id);
+    formData.append("manager", data.manager);
     formData.append("status", data.status);
 
     createWarehouse(data);
@@ -312,7 +312,7 @@ export default function CreateWarehouseModal({
               {/* Manager Id */}
               <FormField
                 control={form.control}
-                name="manager_id"
+                name="manager"
                 render={({ field, fieldState }) => (
                   <FormItem>
                     <FormLabel
@@ -322,7 +322,7 @@ export default function CreateWarehouseModal({
                     </FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="Enter manager_id"
+                        placeholder="Enter manager"
                         {...field}
                         className={fieldState.error ? "border-red-600" : ""}
                       />

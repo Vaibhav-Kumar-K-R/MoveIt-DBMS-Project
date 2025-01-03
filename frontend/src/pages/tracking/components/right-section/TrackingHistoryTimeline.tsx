@@ -47,13 +47,13 @@ const TrackingHistoryTimeline = ({
 
                 <div className="flex flex-col">
                   <span className="text-zinc-500">
-                    {order.vendor_id.shop_name}
+                    {order.vendor.shop_name}
                   </span>
                   <span className="text-zinc-500">
-                    {order.vendor_id.city}, {order.vendor_id.state}
+                    {order.vendor.city}, {order.vendor.state}
                   </span>
                   <span className="text-zinc-500">
-                    {order.vendor_id.pin_code}
+                    {order.vendor.pincode}
                   </span>
                 </div>
               </TimelineDescription>
@@ -130,11 +130,11 @@ const TimeLineTemplate = ({
           <span className="font-semibold">{message}</span>
 
           <div className="flex flex-col">
-            <span className="text-zinc-500">{event.warehouse_id.name}</span>
+            <span className="text-zinc-500">{event.warehouse.name}</span>
             <span className="text-zinc-500">
-              {event.warehouse_id.city}, {event.warehouse_id.state}
+              {event.warehouse.city}, {event.warehouse.state}
             </span>
-            <span className="text-zinc-500">{event.warehouse_id.pincode}</span>
+            <span className="text-zinc-500">{event.warehouse.pincode}</span>
           </div>
         </TimelineDescription>
       </TimelineContent>

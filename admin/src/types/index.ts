@@ -6,9 +6,9 @@ export type AdminData = {
 };
 export type createWarehouseResponseType = {
   message: string;
-  warehouse_id: string;
+  warehouse: string;
 };
 export type updateWarehouseResponseType = {
   message: string;
-  warehouse_id: string;
+  warehouse: string;
 };

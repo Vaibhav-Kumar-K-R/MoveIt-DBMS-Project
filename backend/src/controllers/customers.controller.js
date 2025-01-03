@@ -6,7 +6,7 @@ const getOrder = async (req, res, next) => {
     const order = await Order.findOne({
       tracking_id: req.params.trackingId,
     }).populate({
-      path: "vendor_id",
+      path: "vendor",
       select: "-password -__v",
     });
 
@@ -17,12 +17,12 @@ const getOrder = async (req, res, next) => {
     }
 
     const tracking = await Tracking.find({
-      order_id: order._id,
+      order: order._id,
       isVerified: true,
     })
       .select("-__v")
       .populate({
-        path: "warehouse_id",
+        path: "warehouse",
         select: "name city state address pincode",
       })
       .sort({

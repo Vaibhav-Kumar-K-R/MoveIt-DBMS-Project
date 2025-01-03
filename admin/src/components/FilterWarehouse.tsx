@@ -85,11 +85,11 @@ function FilterWarehouse() {
                     <strong>Phone:</strong> {warehouse.phone}
                   </p>
                   <p>
-                    <strong>Manager name:</strong> {warehouse.manager_id.name}
+                    <strong>Manager name:</strong> {warehouse.manager.name}
                   </p>
                   <p>Manager profile</p>
                   <img
-                    src={warehouse.manager_id.profile_img_url}
+                    src={warehouse.manager.profile_img_url}
                     className="w-[100px] h-[100px]"
                     alt="profile"
                   />

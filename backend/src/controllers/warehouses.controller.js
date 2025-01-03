@@ -10,7 +10,7 @@ import Order from "../models/order.model.js";
 const getWarehouse = async (req, res, next) => {
   try {
     const warehouse = await Warehouse.findById(req.warehouseId).select(
-      "-password -__v",
+      "-password -__v"
     );
 
     if (!warehouse) {
@@ -47,7 +47,7 @@ const signInWarehouse = async (req, res, next) => {
     const token = jwt.sign(
       { warehouseId: warehouse._id },
       process.env.JWT_SECRET,
-      { expiresIn: "1d" },
+      { expiresIn: "1d" }
     );
 
     res.cookie("warehouse_auth_token", token, {
@@ -97,13 +97,13 @@ const departureTracking = async (req, res, next) => {
     }
 
     const latestTracking = await Tracking.findOne({
-      order_id: order._id,
-      warehouse_id: req.warehouseId,
+      order: order._id,
+      warehouse: req.warehouseId,
     }).sort({ createdAt: -1 });
 
     if (
       !latestTracking ||
-      latestTracking.warehouse_id != req.warehouseId ||
+      latestTracking.warehouse != req.warehouseId ||
       latestTracking.status !== "arrived"
     ) {
       return res.status(400).json({
@@ -118,8 +118,8 @@ const departureTracking = async (req, res, next) => {
     }
 
     const existingDeparture = await Tracking.findOne({
-      order_id: order._id,
-      warehouse_id: req.warehouseId,
+      order: order._id,
+      warehouse: req.warehouseId,
       status: "departed",
     });
 
@@ -143,10 +143,10 @@ const departureTracking = async (req, res, next) => {
     }
 
     await Tracking.create({
-      order_id: order._id,
-      warehouse_id: req.warehouseId,
-      employee_id: employeeId,
-      vehicle_id: vehicleId,
+      order: order._id,
+      warehouse: req.warehouseId,
+      employee: employeeId,
+      vehicle: vehicleId,
       status: "departed",
       isVerified: true,
     });
@@ -177,13 +177,13 @@ const outForDeliveryOrder = async (req, res, next) => {
     }
 
     const latestTracking = await Tracking.findOne({
-      order_id: order._id,
-      warehouse_id: req.warehouseId,
+      order: order._id,
+      warehouse: req.warehouseId,
     }).sort({ createdAt: -1 });
 
     if (
       !latestTracking ||
-      latestTracking.warehouse_id != req.warehouseId ||
+      latestTracking.warehouse != req.warehouseId ||
       latestTracking.status !== "arrived"
     ) {
       return res.status(400).json({
@@ -198,8 +198,8 @@ const outForDeliveryOrder = async (req, res, next) => {
     }
 
     const existingOutForDelivery = await Tracking.findOne({
-      order_id: order._id,
-      warehouse_id: req.warehouseId,
+      order: order._id,
+      warehouse: req.warehouseId,
       status: "out_for_delivery",
     });
 
@@ -210,8 +210,8 @@ const outForDeliveryOrder = async (req, res, next) => {
     }
 
     await Tracking.create({
-      order_id: order._id,
-      warehouse_id: req.warehouseId,
+      order: order._id,
+      warehouse: req.warehouseId,
       status: "out_for_delivery",
       isVerified: true,
     });

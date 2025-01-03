@@ -12,7 +12,7 @@ const validateVendorSignUpRequest = (req, res, next) => {
       password: z.string().min(8).max(50),
       shop_name: z.string().min(3).max(50),
       shop_description: z.string().min(3).max(250),
-      pin_code: z.string().min(6).max(6),
+      pincode: z.string().min(6).max(6),
     });
 
     signUpSchema.parse(req.body);
@@ -86,7 +86,7 @@ const validateUpdateProfileRequest = (req, res, next) => {
       state: z.string().min(3).max(50),
       shop_name: z.string().min(3).max(50),
       shop_description: z.string().min(3).max(250),
-      pin_code: z.string().min(6).max(6),
+      pincode: z.string().min(6).max(6),
     });
 
     updateProfileSchema.parse(req.body);

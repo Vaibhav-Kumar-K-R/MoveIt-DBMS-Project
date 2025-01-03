@@ -11,10 +11,10 @@ type Warehouse = {
 // Need type out the customer details. Will do when we start working on frontend.
 export type Tracking = {
   _id: string;
-  order_id: string;
-  warehouse_id: Warehouse;
+  order: string;
+  warehouse: Warehouse;
   driver_id: string;
-  vehicle_id: string;
+  vehicle: string;
   isVerified: boolean;
   status: "arrived" | "departed" | "out_for_delivery";
   createdAt: Date;
@@ -25,7 +25,7 @@ export type Order = {
   _id: string;
   tracking_id: string;
   shipping_id: string;
-  vendor_id: Vendor;
+  vendor: Vendor;
   product_name: string;
   product_description: string;
   quantity: number;

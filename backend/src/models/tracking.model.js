@@ -2,18 +2,18 @@ import mongoose from "mongoose";
 
 const tracking = new mongoose.Schema(
   {
-    order_id: {
+    order: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Order",
       required: true,
     },
-    warehouse_id: {
+    warehouse: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Warehouse",
       required: true,
     },
-    employee_id: { type: mongoose.Schema.Types.ObjectId, ref: "Employee" },
-    vehicle_id: { type: mongoose.Schema.Types.ObjectId, ref: "Vehicle" },
+    employee: { type: mongoose.Schema.Types.ObjectId, ref: "Employee" },
+    vehicle: { type: mongoose.Schema.Types.ObjectId, ref: "Vehicle" },
     status: {
       type: String,
       enum: ["arrived", "departed", "out_for_delivery"],
@@ -21,7 +21,7 @@ const tracking = new mongoose.Schema(
     },
     isVerified: { type: Boolean, default: false },
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
 const Tracking = mongoose.model("Tracking", tracking);

@@ -12,7 +12,7 @@ import { uploadImage } from "../config/cloudinary.js";
 const getAdmin = async (req, res, next) => {
   try {
     const admin = await Admin.findById(req.adminId).select(
-      "-password -_id -createdAt -updatedAt -__v",
+      "-password -_id -createdAt -updatedAt -__v"
     );
 
     if (!admin) {
@@ -106,11 +106,11 @@ const createManagerProfile = async (req, res, next) => {
               public_id: profileImgDetails.public_id,
             },
           }
-        : req.body,
+        : req.body
     );
 
     res.status(201).json({
-      manager_id: manager._id,
+      manager: manager._id,
       message: "Manager profile created successfully",
     });
   } catch (error) {
@@ -142,11 +142,11 @@ const updateManagerWorkStatus = async (req, res, next) => {
       },
       {
         work_status: updatedStatus,
-      },
+      }
     );
 
     res.status(200).json({
-      manager_id: manager._id,
+      manager: manager._id,
       message: "Manager work status successfully",
     });
   } catch (error) {
@@ -181,11 +181,11 @@ const createWarehouseProfile = async (req, res, next) => {
             },
             state: req.body.state.toLowerCase(),
           }
-        : { ...req.body, state: req.body.state.toLowerCase() },
+        : { ...req.body, state: req.body.state.toLowerCase() }
     );
 
     return res.status(201).json({
-      warehouse_id: warehouse._id,
+      warehouse: warehouse._id,
       message: "Warehouse profile created successfully",
     });
   } catch (error) {
@@ -208,11 +208,11 @@ const updateWarehouseStatus = async (req, res, next) => {
       },
       {
         status: warehouse.status === "open" ? "close" : "open",
-      },
+      }
     );
 
     res.status(200).json({
-      warehouse_id: warehouse._id,
+      warehouse: warehouse._id,
       message: "Warehouse status updated successfully",
     });
   } catch (error) {
@@ -223,8 +223,8 @@ const updateWarehouseStatus = async (req, res, next) => {
 const getWarehouseList = async (_req, res, next) => {
   try {
     let warehouseList = await Warehouse.find({}).select("-password").populate({
-      path: "manager_id",
-      select: "-password -manager_id -__v -createdAt -updatedAt ",
+      path: "manager",
+      select: "-password -manager -__v -createdAt -updatedAt ",
     });
 
     if (warehouseList.length == 0) {
@@ -246,7 +246,7 @@ const getWarehousebyState = async (req, res, next) => {
   try {
     const { state } = req.params;
     let stateWarehouse = await Warehouse.find({ state }).select(
-      "-createdAt -updatedAt -__v -_id  -password",
+      "-createdAt -updatedAt -__v -_id  -password"
     );
 
     if (stateWarehouse.length == 0) {
@@ -292,11 +292,11 @@ const addVehicle = async (req, res, next) => {
               public_id: vehicleImgDetails.public_id,
             },
           }
-        : req.body,
+        : req.body
     );
 
     res.status(201).json({
-      vehicle_id: vehicle._id,
+      vehicle: vehicle._id,
       message: "New vehicle added successfully.",
     });
   } catch (error) {
@@ -330,11 +330,11 @@ const updateVehicleStatus = async (req, res, next) => {
       },
       {
         curr_status: updatedStatus,
-      },
+      }
     );
 
     res.status(200).json({
-      vehicle_id: vehicle._id,
+      vehicle: vehicle._id,
       message: "Vehicle status updated successfully",
     });
   } catch (error) {

@@ -16,13 +16,13 @@ const warehouseSchema = new mongoose.Schema(
     password: { type: String, required: true },
     phone: { type: String, required: true },
     status: { type: String, enum: ["open", "closed"], default: "open" },
-    manager_id: {
+    manager: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Manager",
       required: true,
     },
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
 warehouseSchema.pre("save", async function (next) {
