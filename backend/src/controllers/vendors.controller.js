@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 import Order from "../models/order.model.js";
 import { v4 as uuidv4 } from "uuid";
 import { uploadImage } from "../config/cloudinary.js";
+import Warehouse from "../models/warehouse.model.js";
 
 const getVendor = async (req, res, next) => {
   try {
@@ -123,7 +124,7 @@ const updateProfile = async (req, res, next) => {
     if (profileImage) {
       profileImgDetails = await uploadImage(
         profileImage,
-        vendor.profile_img?.public_id,
+        vendor.profile_img?.public_id
       );
 
       updatedVendor = await Vendor.findByIdAndUpdate(
@@ -135,7 +136,7 @@ const updateProfile = async (req, res, next) => {
             public_id: profileImgDetails.public_id,
           },
         },
-        { new: true },
+        { new: true }
       );
     } else {
       updatedVendor = await Vendor.findByIdAndUpdate(vendorId, req.body, {
@@ -159,7 +160,7 @@ const createOrder = async (req, res, next) => {
     const shippingId = `SHIPPING_${uuidv4().split("-")[0]}`;
 
     req.body.price_details.total_price = calculateTotalAmount(
-      req.body.price_details,
+      req.body.price_details
     );
 
     const order = await Order.create({
@@ -184,7 +185,7 @@ const editOrder = async (req, res, next) => {
     const { orderId } = req.params;
 
     req.body.price_details.total_price = calculateTotalAmount(
-      req.body.price_details,
+      req.body.price_details
     );
 
     const order = await Order.findOneAndUpdate({ _id: orderId }, req.body, {
@@ -261,6 +262,19 @@ const calculateTotalAmount = (price_details) => {
   return (amount + gstAmount).toFixed(2);
 };
 
+const getNearbyWarehouses = async (req, res, next) => {
+  try {
+    const { state } = req.query;
+    const warehouses = await Warehouse.find({
+      state: { $regex: new RegExp(state, "i") },
+    }).select("-__v -password");
+
+    return res.status(200).json({ warehouses });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
   getVendor,
   signUpVendor,
@@ -271,4 +285,5 @@ export default {
   editOrder,
   cancelOrder,
   getRecentOrders,
+  getNearbyWarehouses,
 };

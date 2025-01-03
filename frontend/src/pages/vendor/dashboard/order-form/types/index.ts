@@ -15,6 +15,10 @@ export const productSchema = z.object({
   }),
   weight: z.coerce.number().gt(0, "Weight is required"),
   order_placed_date: z.coerce.date(),
+  warehouse: z
+    .string()
+    .nonempty("Warehouse is required, please select a Warehouse")
+    .regex(/^[a-fA-F0-9]{24}$/, "Invalid Object Id"),
 });
 
 export type ProductFormType = z.infer<typeof productSchema>;

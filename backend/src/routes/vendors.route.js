@@ -9,13 +9,13 @@ const vendorRouter = express.Router();
 vendorRouter.post(
   "/auth/sign-up",
   vendorValidateMiddleware.validateVendorSignUpRequest,
-  vendorsController.signUpVendor,
+  vendorsController.signUpVendor
 );
 
 vendorRouter.post(
   "/auth/sign-in",
   vendorValidateMiddleware.validateVendorSignInRequest,
-  vendorsController.signInVendor,
+  vendorsController.signInVendor
 );
 
 vendorRouter.use(vendorAuthMiddleware.verifyVendorToken);
@@ -24,18 +24,20 @@ vendorRouter.get("/me", vendorsController.getVendor);
 
 vendorRouter.get("/recent-orders", vendorsController.getRecentOrders);
 
+vendorRouter.get("/nearby-warehouses", vendorsController.getNearbyWarehouses);
+
 vendorRouter.post("/auth/sign-out", vendorsController.signOutVendor);
 
 vendorRouter.post(
   "/create-order",
   vendorValidateMiddleware.validateCreateOrderRequest,
-  vendorsController.createOrder,
+  vendorsController.createOrder
 );
 
 vendorRouter.post(
   "/edit-order/:orderId",
   vendorValidateMiddleware.validateCreateOrderRequest,
-  vendorsController.editOrder,
+  vendorsController.editOrder
 );
 
 vendorRouter.patch("/cancel-order/:shippingId", vendorsController.cancelOrder);
@@ -44,7 +46,7 @@ vendorRouter.put(
   "/update-profile",
   upload.single("profileImage"),
   vendorValidateMiddleware.validateUpdateProfileRequest,
-  vendorsController.updateProfile,
+  vendorsController.updateProfile
 );
 
 export default vendorRouter;
