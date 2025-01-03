@@ -100,7 +100,7 @@ export default function CreateWarehouseModal({
                         accept="image/*"
                         onChange={(event) =>
                           field.onChange(
-                            event.target.files ? event.target.files[0] : null
+                            event.target.files ? event.target.files[0] : null,
                           )
                         }
                       />
