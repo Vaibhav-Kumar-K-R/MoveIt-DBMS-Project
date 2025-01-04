@@ -36,12 +36,12 @@ function FilterWarehouse() {
 
   return (
     <div className="w-full flex-col flex gap-2 justify-start">
-      <div className="flex gap-1 w-full flex-wrap">
+      <div className="flex gap-1 w-full  flex-wrap">
         <Input
           ref={inputRef}
           type="text"
           placeholder="Search for warehouses by statename..."
-          className="w-11/12"
+          className="w-full sm:w-11/12"
         />
         <Button
           onClick={() => {

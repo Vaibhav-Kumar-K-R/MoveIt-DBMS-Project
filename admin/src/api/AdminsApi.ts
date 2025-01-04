@@ -11,6 +11,7 @@ import {
   CreateWarehouseResponseType,
   UpdateWarehouseResponseType,
 } from "@/pages/warehouses/types/index";
+import { UpdateManagerResponseType } from "@/pages/managers/types/index";
 import { AdminData } from "@/types/index";
 export const useAdminAuth = () => {
   const adminAuth = async (): Promise<AdminData> => {
@@ -361,6 +362,49 @@ export const useCreateManagerMutation = () => {
 
   return {
     createManager,
+    isLoading,
+    response: data,
+  };
+};
+
+export const useUpdateManagerStatusMutation = () => {
+  const updateManagerStatusMutation = async (
+   data:{
+    email:string,
+    work_status:string
+   }
+  ): Promise<UpdateWarehouseResponseType> => {
+    try {
+      const response = await axiosInstance.patch(
+        "/admin/update-managerWork-status/",
+       data,
+      );
+      return response.data;
+    } catch (error: any) {
+      throw new Error(error.message);
+    }
+  };
+
+  const {
+    mutateAsync: updateManagerStatus,
+    isLoading,
+    data,
+    reset,
+  } = useMutation({
+    mutationKey: "updateManager",
+    mutationFn: updateManagerStatusMutation,
+    onSuccess: () => {
+      toast.success("Manager status updated successfully ");
+      reset();
+    },
+    onError: (error: any) => {
+      toast.error(error?.toString());
+      reset();
+    },
+  });
+
+  return {
+    updateManagerStatus,
     isLoading,
     response: data,
   };
