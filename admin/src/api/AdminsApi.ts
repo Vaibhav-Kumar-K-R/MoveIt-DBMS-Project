@@ -373,7 +373,7 @@ export const useUpdateManagerStatusMutation = () => {
     email:string,
     work_status:string
    }
-  ): Promise<UpdateWarehouseResponseType> => {
+  ): Promise<UpdateManagerResponseType> => {
     try {
       const response = await axiosInstance.patch(
         "/admin/update-managerWork-status/",
@@ -407,5 +407,28 @@ export const useUpdateManagerStatusMutation = () => {
     updateManagerStatus,
     isLoading,
     response: data,
+  };
+};
+
+export const useGetVehiclesRequest = () => {
+  const getManagersRequest = async () => {
+    try {
+      const response = await axiosInstance.get("/admin/vehicles");
+
+      return response.data;
+    } catch (error: any) {
+      throw new Error("You need to be logged in to access this page");
+    }
+  };
+
+  const { data, isLoading, isError } = useQuery({
+    queryKey: "getVehiclesRequest",
+    queryFn: getVehiclesRequest,
+  });
+
+  return {
+    response: data,
+    isLoading,
+    isError,
   };
 };

@@ -242,6 +242,28 @@ const getWarehouseList = async (_req, res, next) => {
   }
 };
 
+
+const getVehiclesList = async (_req, res, next) => {
+  try {
+    let vehicleList = await Vehicle.find({})
+
+    if (vehicleList.length == 0) {
+      return res.status(400).json({
+        message: "No vehicles found !!",
+      });
+    }
+
+    return res.status(201).json({
+      vehicles: vehicleList,
+      total_count: vehicleList.length,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
+
 const getManagersList = async (_req, res, next) => {
   try {
     let managerList = await Manager.find({}).select(
@@ -262,6 +284,54 @@ const getManagersList = async (_req, res, next) => {
     next(error);
   }
 };
+
+
+const getManagersByStatus = async (_req, res, next) => {
+
+  try {
+    let managerList = await Manager.find({work_status:req.body.work_status}).select(
+      "-password -__v -createdAt -updatedAt",
+    );
+
+    if (managerList.length == 0) {
+      return res.status(400).json({
+        message: "No managers found !!",
+      });
+    }
+
+    return res.status(201).json({
+      managers: managerList,
+      total_count: managerList.length,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
+const getVehiclesByStatus = async (_req, res, next) => {
+
+  try {
+    let vehicleList = await Vehicle.find({curr_status:req.body.curr_status}).select(
+      " -__v -createdAt -updatedAt",
+    );
+
+    if (vehicleList.length == 0) {
+      return res.status(400).json({
+        message: "No vehicles found !!",
+      });
+    }
+
+    return res.status(201).json({
+      vehicles: vehicleList,
+      total_count:vehicleList.length,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
 
 const getCreateWarehouseManagersList = async (_req, res, next) => {
   try {
@@ -449,8 +519,11 @@ export default {
   getWarehouseList,
   getCreateWarehouseManagersList,
   getManagersList,
+  getManagersByStatus,
   getWarehousebyState,
   addVehicle,
+  getVehiclesList,
+  getVehiclesByStatus,
   getStats,
   updateManagerWorkStatus,
   updateWarehouseStatus,

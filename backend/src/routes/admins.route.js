@@ -42,7 +42,15 @@ adminRouter.get("/warehouses", adminController.getWarehouseList);
 
 adminRouter.get("/managers", adminController.getManagersList);
 
+adminRouter.get("/vehicles", adminController.getVehiclesList);
+
 adminRouter.get("/warehouse/:state", adminController.getWarehousebyState);
+ 
+
+adminRouter.get("/manager/:work_status", adminController.getManagersByStatus);
+
+
+adminRouter.get("/vehicle/:curr_status", adminController.getVehiclesByStatus);
 
 adminRouter.get(
   "/warehouseManagerList",
