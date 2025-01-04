@@ -6,6 +6,7 @@ import { EMPLOYEE_ROLES } from "@/config/employee";
 import { cn } from "@/lib/utils";
 import { CheckCircle2, UserPen } from "lucide-react";
 import { Link } from "react-router-dom";
+import AddTrackingButton from "../add-tracking/components/AddTrackingButton";
 
 const EmployeeAuthButton = () => {
   const { employee, isLoading } = useEmployeeAuth();
@@ -38,11 +39,12 @@ const EmployeeAuthButton = () => {
           "w-full border hover:bg-zinc-100",
           buttonVariants({
             variant: "ghost",
-          }),
+          })
         )}
       >
         <UserPen /> View Profile
       </Link>
+      <AddTrackingButton />
     </AuthButton>
   );
 };

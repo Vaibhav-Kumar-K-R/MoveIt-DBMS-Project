@@ -42,12 +42,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { NearbyWarehouses } from "@/types/vendor";
+import { Warehouses } from "@/types/warehouse";
 
 type ProductFormProps = {
   orderData: ProductFormType;
   updateOrderData: (data: ProductFormType) => void;
-  nearbyWarehouses: NearbyWarehouses | undefined;
+  nearbyWarehouses: Warehouses | undefined;
 };
 
 const ProductForm = ({

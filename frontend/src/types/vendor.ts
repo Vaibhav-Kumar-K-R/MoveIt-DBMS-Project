@@ -23,7 +23,3 @@ export type Vendor = {
 export type RecentOrdersType = {
   orders: Order[];
 };
-
-export type NearbyWarehouses = {
-  warehouses: Warehouse[];
-}

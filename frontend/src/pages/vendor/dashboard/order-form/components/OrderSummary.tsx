@@ -21,14 +21,14 @@ import { formatPhoneNumber } from "@/helpers/format-phone-number";
 import { useCreateOrderRequest, useEditOrderRequest } from "@/api/VendorsApi";
 import { OrderFormType } from "../types";
 import { formatIndianCurrency } from "@/helpers/format-currency";
-import { NearbyWarehouses } from "@/types/vendor";
+import { Warehouses } from "@/types/warehouse";
 import { useMemo } from "react";
 
 type OrderSummaryProps = {
   orderData: OrderFormType;
   isEditing?: boolean;
   order_id?: string;
-  nearbyWarehouses: NearbyWarehouses | undefined;
+  nearbyWarehouses: Warehouses | undefined;
 };
 
 const OrderSummary = ({

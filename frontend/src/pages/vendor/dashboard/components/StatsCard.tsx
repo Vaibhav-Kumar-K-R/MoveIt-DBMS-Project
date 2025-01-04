@@ -1,17 +1,25 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Text } from "lucide-react";
+import { LucideProps } from "lucide-react";
 
-const StatsCard = () => {
+type StatsCardProps = {
+  icon: React.ForwardRefExoticComponent<
+    Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>
+  >;
+  title: string;
+  information: string;
+};
+
+const StatsCard = ({ icon: Icon, information, title }: StatsCardProps) => {
   return (
     <Card>
       <CardHeader className="font-semibold text-xl">
         <div className="flex items-center justify-between">
-          <span>Title</span>
-          <Text />
+          <span>{title}</span>
+          <Icon />
         </div>
       </CardHeader>
       <CardContent>
-        <p>Content</p>
+        <p>{information}</p>
       </CardContent>
     </Card>
   );
