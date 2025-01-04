@@ -44,7 +44,7 @@ const EmployeeAuthButton = () => {
       >
         <UserPen /> View Profile
       </Link>
-      <AddTrackingButton />
+      {employee.role === "driver" && <AddTrackingButton />}
     </AuthButton>
   );
 };
