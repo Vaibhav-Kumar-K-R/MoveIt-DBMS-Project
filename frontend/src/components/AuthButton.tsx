@@ -39,7 +39,7 @@ const AuthButton = ({
             </AvatarFallback>
           </Avatar>
         </PopoverTrigger>
-        <PopoverContent className="mr-4">
+        <PopoverContent className="mr-4 w-[300px]">
           <div className="space-y-4">
             <div>
               <div className="flex items-center gap-2">
@@ -50,9 +50,9 @@ const AuthButton = ({
                   </AvatarFallback>
                 </Avatar>
                 <Separator orientation="vertical" />
-                <div>
+                <div className="w-full">
                   <p className="font-semibold">{name}</p>
-                  <p className="text-sm text-zinc-500">{email}</p>
+                  <p className="text-sm text-zinc-500 line-clamp-1 text-ellipsis w-[300px]">{email}</p>
                 </div>
               </div>
               <Separator className="my-3" />

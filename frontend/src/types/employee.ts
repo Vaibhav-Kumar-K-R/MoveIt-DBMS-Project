@@ -1,4 +1,5 @@
 export type EmployeeType = {
+  _id: string;
   name: string;
   licence_number: string;
   profile_img: {
@@ -12,9 +13,13 @@ export type EmployeeType = {
   city: string;
   state: string;
   dob: string;
-  role: string;
+  role: "driver" | "delivery_boy";
   driving_experience: number;
   salary: number;
   curr_status: string;
   work_status: string;
+};
+
+export type Employees = {
+  drivers: EmployeeType[];
 };

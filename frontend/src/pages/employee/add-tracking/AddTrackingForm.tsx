@@ -1,7 +1,5 @@
-import {
-  useAddTrackingRequest,
-  useGetAllWarehousesRequest,
-} from "@/api/EmployeesApi";
+import { useAddTrackingRequest } from "@/api/EmployeesApi";
+import { useGetAllWarehousesRequest } from "@/api/WarehousesApi";
 import { Button } from "@/components/ui/button";
 import {
   Form,
