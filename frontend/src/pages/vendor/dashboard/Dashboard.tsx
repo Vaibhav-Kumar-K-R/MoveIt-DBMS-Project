@@ -11,11 +11,10 @@ const Dashboard = () => {
         <DashboardHeader />
         <Separator />
         <DashboardStats />
-        <Separator />
-        <div>
-          {/* Chart Stuff here */}
+        {/* <Separator /> */}
+        {/* <div>
           Charts (if needed)
-        </div>
+        </div> */}
         <Separator />
         <RecentOrderDetails />
       </div>

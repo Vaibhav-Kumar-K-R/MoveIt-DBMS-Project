@@ -2,7 +2,8 @@ import { LoginFormData } from "@/forms/login/types";
 import axiosInstance from "@/lib/axios";
 import { OrderFormType } from "@/pages/vendor/dashboard/order-form/types";
 import { VendorsSignUpData } from "@/pages/vendor/sign-up/types";
-import { NearbyWarehouses, RecentOrdersType, Vendor } from "@/types/vendor";
+import { RecentOrdersType, Vendor } from "@/types/vendor";
+import { Warehouses } from "@/types/warehouse";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -294,7 +295,7 @@ export const useGetNearbyWarehouses = (state: string | undefined) => {
 
   queryParams.append("state", state as string);
 
-  const getNearbyWarehouses = async (): Promise<NearbyWarehouses> => {
+  const getNearbyWarehouses = async (): Promise<Warehouses> => {
     try {
       const response = await axiosInstance.get(
         `/vendor/nearby-warehouses?${queryParams.toString()}`

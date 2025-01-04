@@ -10,10 +10,12 @@ employeeRouter.use(employeeAuthMiddleware.verifyEmployeeToken);
 
 employeeRouter.get("/me", employeesController.getEmployee);
 
+employeeRouter.get("/all-warehouses", employeesController.getAllWarehouses);
+
 employeeRouter.post("/auth/sign-out", employeesController.signOutEmployee);
 
 employeeRouter.post(
-  "/add-tracking/:shippingId/:warehouseId",
+  "/add-tracking",
   employeeAuthMiddleware.verifyDriver,
   employeesController.addTracking,
 );

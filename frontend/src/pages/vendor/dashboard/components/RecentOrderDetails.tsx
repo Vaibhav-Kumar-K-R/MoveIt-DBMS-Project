@@ -22,6 +22,7 @@ import OrderDetails from "./OrderDetails";
 import AppLogo from "@/components/AppLogo";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import EditOrder from "./EditOrder";
+import { WAREHOUSE_STATUSES } from "@/config/warehouse";
 
 const RecentOrderDetails = () => {
   const { recentOrders, isLoading } = useGetRecentOrdersRequest();
@@ -51,6 +52,7 @@ const RecentOrderDetails = () => {
               <TableHead>Status</TableHead>
               <TableHead>Price</TableHead>
               <TableHead>Order Placed</TableHead>
+              <TableHead>Warehouse Status</TableHead>
               <TableHead>Actions</TableHead>
             </TableRow>
           </TableHeader>
@@ -59,13 +61,11 @@ const RecentOrderDetails = () => {
             {orders.map((order, index) => (
               <Dialog key={order._id}>
                 <TableRow>
-                  <TableCell className="font-medium py-4">
-                    {index + 1}
-                  </TableCell>
+                  <TableCell className="font-medium">{index + 1}</TableCell>
                   <DialogTrigger asChild>
                     <TableCell
                       key={order._id}
-                      className="font-medium cursor-pointer hover:underline"
+                      className="font-medium cursor-pointer hover:underline w-[450px] line-clamp-1 overflow-hidden m-4"
                     >
                       {order.product_name}
                     </TableCell>
@@ -75,6 +75,9 @@ const RecentOrderDetails = () => {
                     {formatIndianCurrency(order.price_details.total_price)}
                   </TableCell>
                   <TableCell>{formatDate(order.order_placed_date)}</TableCell>
+                  <TableCell>
+                    {WAREHOUSE_STATUSES[order.warehouse_status]}
+                  </TableCell>
                   <TableCell>
                     <EditOrder order={order} />
                   </TableCell>
