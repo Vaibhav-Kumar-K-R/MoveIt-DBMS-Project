@@ -8,8 +8,10 @@ const warehouseRouter = express.Router();
 warehouseRouter.post(
   "/auth/sign-in",
   warehouseValidateMiddleware.validateWarehouseSignInRequest,
-  warehousesController.signInWarehouse,
+  warehousesController.signInWarehouse
 );
+
+warehouseRouter.get("/all-warehouses", warehousesController.getAllWarehouses);
 
 warehouseRouter.use(warehouseAuthMiddleware.verifyWarehouseToken);
 
@@ -18,24 +20,24 @@ warehouseRouter.get("/me", warehousesController.getWarehouse);
 warehouseRouter.post("/auth/sign-out", warehousesController.signOutWarehouse);
 
 warehouseRouter.post(
-  "/departure/:shippingId",
+  "/departure",
   warehouseValidateMiddleware.validateOrderDepartureRequest,
-  warehousesController.departureTracking,
+  warehousesController.departureTracking
 );
 
 warehouseRouter.post(
   "/out-for-delivery/:shippingId",
-  warehousesController.outForDeliveryOrder,
+  warehousesController.outForDeliveryOrder
 );
 
 warehouseRouter.patch(
-  "/verify/:trackingId",
-  warehousesController.verifyTracking,
+  "/verify/:shippingId",
+  warehousesController.verifyTracking
 );
 
 warehouseRouter.delete(
-  "/delete/:trackingId",
-  warehousesController.deleteTracking,
+  "/delete/:shippingId",
+  warehousesController.deleteTracking
 );
 
 export default warehouseRouter;

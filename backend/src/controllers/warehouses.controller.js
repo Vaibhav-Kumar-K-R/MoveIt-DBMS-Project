@@ -10,7 +10,7 @@ import Order from "../models/order.model.js";
 const getWarehouse = async (req, res, next) => {
   try {
     const warehouse = await Warehouse.findById(req.warehouseId).select(
-      "-password -__v",
+      "-password -__v"
     );
 
     if (!warehouse) {
@@ -20,6 +20,18 @@ const getWarehouse = async (req, res, next) => {
     }
 
     res.status(200).json(warehouse);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getAllWarehouses = async (_req, res, next) => {
+  try {
+    const warehouses = await Warehouse.find({}).select("-password -__v");
+
+    res.status(200).json({
+      warehouses,
+    });
   } catch (error) {
     next(error);
   }
@@ -47,7 +59,7 @@ const signInWarehouse = async (req, res, next) => {
     const token = jwt.sign(
       { warehouseId: warehouse._id },
       process.env.JWT_SECRET,
-      { expiresIn: "1d" },
+      { expiresIn: "1d" }
     );
 
     res.cookie("warehouse_auth_token", token, {
@@ -82,8 +94,7 @@ const signOutWarehouse = async (req, res, next) => {
 
 const departureTracking = async (req, res, next) => {
   try {
-    const { shippingId } = req.params;
-    const { vehicleId, employeeId } = req.body;
+    const { vehicleId, employeeId, shippingId } = req.body;
 
     const order = await Order.findOne({ shipping_id: shippingId });
 
@@ -226,17 +237,20 @@ const outForDeliveryOrder = async (req, res, next) => {
     next(error);
   }
 };
+
 const verifyTracking = async (req, res, next) => {
   try {
-    const { trackingId } = req.params;
+    const { shippingId } = req.params;
 
-    if (!mongoose.Types.ObjectId.isValid(trackingId)) {
+    if (!mongoose.Types.ObjectId.isValid(shippingId)) {
       return res.status(400).json({
         message: "Invalid tracking id",
       });
     }
 
-    const tracking = await Tracking.findById(trackingId);
+    const tracking = await Tracking.findOne({
+      shipping_id: shippingId,
+    });
 
     if (!tracking) {
       return res.status(404).json({
@@ -263,16 +277,18 @@ const verifyTracking = async (req, res, next) => {
 
 const deleteTracking = async (req, res, next) => {
   try {
-    const { trackingId } = req.params;
+    const { shippingId } = req.params;
 
-    if (!mongoose.Types.ObjectId.isValid(trackingId)) {
+    if (!mongoose.Types.ObjectId.isValid(shippingId)) {
       return res.status(400).json({
         message: "Invalid tracking id",
       });
     }
 
     // Can delete the order stop only if it is not verified
-    const tracking = await Tracking.findById(trackingId);
+    const tracking = await Tracking.findOne({
+      shipping_id: shippingId,
+    });
 
     if (!tracking) {
       return res.status(404).json({
@@ -298,6 +314,7 @@ const deleteTracking = async (req, res, next) => {
 
 export default {
   getWarehouse,
+  getAllWarehouses,
   signInWarehouse,
   signOutWarehouse,
   departureTracking,

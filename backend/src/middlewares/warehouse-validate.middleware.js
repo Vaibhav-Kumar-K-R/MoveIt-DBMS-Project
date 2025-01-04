@@ -19,6 +19,7 @@ const validateWarehouseSignInRequest = (req, res, next) => {
 const validateOrderDepartureRequest = (req, res, next) => {
   try {
     const orderDepartureRequest = z.object({
+      shippingId: z.string().startsWith("SHIPPING_"),
       vehicleId: z.string().refine((id) => mongoose.isValidObjectId(id), {
         message: "Invalid ObjectId for vehicle",
       }),
