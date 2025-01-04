@@ -8,15 +8,19 @@ import {
 } from "@/components/ui/card";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import FilterWarehouse from "@/pages/warehouses/components/FilterWarehouse";
 import CreateManagerModal from "@/pages/managers/components/CreateManagerModal";
 import Redirect from "@/pages/redirect/Redirect";
 import { useState } from "react";
 import { useGetManagersRequest } from "@/api/AdminsApi";
+import { ManagerType } from "@/pages/managers/types/index";
+import UpdateManagerWorkStatus from "./components/UpdateManagerWorkStatus";
 export default function Warehouse() {
   const { response, isLoading } = useGetManagersRequest();
   const [isCreatingManager, setIsCreatingManager] = useState(false);
-
+  const [isUpdatingManager, setIsUpdatingManager] = useState(false);
+  const [editingManagerEmail, setIsEditingManagerEmail] = useState<string>("");
+  const [editingManagerStatus, setIsEditingManagerStatus] =
+    useState<string>("");
   if (isLoading) {
     return <Redirect />;
   }
@@ -33,10 +37,9 @@ export default function Warehouse() {
           <Plus /> Add New Manager
         </Button>
       </div>
-      <FilterWarehouse />
       <h1 className="text-2xl font-semibold ">All Managers</h1>
       <div className="grid gap-6 sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
-        {response.managers.map((manager: any) => (
+        {response.managers.map((manager: ManagerType) => (
           <Card key={manager._id} className="flex flex-col">
             <CardHeader className="flex-grow">
               <CardTitle>{manager.name}</CardTitle>
@@ -76,23 +79,34 @@ export default function Warehouse() {
                 <p>
                   <strong>Phone:</strong> <a href="tel:">{manager.phone}</a>
                 </p>
-
                 <p>
                   <strong>Salary (in INR):</strong>
                   {manager.salary}
                 </p>
                 <p>
                   <strong>Status:</strong>
-                  {manager.work_status}
+                  {manager.work_status === "working" ? (
+                    <p className="text-green-700 font-semibold text-md ">
+                      Working
+                    </p>
+                  ) : manager.work_status === "terminated" ? (
+                    <p className="text-red-600 font-semibold text-md ">
+                      Terminated
+                    </p>
+                  ) : (
+                    <p className="text-yellow-600 text-md font-semibold ">
+                      Resigned
+                    </p>
+                  )}
                 </p>
               </div>
             </CardContent>
             <CardFooter>
               <Button
                 onClick={() => {
-                  // setEditWarehouseEmail(warehouse.email);
-                  // setIsEditingWarehouse(true);
-                  // setEditWarehouseStatus(warehouse.status);
+                  setIsUpdatingManager(true);
+                  setIsEditingManagerEmail(manager.email);
+                  setIsEditingManagerStatus(manager.work_status);
                 }}
                 variant="outline"
                 size="sm"
@@ -111,14 +125,14 @@ export default function Warehouse() {
           onClose={setIsCreatingManager}
         ></CreateManagerModal>
       )}
-      {/* {isEditingWarehouse && (
-        <UpdateWarehouseModal
-          status={editWarehouseStatus}
-          email={editWarehouseEmail}
-          isOpen={isEditingWarehouse}
-          onClose={setIsEdittingWarehouse}
+      {isUpdatingManager && (
+        <UpdateManagerWorkStatus
+          status={editingManagerStatus}
+          email={editingManagerEmail}
+          isOpen={isUpdatingManager}
+          onClose={setIsUpdatingManager}
         />
-      )} */}
+      )}
     </div>
   );
 }

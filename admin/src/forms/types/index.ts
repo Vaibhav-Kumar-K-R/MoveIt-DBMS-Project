@@ -86,6 +86,22 @@ export const createManagerFormSchema = z.object({
   work_status: z.enum(["working", "resigned", "terminated"]).default("working"),
 });
 
+export const createVehicleFormSchema = z.object({
+  vehicleImg: z.instanceof(File),
+  number_plate: z
+    .string()
+    .regex(/^[A-Z]{2}-\d{2}-[A-Z]{2}-\d{4}$/, "Invalid number plate format")
+    .nonempty("Number plate is required"),
+  capacity: z.number(),
+  curr_status: z
+    .enum(["available", "in_use", "in_maintenance", "not_available"])
+    .default("available"),
+  model: z.string().nonempty("Vehicle model is required"),
+  type: z.string().nonempty("Vehicle type is required"),
+});
+
 export type CreateWarehouseFormData = z.infer<typeof createWarehouseFormSchema>;
 
 export type CreateManagerFormData = z.infer<typeof createManagerFormSchema>;
+
+export type CreateVehicleFormData = z.infer<typeof createVehicleFormSchema>;
