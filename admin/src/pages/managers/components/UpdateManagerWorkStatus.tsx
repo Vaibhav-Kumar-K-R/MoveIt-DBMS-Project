@@ -1,14 +1,34 @@
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Loader2 } from "lucide-react";
 import { useUpdateManagerStatusMutation } from "@/api/AdminsApi";
 const FormSchema = z.object({
-  work_status: z.string().min(1, "Please select the status of the manager"), 
+  work_status: z.string().min(1, "Please select the status of the manager"),
 });
 
 interface UpdateManagerStatusModalProps {
@@ -24,18 +44,16 @@ export default function UpdateManagerWorkStatus({
   isOpen,
   onClose,
 }: UpdateManagerStatusModalProps) {
-
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
-    defaultValues: { work_status: "" }, 
+    defaultValues: { work_status: "" },
   });
 
-  const {updateManagerStatus,isLoading} = useUpdateManagerStatusMutation();
+  const { updateManagerStatus, isLoading } = useUpdateManagerStatusMutation();
 
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
-
-   const newData={...data,email:email}
-   await  updateManagerStatus(newData);
+    const newData = { ...data, email: email };
+    await updateManagerStatus(newData);
     onClose(false);
   };
 
@@ -79,7 +97,7 @@ export default function UpdateManagerWorkStatus({
                               <SelectItem key={item} value={item}>
                                 {item}
                               </SelectItem>
-                            ) : null
+                            ) : null,
                           )}
                         </SelectContent>
                       </Select>
@@ -87,7 +105,10 @@ export default function UpdateManagerWorkStatus({
                     </FormItem>
                   )}
                 />
-                <Button type="submit" className={`${isLoading?"opacity-80":""} w-full`}>
+                <Button
+                  type="submit"
+                  className={`${isLoading ? "opacity-80" : ""} w-full`}
+                >
                   {isLoading ? (
                     <Loader2 className="animate-spin" />
                   ) : (

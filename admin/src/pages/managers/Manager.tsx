@@ -90,9 +90,13 @@ export default function Warehouse() {
                       Working
                     </p>
                   ) : manager.work_status === "terminated" ? (
-                    <p className="text-red-600 font-semibold text-md ">Terminated</p>
+                    <p className="text-red-600 font-semibold text-md ">
+                      Terminated
+                    </p>
                   ) : (
-                    <p className="text-yellow-600 text-md font-semibold ">Resigned</p>
+                    <p className="text-yellow-600 text-md font-semibold ">
+                      Resigned
+                    </p>
                   )}
                 </p>
               </div>

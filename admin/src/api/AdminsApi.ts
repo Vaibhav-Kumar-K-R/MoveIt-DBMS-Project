@@ -3,6 +3,7 @@ import { LoginFormData } from "@/pages/login/types";
 import {
   CreateWarehouseFormData,
   CreateManagerFormData,
+  CreateVehicleFormData,
 } from "@/forms/types/index";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
@@ -368,16 +369,14 @@ export const useCreateManagerMutation = () => {
 };
 
 export const useUpdateManagerStatusMutation = () => {
-  const updateManagerStatusMutation = async (
-   data:{
-    email:string,
-    work_status:string
-   }
-  ): Promise<UpdateManagerResponseType> => {
+  const updateManagerStatusMutation = async (data: {
+    email: string;
+    work_status: string;
+  }): Promise<UpdateManagerResponseType> => {
     try {
       const response = await axiosInstance.patch(
         "/admin/update-managerWork-status/",
-       data,
+        data,
       );
       return response.data;
     } catch (error: any) {
@@ -411,7 +410,7 @@ export const useUpdateManagerStatusMutation = () => {
 };
 
 export const useGetVehiclesRequest = () => {
-  const getManagersRequest = async () => {
+  const getVehiclesRequest = async () => {
     try {
       const response = await axiosInstance.get("/admin/vehicles");
 
@@ -430,5 +429,54 @@ export const useGetVehiclesRequest = () => {
     response: data,
     isLoading,
     isError,
+  };
+};
+export const useAddVehicleMutation = () => {
+  const addVehicleMutation = async (vehicleData: CreateVehicleFormData) => {
+    try {
+      const response = await axiosInstance.post(
+        "/admin/add-vehicle",
+        vehicleData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        },
+      );
+      return response.data;
+    } catch (error: any) {
+      throw error; // Let react-query handle the error
+    }
+  };
+
+  const {
+    mutateAsync: addVehicle,
+    isLoading,
+    data,
+    reset,
+  } = useMutation({
+    mutationKey: "addVehicle",
+    mutationFn: addVehicleMutation,
+    onSuccess: () => {
+      toast.success("Vehicle details added successfully");
+
+      reset();
+    },
+    onError: (error: any) => {
+      // Retrieve error message from the response body
+      const errorMessage =
+        error?.response?.data?.message || "An unexpected error occurred";
+
+      console.error(errorMessage); // Log the error message
+      toast.error(errorMessage); // Show the error message in a toast
+
+      reset();
+    },
+  });
+
+  return {
+    addVehicle,
+    isLoading,
+    response: data,
   };
 };
