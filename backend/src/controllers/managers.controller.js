@@ -2,6 +2,7 @@ import Manager from "../models/manager.model.js";
 import Employee from "../models/employee.model.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { uploadImage } from "../config/cloudinary.js";
 
 const getManager = async (req, res, next) => {
   try {

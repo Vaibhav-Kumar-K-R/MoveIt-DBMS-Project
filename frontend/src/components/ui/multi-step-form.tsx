@@ -29,7 +29,7 @@ const MultiStepForm = ({ className, formHeader }: MultiStepFormProps) => {
         className,
       )}
     >
-      <div className="flex flex-col gap-3 items-center justify-center w-full sticky -top-[1px] bg-white">
+      <div className="flex flex-col gap-3 items-center justify-center w-full sticky z-10 -top-[1px] bg-white">
         {formHeader}
         <div className="flex items-center justify-center w-full gap-2">
           {Array.from({ length: stepsLength }).map((_, index) => (

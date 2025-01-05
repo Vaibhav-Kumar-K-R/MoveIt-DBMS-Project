@@ -33,7 +33,7 @@ export const useManagerLoginRequest = () => {
     try {
       const response = await axiosInstance.post(
         "/manager/auth/sign-in",
-        loginData,
+        loginData
       );
 
       return response.data;
@@ -116,5 +116,46 @@ export const useManagerLogoutRequest = () => {
     isLoading,
     data,
     error,
+  };
+};
+
+export const useAddEmployeeRequest = () => {
+  const addEmployeeRequest = async (data: any) => {
+    try {
+      const response = await axiosInstance.post("/manager/add-employee", data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      return response.data;
+    } catch (error: any) {
+      throw new Error(error.message);
+    }
+  };
+
+  const {
+    mutateAsync: addEmployee,
+    isLoading,
+    data,
+    error,
+    isSuccess,
+  } = useMutation({
+    mutationKey: "addEmployeeRequest",
+    mutationFn: addEmployeeRequest,
+    onSuccess: () => {
+      toast("Employee added successfully", { icon: "🚀" });
+    },
+    onError: (error: any) => {
+      toast(error.message, { icon: "🚨" });
+    },
+  });
+
+  return {
+    addEmployee,
+    isLoading,
+    data,
+    error,
+    isSuccess,
   };
 };
