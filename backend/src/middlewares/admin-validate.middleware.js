@@ -57,7 +57,7 @@ const validateCreateManagerRequest = (req, res, next) => {
       pincode: z.string().min(6).max(6),
       city: z.string(),
       state: z.string(),
-      dob: z.string().regex(/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/), // DD-MM-YYYY
+      dob: z.string().regex(/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/), // YYYY-MM-DD
       work_status: z
         .enum(["working", "resigned", "terminated"])
         .default("working"),

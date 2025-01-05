@@ -5,7 +5,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Ellipsis,  UserPlus } from "lucide-react";
+import { Ellipsis } from "lucide-react";
 import DepartOrderButton from "../forms/depart-tracking/components/DepartOrderButton";
 
 const DashboardHeader = () => {
@@ -22,9 +22,6 @@ const DashboardHeader = () => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="mr-5">
-          <DropdownMenuItem className="px-5 py-2 font-semibold flex items-center justify-center focus:bg-zinc-200 cursor-pointer">
-            <UserPlus /> Add Employee
-          </DropdownMenuItem>
           <DropdownMenuItem
             asChild
             className="px-5 py-2 font-semibold flex items-center justify-center focus:bg-zinc-200 cursor-pointer"
