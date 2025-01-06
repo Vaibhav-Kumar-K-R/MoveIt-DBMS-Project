@@ -180,7 +180,7 @@ const DepartOrderForm = () => {
           disabled={isLoading}
           className={cn(
             "w-full",
-            isLoading ? "bg-opacity-75" : "bg-opacity-100"
+            isLoading ? "bg-opacity-75" : "bg-opacity-100",
           )}
         >
           {isLoading ? (

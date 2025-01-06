@@ -34,7 +34,7 @@ export const useManagerLoginRequest = () => {
     try {
       const response = await axiosInstance.post(
         "/manager/auth/sign-in",
-        loginData
+        loginData,
       );
 
       return response.data;
@@ -226,7 +226,7 @@ export const useGetEmployeesRequest = (page: number) => {
 
     try {
       const response = await axiosInstance.get(
-        `/manager/get-employees?${queryParams.toString()}`
+        `/manager/get-employees?${queryParams.toString()}`,
       );
 
       return response.data;
