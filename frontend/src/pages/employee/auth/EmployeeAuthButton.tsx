@@ -39,7 +39,7 @@ const EmployeeAuthButton = () => {
           "w-full border hover:bg-zinc-100",
           buttonVariants({
             variant: "ghost",
-          })
+          }),
         )}
       >
         <UserPen /> View Profile
