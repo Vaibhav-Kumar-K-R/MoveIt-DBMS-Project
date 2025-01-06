@@ -7,7 +7,7 @@ import { uploadImage } from "../config/cloudinary.js";
 const getManager = async (req, res, next) => {
   try {
     const manager = await Manager.findById(req.managerId).select(
-      "-password -__v",
+      "-password -__v"
     );
 
     if (!manager) {
@@ -33,14 +33,28 @@ const getEmployeesUnderManager = async (req, res, next) => {
       });
     }
 
+    const pageSize = 10;
+    const pageNumber = parseInt(req.query.page.toString() || "1");
+    const skip = (pageNumber - 1) * pageSize;
+
     const employees = await Employee.find({
       manager: managerId,
     })
-      .select("-password")
-      .sort({ createdAt: -1 });
+      .select("-password -__v")
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(10);
+    const totalEmployees = await Employee.countDocuments({
+      manager: managerId,
+    });
 
     res.status(200).json({
       employees,
+      pagination: {
+        total: totalEmployees,
+        page: pageNumber,
+        pages: Math.ceil(totalEmployees / pageSize),
+      },
       message: "Employees fetched successfully",
     });
   } catch (error) {
@@ -130,7 +144,7 @@ const addEmployee = async (req, res, next) => {
         : {
             ...req.body,
             manager: req.managerId,
-          },
+          }
     );
 
     res.status(201).json({
