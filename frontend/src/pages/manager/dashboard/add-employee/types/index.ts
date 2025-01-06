@@ -32,7 +32,7 @@ export const workDetailsSchema = z.object({
     .string()
     .regex(
       /^(([A-Z]{2}[0-9]{2})( )|([A-Z]{2}-[0-9]{2}))((19|20)[0-9][0-9])[0-9]{7}$/,
-      { message: "Invalid Indian Licence Number" }
+      { message: "Invalid Indian Licence Number" },
     ),
   driving_experience: z.coerce.number().min(1),
   salary: z.coerce.number().min(1),

@@ -64,7 +64,7 @@ export const useVendorDashboardContext = () => {
 
   if (context === undefined) {
     throw new Error(
-      "useVendorDashboardContext must be used within a VendorDashboardContextProvider"
+      "useVendorDashboardContext must be used within a VendorDashboardContextProvider",
     );
   }
 

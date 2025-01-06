@@ -56,7 +56,7 @@ const SummarySection = ({ employeeData }: SummarySectionProps) => {
     // Append Work Details
     formData.append(
       "driving_experience",
-      employeeData.driving_experience.toString()
+      employeeData.driving_experience.toString(),
     );
     formData.append("role", employeeData.role);
     formData.append("licence_number", employeeData.licence_number);
