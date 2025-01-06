@@ -20,6 +20,15 @@ export type EmployeeType = {
   work_status: string;
 };
 
+export type EmployeesUnderManager = {
+  employees: EmployeeType[];
+  pagination: {
+    total: number;
+    page: number;
+    pages: number;
+  };
+};
+
 export type Employees = {
   drivers: EmployeeType[];
 };
