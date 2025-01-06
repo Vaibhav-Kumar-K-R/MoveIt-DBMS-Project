@@ -20,6 +20,14 @@ managerRouter.post(
   managersController.addEmployee
 );
 
+managerRouter.post(
+  "/update-employee/:employeeId",
+  upload.single("employeeProfileImg"),
+  managerAuthMiddleware.verifyManagerToken,
+  managerValidateMiddleware.validateUpdateEmployeeRequest,
+  managersController.updateEmoployee
+);
+
 managerRouter.use(managerAuthMiddleware.verifyManagerToken);
 
 managerRouter.get("/me", managersController.getManager);

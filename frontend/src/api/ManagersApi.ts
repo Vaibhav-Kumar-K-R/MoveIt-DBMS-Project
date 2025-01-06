@@ -1,5 +1,6 @@
 import { LoginFormData } from "@/forms/login/types";
 import axiosInstance from "@/lib/axios";
+import { EmployeesUnderManager } from "@/types/employee";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -134,6 +135,7 @@ export const useAddEmployeeRequest = () => {
     }
   };
 
+  const queryClient = useQueryClient();
   const {
     mutateAsync: addEmployee,
     isLoading,
@@ -145,6 +147,11 @@ export const useAddEmployeeRequest = () => {
     mutationFn: addEmployeeRequest,
     onSuccess: () => {
       toast("Employee added successfully", { icon: "🚀" });
+      queryClient.invalidateQueries({
+        predicate: (query) =>
+          Array.isArray(query.queryKey) &&
+          query.queryKey.includes("getEmployeesRequest"),
+      });
     },
     onError: (error: any) => {
       toast(error.message, { icon: "🚨" });
@@ -160,8 +167,59 @@ export const useAddEmployeeRequest = () => {
   };
 };
 
+export const useEditEmployeeRequest = (employeeId: string) => {
+  const editEmployeeRequest = async (data: any) => {
+    try {
+      const response = await axiosInstance.post(
+        `/manager/update-employee/${employeeId}`,
+        data,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      return response.data;
+    } catch (error: any) {
+      throw new Error(error.message);
+    }
+  };
+
+  const queryClient = useQueryClient();
+  const {
+    mutateAsync: editEmployee,
+    isLoading,
+    data,
+    error,
+    isSuccess,
+  } = useMutation({
+    mutationKey: [employeeId, "editEmployeeRequest"],
+    mutationFn: editEmployeeRequest,
+    onSuccess: () => {
+      toast("Employee updated successfully", { icon: "🚀" });
+      queryClient.invalidateQueries({
+        predicate: (query) =>
+          Array.isArray(query.queryKey) &&
+          query.queryKey.includes("getEmployeesRequest"),
+      });
+    },
+    onError: (error: any) => {
+      toast(error.message, { icon: "🚨" });
+    },
+  });
+
+  return {
+    editEmployee,
+    isLoading,
+    data,
+    error,
+    isSuccess,
+  };
+};
+
 export const useGetEmployeesRequest = (page: number) => {
-  const getEmployeesRequest = async () => {
+  const getEmployeesRequest = async (): Promise<EmployeesUnderManager> => {
     const queryParams = new URLSearchParams();
 
     queryParams.append("page", page.toString());
@@ -183,7 +241,7 @@ export const useGetEmployeesRequest = (page: number) => {
   });
 
   return {
-    employees: data,
+    employeeData: data,
     isLoading,
     isError,
   };

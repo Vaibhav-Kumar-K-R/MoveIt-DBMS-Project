@@ -33,7 +33,7 @@ const getEmployeesUnderManager = async (req, res, next) => {
       });
     }
 
-    const pageSize = 10;
+    const pageSize = 5;
     const pageNumber = parseInt(req.query.page.toString() || "1");
     const skip = (pageNumber - 1) * pageSize;
 
@@ -43,7 +43,7 @@ const getEmployeesUnderManager = async (req, res, next) => {
       .select("-password -__v")
       .sort({ createdAt: -1 })
       .skip(skip)
-      .limit(10);
+      .limit(pageSize);
     const totalEmployees = await Employee.countDocuments({
       manager: managerId,
     });
@@ -156,6 +156,53 @@ const addEmployee = async (req, res, next) => {
   }
 };
 
+const updateEmoployee = async (req, res, next) => {
+  try {
+    const { employeeId } = req.params;
+    const employee = await Employee.findById(employeeId);
+
+    if (!employee) {
+      return res.status(404).json({
+        message: "Employee not found",
+      });
+    }
+
+    if (employee.manager.toString() !== req.managerId) {
+      return res.status(400).json({
+        message: "You are not authorized to update this employee",
+      });
+    }
+
+    const profileImg = req.file;
+    let profileImgDetails = null;
+
+    if (profileImg) {
+      profileImgDetails = await uploadImage(profileImg);
+    }
+
+    const updatedEmployee = await Employee.findByIdAndUpdate(
+      employeeId,
+      profileImgDetails
+        ? {
+            ...req.body,
+            profile_img: {
+              profile_img_url: profileImgDetails.secure_url,
+              public_id: profileImgDetails.public_id,
+            },
+          }
+        : req.body,
+      { new: true }
+    );
+
+    res.status(200).json({
+      employee_id: updatedEmployee._id,
+      message: "Employee updated successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const removeEmployee = async (req, res, next) => {
   try {
     const { employeeId } = req.params;
@@ -193,5 +240,6 @@ export default {
   signInManager,
   signOutManager,
   addEmployee,
+  updateEmoployee,
   removeEmployee,
 };

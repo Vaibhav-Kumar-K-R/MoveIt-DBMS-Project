@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { UserPlus } from "lucide-react";
-import AddEmployeeForm from "../add-employee/AddEmployeeForm";
+import AddEmployeeForm from "../form/add-employee/AddEmployeeForm";
 
 const DashboardHeader = () => {
   return (
