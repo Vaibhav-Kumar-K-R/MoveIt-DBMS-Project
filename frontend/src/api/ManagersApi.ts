@@ -159,3 +159,32 @@ export const useAddEmployeeRequest = () => {
     isSuccess,
   };
 };
+
+export const useGetEmployeesRequest = (page: number) => {
+  const getEmployeesRequest = async () => {
+    const queryParams = new URLSearchParams();
+
+    queryParams.append("page", page.toString());
+
+    try {
+      const response = await axiosInstance.get(
+        `/manager/get-employees?${queryParams.toString()}`
+      );
+
+      return response.data;
+    } catch (error: any) {
+      throw new Error(error.message);
+    }
+  };
+
+  const { data, isLoading, isError } = useQuery({
+    queryKey: [page, "getEmployeesRequest"],
+    queryFn: getEmployeesRequest,
+  });
+
+  return {
+    employees: data,
+    isLoading,
+    isError,
+  };
+};
