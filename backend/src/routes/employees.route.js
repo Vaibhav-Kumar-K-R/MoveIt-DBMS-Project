@@ -6,7 +6,10 @@ const employeeRouter = express.Router();
 
 employeeRouter.post("/auth/sign-in", employeesController.signInEmployee);
 
-employeeRouter.get("/get-all-drivers", employeesController.getAllDrivers);
+employeeRouter.get(
+  "/get-all-drivers",
+  employeesController.getAllAvailableDrivers
+);
 
 employeeRouter.use(employeeAuthMiddleware.verifyEmployeeToken);
 

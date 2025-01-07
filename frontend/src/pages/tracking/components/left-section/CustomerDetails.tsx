@@ -1,5 +1,5 @@
 import { formatPhoneNumber } from "@/helpers/format-phone-number";
-import { Order } from "@/types/customer";
+import { Order } from "@/types/order";
 
 type CustomerDetailsProps = {
   order: Order;

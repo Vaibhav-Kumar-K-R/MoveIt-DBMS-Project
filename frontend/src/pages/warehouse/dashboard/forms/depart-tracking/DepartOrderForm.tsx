@@ -24,6 +24,8 @@ import { departTrackingFormSchema, DepartTrackingFormValues } from "./types";
 import { cn } from "@/lib/utils";
 import { useGetAllVehicles } from "@/api/VehicleApi";
 import { useOrderDepartureRequest } from "@/api/WarehousesApi";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { avatarFallbackColor } from "@/constants/avatar-colors";
 
 const DepartOrderForm = () => {
   const form = useForm<DepartTrackingFormValues>({
@@ -97,11 +99,17 @@ const DepartOrderForm = () => {
                         className="cursor-pointer gap-2"
                       >
                         <div className="flex items-center gap-2">
-                          <img
-                            className="size-10 rounded-full"
-                            src={driver.profile_img.profile_img_url}
-                            alt={driver.name}
-                          />
+                          <Avatar>
+                            <AvatarImage
+                              src={driver.profile_img.profile_img_url}
+                              alt={driver.name}
+                            />
+                            <AvatarFallback
+                              className={cn(avatarFallbackColor())}
+                            >
+                              {driver.name.slice(0, 2).toUpperCase()}
+                            </AvatarFallback>
+                          </Avatar>
                           <div className="flex flex-col items-start">
                             <p className="font-semibold">{driver.name}</p>
                             <p className="text-xs text-zinc-500">
@@ -147,11 +155,17 @@ const DepartOrderForm = () => {
                         className="cursor-pointer gap-2"
                       >
                         <div className="flex items-center gap-2">
-                          <img
-                            className="size-10 rounded-full"
-                            src={vehicle.vehicle_img.vehicle_img_url}
-                            alt={vehicle.model}
-                          />
+                          <Avatar>
+                            <AvatarImage
+                              src={vehicle.vehicle_img.vehicle_img_url}
+                              alt={vehicle.model}
+                            />
+                            <AvatarFallback
+                              className={cn(avatarFallbackColor())}
+                            >
+                              {vehicle.model.slice(0, 2).toUpperCase()}
+                            </AvatarFallback>
+                          </Avatar>
                           <div className="flex flex-col items-start">
                             <p className="font-semibold">
                               {vehicle.type}, {vehicle.model}
@@ -180,7 +194,7 @@ const DepartOrderForm = () => {
           disabled={isLoading}
           className={cn(
             "w-full",
-            isLoading ? "bg-opacity-75" : "bg-opacity-100",
+            isLoading ? "bg-opacity-75" : "bg-opacity-100"
           )}
         >
           {isLoading ? (

@@ -1,4 +1,4 @@
-import { Order } from "@/types/customer";
+import { Order } from "@/types/order";
 import { Separator } from "@/components/ui/separator";
 import ProductDescription from "./left-section/ProductDescription";
 import CustomerDetails from "./left-section/CustomerDetails";

@@ -1,7 +1,6 @@
 import { useGetEmployeesRequest } from "@/api/ManagersApi";
 import AppLogo from "@/components/AppLogo";
 import PageControls from "@/components/PageControls";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import {
   Dialog,
@@ -21,7 +20,6 @@ import {
 } from "@/components/ui/table";
 import { EMPLOYEE_ROLES, EMPLOYEE_WORK_STATUS } from "@/config/employee";
 import { formatIndianCurrency } from "@/helpers/format-currency";
-import { Edit } from "lucide-react";
 import { useState } from "react";
 import EmployeeDetails from "./EmployeeDetails";
 import EditEmployeeDetails from "./EditEmployeeDetails";

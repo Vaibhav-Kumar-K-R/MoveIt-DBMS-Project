@@ -1,5 +1,4 @@
-import { Order } from "./customer";
-import { Warehouse } from "./warehouse";
+import { Order } from "./order";
 
 export type Vendor = {
   profile_img: {

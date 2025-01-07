@@ -40,8 +40,8 @@ managerRouter.get(
 );
 
 managerRouter.delete(
-  "/remove-employee/:employeeId",
-  managersController.removeEmployee
+  "/update-work-status/:employeeId",
+  managersController.updateEmployeeWorkStatus
 );
 
 export default managerRouter;

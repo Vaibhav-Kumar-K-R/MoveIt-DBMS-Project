@@ -1,3 +1,6 @@
+import { Order } from "./order";
+import { Pagination } from "./pagination";
+
 export type Warehouse = {
   _id: string;
   profile_img: {
@@ -19,3 +22,8 @@ export type Warehouse = {
 export type Warehouses = {
   warehouses: Warehouse[];
 };
+
+export type AssignedOrders = {
+  orders: Order[];
+  pagination: Pagination;
+}

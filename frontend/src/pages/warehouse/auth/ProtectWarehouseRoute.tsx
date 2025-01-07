@@ -9,7 +9,7 @@ const ProtectWarehouseRoute = () => {
     return <Redirect />;
   }
 
-  return isSignedIn ? <Outlet /> : <Navigate to="/vendor/login" replace />;
+  return isSignedIn ? <Outlet /> : <Navigate to="/warehouse/login" replace />;
 };
 
 export default ProtectWarehouseRoute;

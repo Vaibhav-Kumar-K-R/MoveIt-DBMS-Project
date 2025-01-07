@@ -10,7 +10,9 @@ import {
 } from "@/components/ui/timeline";
 import { ORDER_TRACKING_STATUS } from "@/config/order";
 import { formatDate, formatTime } from "@/helpers/format-date";
-import { Order, Tracking } from "@/types/customer";
+import { formatIndianPincode } from "@/helpers/format-pincode";
+import { Tracking } from "@/types/customer";
+import { Order } from "@/types/order";
 import { Fragment } from "react/jsx-runtime";
 
 type TrackingHistoryTimelineProps = {
@@ -52,7 +54,9 @@ const TrackingHistoryTimeline = ({
                   <span className="text-zinc-500">
                     {order.vendor.city}, {order.vendor.state}
                   </span>
-                  <span className="text-zinc-500">{order.vendor.pincode}</span>
+                  <span className="text-zinc-500">
+                    {formatIndianPincode(order.vendor.pincode || "000000")}
+                  </span>
                 </div>
               </TimelineDescription>
             </TimelineContent>
@@ -132,7 +136,9 @@ const TimeLineTemplate = ({
             <span className="text-zinc-500">
               {event.warehouse.city}, {event.warehouse.state}
             </span>
-            <span className="text-zinc-500">{event.warehouse.pincode}</span>
+            <span className="text-zinc-500">
+              {formatIndianPincode(event.warehouse.pincode)}
+            </span>
           </div>
         </TimelineDescription>
       </TimelineContent>

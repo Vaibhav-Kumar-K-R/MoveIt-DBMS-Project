@@ -10,7 +10,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Edit } from "lucide-react";
 import OrderForm from "../order-form/OrderForm";
 import { useState } from "react";
-import { Order } from "@/types/customer";
+import { Order } from "@/types/order";
 import { OrderFormType } from "../order-form/types";
 
 type EditOrderProps = {

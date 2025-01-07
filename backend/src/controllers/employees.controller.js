@@ -23,11 +23,12 @@ const getEmployee = async (req, res, next) => {
   }
 };
 
-const getAllDrivers = async (_req, res, next) => {
+const getAllAvailableDrivers = async (_req, res, next) => {
   try {
-    const drivers = await Employee.find({ role: "driver" }).select(
-      "-password -__v"
-    );
+    const drivers = await Employee.find({
+      role: "driver",
+      curr_status: "available",
+    }).select("-password -__v");
 
     return res.status(200).json({ drivers });
   } catch (error) {
@@ -207,7 +208,7 @@ const orderDelivery = async (req, res, next) => {
 
 export default {
   getEmployee,
-  getAllDrivers,
+  getAllAvailableDrivers,
   signInEmployee,
   signOutEmployee,
   addTracking,
