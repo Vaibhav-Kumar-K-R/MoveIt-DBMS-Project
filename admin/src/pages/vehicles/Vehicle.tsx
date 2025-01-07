@@ -11,19 +11,18 @@ import AddVehicleModal from "@/pages/vehicles/components/AddVehicleModal";
 import Redirect from "@/pages/redirect/Redirect";
 import { useState } from "react";
 import { useGetVehiclesRequest } from "@/api/AdminsApi";
-
+import UpdateVehicleStatus from "@/pages/vehicles/components/UpdateVehicleStatus";
 export default function Vehicle() {
   const { response, isLoading } = useGetVehiclesRequest();
   const [isAddingVehicle, setIsAddingVehicle] = useState(false);
   const [isEditingVehicleStatus, setIsEditingVehicleStatus] = useState(false);
   const [editVehicleData, setEditVehicleData] = useState<{
     number_plate: string;
-    curr_status: string;
+    status: string;
   }>({
     number_plate: "",
-    curr_status: "",
+    status: "",
   });
- 
 
   if (isLoading) {
     return <Redirect />;
@@ -63,7 +62,23 @@ export default function Vehicle() {
                 </p>
                 <p>
                   <strong>Status:</strong>
-                  {vehicle.curr_status}
+                  {vehicle.curr_status === "available" ? (
+                    <span className="text-green-500  font-semibold text-md px-2 py-1 rounded">
+                      Available
+                    </span>
+                  ) : vehicle.curr_status === "in_use" ? (
+                    <span className="text-yellow-500  font-semibold text-md px-2 py-1 rounded">
+                      In Use
+                    </span>
+                  ) : vehicle.curr_status === "in_maintenance" ? (
+                    <span className="text-blue-500 font-semibold text-md px-2 py-1 rounded">
+                      In Maintenance
+                    </span>
+                  ) : (
+                    <span className="text-red-500  font-semibold text-md px-2 py-1 rounded">
+                      Not Available
+                    </span>
+                  )}
                 </p>
                 <p className="capitalize">
                   <strong>Model:</strong>
@@ -77,11 +92,10 @@ export default function Vehicle() {
             <CardFooter>
               <Button
                 onClick={() => {
-                  
-                setEditVehicleData({
+                  setEditVehicleData({
                     number_plate: vehicle.number_plate,
-                    curr_status: vehicle.curr_status,
-                 });
+                    status: vehicle.curr_status,
+                  });
                   setIsEditingVehicleStatus(true);
                 }}
                 variant="outline"
@@ -101,14 +115,14 @@ export default function Vehicle() {
           onClose={setIsAddingVehicle}
         ></AddVehicleModal>
       )}
-      {/* {isEditingVehicleStatuse && (
-        <UpdateWarehouseModal
-          status={editWarehouseStatus}
-          email={editWarehouseEmail}
-          isOpen={isEditingVehicleStatuse}
-          onClose={setIsEdittingWarehouse}
+      {isEditingVehicleStatus && (
+        <UpdateVehicleStatus
+          status={editVehicleData.status}
+          number_plate={editVehicleData.number_plate}
+          isOpen={isEditingVehicleStatus}
+          onClose={setIsEditingVehicleStatus}
         />
-      )} */}
+      )}
     </div>
   );
 }

@@ -480,3 +480,44 @@ export const useAddVehicleMutation = () => {
     response: data,
   };
 };
+
+export const useUpdateVehicleStatusMutation = () => {
+  const updateVehicleStatusMutation = async (data: {
+    number_plate: string;
+    status: string;
+  }) => {
+    try {
+      const response = await axiosInstance.patch(
+        "/admin/update-vehicle-status/",
+        data,
+      );
+      return response.data;
+    } catch (error: any) {
+      throw new Error(error.message);
+    }
+  };
+
+  const {
+    mutateAsync: updateVehicle,
+    isLoading,
+    data,
+    reset,
+  } = useMutation({
+    mutationKey: "updateVehicle",
+    mutationFn: updateVehicleStatusMutation,
+    onSuccess: () => {
+      toast.success("Vehicle status updated successfully ");
+      reset();
+    },
+    onError: (error: any) => {
+      toast.error(error?.toString());
+      reset();
+    },
+  });
+
+  return {
+    updateVehicle,
+    isLoading,
+    response: data,
+  };
+};
