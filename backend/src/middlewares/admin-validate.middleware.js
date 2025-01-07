@@ -77,8 +77,13 @@ const validateCreateVehicleRequest = (req, res, next) => {
   try {
     req.body.capacity = parseInt(req.body.capacity);
     const createVehicleRequest = z.object({
-      number_plate: z.string().regex(/^[A-Z]{2}-\d{2}-[A-Z]{2}-\d{4}$/, "Invalid number plate format"),
-      curr_status:  z.string(),
+      number_plate: z
+        .string()
+        .regex(
+          /^[A-Z]{2}-\d{2}-[A-Z]{2}-\d{4}$/,
+          "Invalid number plate format",
+        ),
+      curr_status: z.string(),
       capacity: z.number(),
       model: z.string(),
       type: z.string(),
