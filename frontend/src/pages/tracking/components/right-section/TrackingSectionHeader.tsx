@@ -1,6 +1,7 @@
 import { formatDate } from "@/helpers/format-date";
 import { ORDER_STATUS } from "@/config/order";
-import { Order, Tracking } from "@/types/customer";
+import { Tracking } from "@/types/customer";
+import { Order } from "@/types/order";
 
 type TrackingSectionHeaderProps = {
   order: Order;

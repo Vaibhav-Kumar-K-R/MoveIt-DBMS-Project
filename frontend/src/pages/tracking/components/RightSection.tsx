@@ -14,7 +14,7 @@ const RightSection = ({
   return (
     <div className="space-y-6">
       <TrackingSectionHeader order={order} tracking={tracking} />
-      {order.status === "in_transit" && (
+      {order.status === "delivered" && (
         <>
           <Separator />
           <TrackingReviewSection />

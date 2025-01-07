@@ -3,7 +3,7 @@ import { Separator } from "@/components/ui/separator";
 import { formatIndianCurrency } from "@/helpers/format-currency";
 import { formatDate, formatTime } from "@/helpers/format-date";
 import { formatPhoneNumber } from "@/helpers/format-phone-number";
-import { Order } from "@/types/customer";
+import { Order } from "@/types/order";
 import {
   Calendar,
   CreditCard,

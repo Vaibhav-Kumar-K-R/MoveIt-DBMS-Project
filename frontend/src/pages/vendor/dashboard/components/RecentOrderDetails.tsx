@@ -23,6 +23,7 @@ import AppLogo from "@/components/AppLogo";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import EditOrder from "./EditOrder";
 import { WAREHOUSE_STATUSES } from "@/config/warehouse";
+import { cn } from "@/lib/utils";
 
 const RecentOrderDetails = () => {
   const { recentOrders, isLoading } = useGetRecentOrdersRequest();
@@ -63,10 +64,7 @@ const RecentOrderDetails = () => {
                 <TableRow>
                   <TableCell className="font-medium">{index + 1}</TableCell>
                   <DialogTrigger asChild>
-                    <TableCell
-                      key={order._id}
-                      className="font-medium cursor-pointer hover:underline w-[450px] line-clamp-1 overflow-hidden m-4"
-                    >
+                    <TableCell className="font-medium cursor-pointer hover:underline w-[450px] line-clamp-1 overflow-hidden my-4">
                       {order.product_name}
                     </TableCell>
                   </DialogTrigger>
@@ -75,7 +73,16 @@ const RecentOrderDetails = () => {
                     {formatIndianCurrency(order.price_details.total_price)}
                   </TableCell>
                   <TableCell>{formatDate(order.order_placed_date)}</TableCell>
-                  <TableCell>
+                  <TableCell
+                    className={cn(
+                      order.warehouse_status === "rejected"
+                        ? "text-red-500"
+                        : order.warehouse_status === "accepted"
+                        ? "text-green-500"
+                        : "text-yellow-500",
+                        "font-semibold"
+                    )}
+                  >
                     {WAREHOUSE_STATUSES[order.warehouse_status]}
                   </TableCell>
                   <TableCell>

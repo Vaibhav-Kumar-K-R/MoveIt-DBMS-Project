@@ -203,9 +203,10 @@ const updateEmoployee = async (req, res, next) => {
   }
 };
 
-const removeEmployee = async (req, res, next) => {
+const updateEmployeeWorkStatus = async (req, res, next) => {
   try {
     const { employeeId } = req.params;
+    const { status } = req.query;
     const employee = await Employee.findById(employeeId);
 
     if (!employee) {
@@ -220,14 +221,39 @@ const removeEmployee = async (req, res, next) => {
       });
     }
 
-    if (employee.profile_img?.public_id) {
-      await deleteImage(employee.profile_img.public_id);
+    const workStatuses = ["employed", "resigned", "terminated"];
+
+    if (!workStatuses.includes(status)) {
+      return res.status(400).json({
+        message: "Invalid work status",
+      });
     }
 
-    await Employee.findByIdAndDelete(employeeId);
+    switch (status) {
+      case "employed":
+        await Employee.findByIdAndUpdate(employeeId, {
+          work_status: "employed",
+        });
+        break;
+
+      case "resigned":
+        await Employee.findByIdAndUpdate(employeeId, {
+          work_status: "resigned",
+          curr_status: "inactive",
+        });
+        break;
+
+      case "terminated":
+        await Employee.findByIdAndUpdate(employeeId, {
+          work_status: "terminated",
+          curr_status: "inactive",
+        });
+        break;
+    }
 
     res.status(200).json({
-      message: "Employee removed successfully",
+      employee_id: employeeId,
+      message: "Employee work status updated successfully",
     });
   } catch (error) {
     next(error);
@@ -241,5 +267,5 @@ export default {
   signOutManager,
   addEmployee,
   updateEmoployee,
-  removeEmployee,
+  updateEmployeeWorkStatus,
 };

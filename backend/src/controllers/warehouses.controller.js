@@ -92,6 +92,77 @@ const signOutWarehouse = async (req, res, next) => {
   }
 };
 
+const getOrdersAssigned = async (req, res, next) => {
+  try {
+    const pageSize = 5;
+    const page = parseInt(req.query?.page?.toString() || "1");
+    const skip = (page - 1) * pageSize;
+
+    const query = {
+      warehouse: req.warehouseId,
+      warehouse_status: "pending",
+    };
+
+    const orders = await Order.find(query)
+      .sort({ createdAt: "asc" })
+      .skip(skip)
+      .limit(pageSize)
+      .select("-__v")
+      .populate({
+        path: "vendor",
+        select: "-password -__v",
+      });
+    const totalOrders = await Order.countDocuments(query);
+
+    res.status(200).json({
+      orders,
+      pagination: {
+        total: totalOrders,
+        page,
+        pages: Math.ceil(totalOrders / pageSize),
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const updateOrderWarehouseStatus = async (req, res, next) => {
+  try {
+    const { orderId } = req.params;
+    const { status } = req.query;
+
+    const order = await Order.findById(orderId);
+
+    if (!order) {
+      return res.status(404).json({
+        message: "Order not found",
+      });
+    }
+
+    if (order.warehouse.toString() !== req.warehouseId) {
+      return res.status(400).json({
+        message: "You are not authorized to update this order",
+      });
+    }
+
+    if (!["accepted", "rejected", "pending"].includes(status)) {
+      return res.status(400).json({
+        message: "Invalid status",
+      });
+    }
+
+    order.warehouse_status = status;
+    await order.save();
+
+    res.status(200).json({
+      message: "Order status updated successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const departureTracking = async (req, res, next) => {
   try {
     const { vehicleId, employeeId, shippingId } = req.body;
@@ -152,6 +223,10 @@ const departureTracking = async (req, res, next) => {
     if (employee.role !== "driver") {
       return res.status(400).json({ message: "Employee is not a driver" });
     }
+
+    employee.curr_status = "in_work";
+    vehicle.curr_status = "in_use";
+    await Promise.all([employee.save(), vehicle.save()]);
 
     await Tracking.create({
       order: order._id,
@@ -317,6 +392,8 @@ export default {
   getAllWarehouses,
   signInWarehouse,
   signOutWarehouse,
+  getOrdersAssigned,
+  updateOrderWarehouseStatus,
   departureTracking,
   outForDeliveryOrder,
   verifyTracking,

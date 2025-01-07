@@ -19,6 +19,16 @@ warehouseRouter.get("/me", warehousesController.getWarehouse);
 
 warehouseRouter.post("/auth/sign-out", warehousesController.signOutWarehouse);
 
+warehouseRouter.get(
+  "/get-assigned-orders",
+  warehousesController.getOrdersAssigned
+);
+
+warehouseRouter.patch(
+  "/update-order-status/:orderId",
+  warehousesController.updateOrderWarehouseStatus
+);
+
 warehouseRouter.post(
   "/departure",
   warehouseValidateMiddleware.validateOrderDepartureRequest,

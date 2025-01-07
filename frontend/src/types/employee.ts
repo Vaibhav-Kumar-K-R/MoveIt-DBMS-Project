@@ -1,3 +1,5 @@
+import { Pagination } from "./pagination";
+
 export type EmployeeType = {
   _id: string;
   name: string;
@@ -22,11 +24,7 @@ export type EmployeeType = {
 
 export type EmployeesUnderManager = {
   employees: EmployeeType[];
-  pagination: {
-    total: number;
-    page: number;
-    pages: number;
-  };
+  pagination: Pagination;
 };
 
 export type Employees = {

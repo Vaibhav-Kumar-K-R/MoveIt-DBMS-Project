@@ -1,4 +1,5 @@
-import { Order } from "@/types/customer";
+import { formatIndianCurrency } from "@/helpers/format-currency";
+import { Order } from "@/types/order";
 
 type ProductDescriptionProps = {
   order: Order;
@@ -19,7 +20,7 @@ const ProductDescription = ({ order }: ProductDescriptionProps) => {
 
       <div>
         <h3 className="text-sm text-muted-foreground">Price</h3>
-        <p className="font-medium">₹ {order.price_details.total_price}</p>
+        <p className="font-medium">{formatIndianCurrency(order.price_details.total_price)}</p>
       </div>
 
       <div>
