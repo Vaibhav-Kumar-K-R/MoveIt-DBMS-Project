@@ -16,6 +16,7 @@ import adminRouter from "./routes/admins.route.js";
 import managerRouter from "./routes/managers.route.js";
 import employeeRouter from "./routes/employees.route.js";
 import warehouseRouter from "./routes/warehouses.route.js";
+import vehicleRouter from "./routes/vehicles.route.js";
 
 connectDB();
 setUpCloudinary();
@@ -48,6 +49,7 @@ app.use("/api/admin", adminRouter);
 app.use("/api/warehouse", warehouseRouter);
 app.use("/api/manager", managerRouter);
 app.use("/api/employee", employeeRouter);
+app.use("/api/vehicle", vehicleRouter);
 
 // Error handler
 app.use("*", (err, _req, res, next) => {

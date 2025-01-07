@@ -15,3 +15,7 @@ export type Warehouse = {
   createdAt: Date;
   updatedAt: Date;
 };
+
+export type Warehouses = {
+  warehouses: Warehouse[];
+};

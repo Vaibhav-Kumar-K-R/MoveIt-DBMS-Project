@@ -1,5 +1,6 @@
 import Employee from "../models/employee.model.js";
 import Order from "../models/order.model.js";
+import Warehouse from "../models/warehouse.model.js";
 import Tracking from "../models/tracking.model.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
@@ -7,7 +8,7 @@ import bcrypt from "bcryptjs";
 const getEmployee = async (req, res, next) => {
   try {
     const employee = await Employee.findById(req.employeeId).select(
-      "-password -__v",
+      "-password -__v"
     );
 
     if (!employee) {
@@ -17,6 +18,18 @@ const getEmployee = async (req, res, next) => {
     }
 
     return res.status(200).json(employee);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getAllDrivers = async (_req, res, next) => {
+  try {
+    const drivers = await Employee.find({ role: "driver" }).select(
+      "-password -__v"
+    );
+
+    return res.status(200).json({ drivers });
   } catch (error) {
     next(error);
   }
@@ -44,7 +57,7 @@ const signInEmployee = async (req, res, next) => {
     const token = jwt.sign(
       { employeeId: employee._id },
       process.env.JWT_SECRET,
-      { expiresIn: "1d" },
+      { expiresIn: "1d" }
     );
 
     res.cookie("employee_auth_token", token, {
@@ -79,7 +92,7 @@ const signOutEmployee = async (req, res, next) => {
 
 const addTracking = async (req, res, next) => {
   try {
-    const { shippingId, warehouseId } = req.params;
+    const { shippingId, warehouse } = req.body;
     const order = await Order.findOne({
       shipping_id: shippingId,
     });
@@ -110,7 +123,7 @@ const addTracking = async (req, res, next) => {
 
     const latestTracking = await Tracking.findOne({
       order: order._id,
-      warehouse: warehouseId,
+      warehouse: warehouse,
     })
       .sort({ createdAt: -1 })
       .limit(1);
@@ -128,7 +141,7 @@ const addTracking = async (req, res, next) => {
 
     let tracking = await Tracking.findOne({
       order: order._id,
-      warehouse: warehouseId,
+      warehouse,
       status: "arrived",
     });
 
@@ -140,7 +153,7 @@ const addTracking = async (req, res, next) => {
 
     tracking = await Tracking.create({
       order: order._id,
-      warehouse: warehouseId,
+      warehouse: warehouse,
       status: "arrived",
       employee: req.employeeId,
     });
@@ -194,6 +207,7 @@ const orderDelivery = async (req, res, next) => {
 
 export default {
   getEmployee,
+  getAllDrivers,
   signInEmployee,
   signOutEmployee,
   addTracking,

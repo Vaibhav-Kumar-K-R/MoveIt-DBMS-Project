@@ -6,6 +6,8 @@ const employeeRouter = express.Router();
 
 employeeRouter.post("/auth/sign-in", employeesController.signInEmployee);
 
+employeeRouter.get("/get-all-drivers", employeesController.getAllDrivers);
+
 employeeRouter.use(employeeAuthMiddleware.verifyEmployeeToken);
 
 employeeRouter.get("/me", employeesController.getEmployee);
@@ -13,15 +15,15 @@ employeeRouter.get("/me", employeesController.getEmployee);
 employeeRouter.post("/auth/sign-out", employeesController.signOutEmployee);
 
 employeeRouter.post(
-  "/add-tracking/:shippingId/:warehouseId",
+  "/add-tracking",
   employeeAuthMiddleware.verifyDriver,
-  employeesController.addTracking,
+  employeesController.addTracking
 );
 
 employeeRouter.post(
   "/delivery/:shippingId",
   employeeAuthMiddleware.verifyDeliveryBoy,
-  employeesController.orderDelivery,
+  employeesController.orderDelivery
 );
 
 export default employeeRouter;

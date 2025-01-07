@@ -42,12 +42,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { NearbyWarehouses } from "@/types/vendor";
+import { Warehouses } from "@/types/warehouse";
 
 type ProductFormProps = {
   orderData: ProductFormType;
   updateOrderData: (data: ProductFormType) => void;
-  nearbyWarehouses: NearbyWarehouses | undefined;
+  nearbyWarehouses: Warehouses | undefined;
 };
 
 const ProductForm = ({
@@ -333,7 +333,7 @@ const ProductForm = ({
                       variant={"outline"}
                       className={cn(
                         "justify-start text-left font-normal w-full",
-                        !field.value && "text-muted-foreground"
+                        !field.value && "text-muted-foreground",
                       )}
                     >
                       <CalendarIcon className="mr-2 h-4 w-4" />

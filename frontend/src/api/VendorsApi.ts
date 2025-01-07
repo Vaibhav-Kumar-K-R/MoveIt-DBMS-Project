@@ -2,7 +2,8 @@ import { LoginFormData } from "@/forms/login/types";
 import axiosInstance from "@/lib/axios";
 import { OrderFormType } from "@/pages/vendor/dashboard/order-form/types";
 import { VendorsSignUpData } from "@/pages/vendor/sign-up/types";
-import { NearbyWarehouses, RecentOrdersType, Vendor } from "@/types/vendor";
+import { RecentOrdersType, Vendor } from "@/types/vendor";
+import { Warehouses } from "@/types/warehouse";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -36,7 +37,7 @@ export const useVendorLoginRequest = () => {
     try {
       const response = await axiosInstance.post(
         "/vendor/auth/sign-in",
-        loginData
+        loginData,
       );
 
       return response.data;
@@ -76,7 +77,7 @@ export const useVendorSignUpRequest = () => {
     try {
       const response = await axiosInstance.post(
         "/vendor/auth/sign-up",
-        signUpFormData
+        signUpFormData,
       );
 
       return response.data;
@@ -166,7 +167,7 @@ export const useCreateOrderRequest = () => {
     try {
       const response = await axiosInstance.post(
         "/vendor/create-order",
-        orderData
+        orderData,
       );
 
       return response.data;
@@ -214,7 +215,7 @@ export const useEditOrderRequest = (orderId: string) => {
     try {
       const response = await axiosInstance.post(
         `/vendor/edit-order/${orderId}`,
-        orderData
+        orderData,
       );
 
       return response.data;
@@ -294,10 +295,10 @@ export const useGetNearbyWarehouses = (state: string | undefined) => {
 
   queryParams.append("state", state as string);
 
-  const getNearbyWarehouses = async (): Promise<NearbyWarehouses> => {
+  const getNearbyWarehouses = async (): Promise<Warehouses> => {
     try {
       const response = await axiosInstance.get(
-        `/vendor/nearby-warehouses?${queryParams.toString()}`
+        `/vendor/nearby-warehouses?${queryParams.toString()}`,
       );
 
       return response.data;

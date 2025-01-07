@@ -1,6 +1,7 @@
 import { LoginFormData } from "@/forms/login/types";
 import axiosInstance from "@/lib/axios";
-import { EmployeeType } from "@/types/employee";
+import { AddTrackingFormValues } from "@/pages/employee/add-tracking/types";
+import { Employees, EmployeeType } from "@/types/employee";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -116,6 +117,73 @@ export const useEmployeeLogoutRequest = () => {
     logoutEmployee,
     isLoading,
     error,
+    isSuccess,
+  };
+};
+
+export const useAddTrackingRequest = () => {
+  const addTrackingRequest = async (trackingInfo: AddTrackingFormValues) => {
+    try {
+      const response = await axiosInstance.post(
+        "/employee/add-tracking",
+        trackingInfo,
+      );
+
+      return response.data;
+    } catch (error: any) {
+      throw new Error(error.message);
+    }
+  };
+
+  const {
+    mutateAsync: addTracking,
+    isLoading,
+    error,
+    isSuccess,
+  } = useMutation({
+    mutationKey: "addTrackingRequest",
+    mutationFn: addTrackingRequest,
+    onSuccess: () => {
+      toast("Tracking added successfully", { icon: "🚀" });
+    },
+    onError: (error: any) => {
+      toast(error.message, { icon: "🚨" });
+    },
+  });
+
+  return {
+    addTracking,
+    isLoading,
+    error,
+    isSuccess,
+  };
+};
+
+export const useGetAllDriversRequest = () => {
+  const getAllDriversRequest = async (): Promise<Employees> => {
+    try {
+      const response = await axiosInstance.get("/employee/get-all-drivers");
+
+      return response.data;
+    } catch (error: any) {
+      throw new Error(error.message);
+    }
+  };
+
+  const {
+    data: allDrivers,
+    isLoading,
+    isError,
+    isSuccess,
+  } = useQuery({
+    queryKey: "getAllDriversRequest",
+    queryFn: getAllDriversRequest,
+  });
+
+  return {
+    allDrivers,
+    isLoading,
+    isError,
     isSuccess,
   };
 };

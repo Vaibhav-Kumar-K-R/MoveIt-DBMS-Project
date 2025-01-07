@@ -9,7 +9,23 @@ const managerRouter = express.Router();
 managerRouter.post(
   "/auth/sign-in",
   managerValidateMiddleware.validateManagerSignInRequest,
-  managersController.signInManager,
+  managersController.signInManager
+);
+
+managerRouter.post(
+  "/add-employee",
+  upload.single("employeeProfileImg"),
+  managerAuthMiddleware.verifyManagerToken,
+  managerValidateMiddleware.validateAddEmployeeRequest,
+  managersController.addEmployee
+);
+
+managerRouter.post(
+  "/update-employee/:employeeId",
+  upload.single("employeeProfileImg"),
+  managerAuthMiddleware.verifyManagerToken,
+  managerValidateMiddleware.validateUpdateEmployeeRequest,
+  managersController.updateEmoployee
 );
 
 managerRouter.use(managerAuthMiddleware.verifyManagerToken);
@@ -20,19 +36,12 @@ managerRouter.post("/auth/sign-out", managersController.signOutManager);
 
 managerRouter.get(
   "/get-employees",
-  managersController.getEmployeesUnderManager,
-);
-
-managerRouter.post(
-  "/add-employee",
-  upload.single("employeeProfileImg"),
-  managerValidateMiddleware.validateAddEmployeeRequest,
-  managersController.addEmployee,
+  managersController.getEmployeesUnderManager
 );
 
 managerRouter.delete(
   "/remove-employee/:employeeId",
-  managersController.removeEmployee,
+  managersController.removeEmployee
 );
 
 export default managerRouter;

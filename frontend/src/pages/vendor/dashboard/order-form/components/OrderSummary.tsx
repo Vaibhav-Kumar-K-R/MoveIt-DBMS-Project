@@ -21,14 +21,14 @@ import { formatPhoneNumber } from "@/helpers/format-phone-number";
 import { useCreateOrderRequest, useEditOrderRequest } from "@/api/VendorsApi";
 import { OrderFormType } from "../types";
 import { formatIndianCurrency } from "@/helpers/format-currency";
-import { NearbyWarehouses } from "@/types/vendor";
+import { Warehouses } from "@/types/warehouse";
 import { useMemo } from "react";
 
 type OrderSummaryProps = {
   orderData: OrderFormType;
   isEditing?: boolean;
   order_id?: string;
-  nearbyWarehouses: NearbyWarehouses | undefined;
+  nearbyWarehouses: Warehouses | undefined;
 };
 
 const OrderSummary = ({
@@ -40,12 +40,12 @@ const OrderSummary = ({
   const { createOrder, isLoading: isCreateOrderLoading } =
     useCreateOrderRequest();
   const { editOrder, isLoading: isEditOrderLoading } = useEditOrderRequest(
-    order_id as string
+    order_id as string,
   );
   const { controls } = useMultiStepFormContext();
   const selectedWarehouse = useMemo(() => {
     return nearbyWarehouses?.warehouses.find(
-      (warehouse) => warehouse._id === orderData.warehouse
+      (warehouse) => warehouse._id === orderData.warehouse,
     );
   }, [nearbyWarehouses, orderData]);
 
@@ -123,14 +123,14 @@ const OrderSummary = ({
               icon: IndianRupee,
               title: "Product Price",
               information: formatIndianCurrency(
-                orderData.price_details.product_price
+                orderData.price_details.product_price,
               ),
             },
             {
               icon: Truck,
               title: "Delivery Charge",
               information: formatIndianCurrency(
-                orderData.price_details.delivery_charge
+                orderData.price_details.delivery_charge,
               ),
             },
             {
@@ -241,7 +241,7 @@ const OrderSummary = ({
           icon={Calendar}
           title={"Order Placed Date"}
           information={`${formatDate(
-            orderData.order_placed_date
+            orderData.order_placed_date,
           )} | At ${formatTime(orderData.order_placed_date)}`}
         />
       </div>

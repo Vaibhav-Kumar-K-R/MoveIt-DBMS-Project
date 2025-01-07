@@ -1,5 +1,7 @@
 import { LoginFormData } from "@/forms/login/types";
 import axiosInstance from "@/lib/axios";
+import { DepartTrackingFormValues } from "@/pages/warehouse/dashboard/forms/depart-tracking/types";
+import { Warehouses } from "@/types/warehouse";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -116,5 +118,69 @@ export const useWarehouseLogoutRequest = () => {
     isLoading,
     data,
     error,
+  };
+};
+
+export const useGetAllWarehousesRequest = () => {
+  const getAllWarehousesRequest = async (): Promise<Warehouses> => {
+    try {
+      const response = await axiosInstance.get("/warehouse/all-warehouses");
+
+      return response.data;
+    } catch (error: any) {
+      throw new Error(error.message);
+    }
+  };
+
+  const {
+    data: allWarehouses,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: "getAllWarehousesRequest",
+    queryFn: getAllWarehousesRequest,
+  });
+
+  return {
+    allWarehouses,
+    isLoading,
+    isError,
+  };
+};
+
+export const useOrderDepartureRequest = () => {
+  const orderDepartureRequest = async (data: DepartTrackingFormValues) => {
+    try {
+      const response = await axiosInstance.post("/warehouse/departure", data);
+
+      return response.data;
+    } catch (error: any) {
+      throw new Error(error.message);
+    }
+  };
+
+  const {
+    mutateAsync: departOrder,
+    isLoading,
+    data,
+    error,
+    isSuccess,
+  } = useMutation({
+    mutationKey: "orderDepartureRequest",
+    mutationFn: orderDepartureRequest,
+    onSuccess: () => {
+      toast("Departure order sent successfully", { icon: "🚀" });
+    },
+    onError: (error: any) => {
+      toast(error.message, { icon: "🚨" });
+    },
+  });
+
+  return {
+    departOrder,
+    isLoading,
+    data,
+    error,
+    isSuccess,
   };
 };
