@@ -124,7 +124,7 @@ const updateProfile = async (req, res, next) => {
     if (profileImage) {
       profileImgDetails = await uploadImage(
         profileImage,
-        vendor.profile_img?.public_id
+        vendor.profile_img?.public_id,
       );
 
       updatedVendor = await Vendor.findByIdAndUpdate(
@@ -136,7 +136,7 @@ const updateProfile = async (req, res, next) => {
             public_id: profileImgDetails.public_id,
           },
         },
-        { new: true }
+        { new: true },
       );
     } else {
       updatedVendor = await Vendor.findByIdAndUpdate(vendorId, req.body, {
@@ -160,7 +160,7 @@ const createOrder = async (req, res, next) => {
     const shippingId = `SHIPPING_${uuidv4().split("-")[0]}`;
 
     req.body.price_details.total_price = calculateTotalAmount(
-      req.body.price_details
+      req.body.price_details,
     );
 
     const order = await Order.create({
@@ -185,7 +185,7 @@ const editOrder = async (req, res, next) => {
     const { orderId } = req.params;
 
     req.body.price_details.total_price = calculateTotalAmount(
-      req.body.price_details
+      req.body.price_details,
     );
 
     const order = await Order.findOneAndUpdate({ _id: orderId }, req.body, {

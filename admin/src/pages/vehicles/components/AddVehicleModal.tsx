@@ -14,10 +14,7 @@ interface AddVehicleModalProps {
 export default function AddVehicleModal({
   isOpen,
   onClose,
-}:  AddVehicleModalProps) {
-
-
-
+}: AddVehicleModalProps) {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[425px]">
@@ -28,9 +25,7 @@ export default function AddVehicleModal({
           </DialogDescription>
         </DialogHeader>
         <div className="h-[60vh] px-3 relative overflow-y-scroll">
-          <CreateVehicleForm
-            close={onClose}
-          ></CreateVehicleForm>
+          <CreateVehicleForm close={onClose}></CreateVehicleForm>
         </div>
       </DialogContent>
     </Dialog>

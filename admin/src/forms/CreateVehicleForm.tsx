@@ -22,7 +22,8 @@ interface FormElementType {
 }
 
 function CreateWarehouseForm({ close }: FormElementType) {
-  const { isLoading: isAddVehicleLoading, addVehicle } = useAddVehicleMutation();
+  const { isLoading: isAddVehicleLoading, addVehicle } =
+    useAddVehicleMutation();
 
   const form = useForm<CreateVehicleFormData>({
     resolver: zodResolver(createVehicleFormSchema),
