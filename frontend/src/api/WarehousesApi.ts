@@ -1,7 +1,7 @@
 import { LoginFormData } from "@/forms/login/types";
 import axiosInstance from "@/lib/axios";
 import { DepartTrackingFormValues } from "@/pages/warehouse/dashboard/forms/depart-tracking/types";
-import { AssignedOrders, Warehouses } from "@/types/warehouse";
+import { AssignedOrders, AssignedTrackings, Warehouses } from "@/types/warehouse";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -178,6 +178,37 @@ export const useGetAssignedOrdersRequest = () => {
     isSuccess,
   };
 };
+
+export const useGetAssignedTrackingsRequest = () => {
+  const getAssignedTrackingsRequest = async (): Promise<AssignedTrackings> => {
+    try {
+      const response = await axiosInstance.get(
+        "/warehouse/get-assigned-trackings"
+      );
+
+      return response.data;
+    } catch (error: any) {
+      throw new Error(error.message);
+    }
+  };
+
+  const {
+    data: assignedTrackings,
+    isLoading,
+    isError,
+    isSuccess,
+  } = useQuery({
+    queryKey: "getAssignedTrackingsRequest",
+    queryFn: getAssignedTrackingsRequest,
+  });
+
+  return {
+    assignedTrackings,
+    isLoading,
+    isError,
+    isSuccess,
+  };
+}
 
 export const useUpdateOrderStatusRequest = (orderId: string) => {
   const updateOrderStatusRequest = async (status: string) => {

@@ -19,10 +19,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Building2, Loader2, TextQuote, Truck } from "lucide-react";
+import { Building2, Car, Loader2, TextQuote, Truck } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { addTrackingFormSchema, AddTrackingFormValues } from "./types";
 import { cn } from "@/lib/utils";
+import { useGetAllVehicles } from "@/api/VehicleApi";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { avatarFallbackColor } from "@/constants/avatar-colors";
 
 const AddTrackingForm = () => {
   const form = useForm<AddTrackingFormValues>({
@@ -30,9 +33,11 @@ const AddTrackingForm = () => {
     defaultValues: {
       shippingId: "SHIPPING_",
       warehouse: "",
+      vehicle: "",
     },
   });
   const { allWarehouses } = useGetAllWarehousesRequest();
+  const { allVehicles } = useGetAllVehicles();
   const { addTracking, isLoading } = useAddTrackingRequest();
 
   const onSubmit = async (data: AddTrackingFormValues) => {
@@ -118,13 +123,71 @@ const AddTrackingForm = () => {
           )}
         />
 
+        <FormField
+          control={form.control}
+          name="vehicle"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Vehicle *</FormLabel>
+              <div className="flex items-center border rounded-md px-3 py-2 h-16">
+                <Car className="mr-2 text-gray-500" />
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger className="h-14">
+                      <SelectValue placeholder="Select Vehicle" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {allVehicles?.vehicles.map((vehicle) => (
+                      <SelectItem
+                        key={vehicle._id}
+                        value={vehicle._id}
+                        className="cursor-pointer gap-2"
+                      >
+                        <div className="flex items-center gap-2">
+                          <Avatar>
+                            <AvatarImage
+                              src={vehicle.vehicle_img.vehicle_img_url}
+                              alt={vehicle.model}
+                            />
+                            <AvatarFallback
+                              className={cn(avatarFallbackColor())}
+                            >
+                              {vehicle.model.slice(0, 2).toUpperCase()}
+                            </AvatarFallback>
+                          </Avatar>
+                          <div className="flex flex-col items-start">
+                            <p className="font-semibold">
+                              {vehicle.type}, {vehicle.model}
+                            </p>
+                            <p className="text-xs text-zinc-500">
+                              {vehicle.number_plate}
+                            </p>
+                          </div>
+                        </div>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <FormDescription>
+                Select the vehicle that will be used to transport the order
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         {/* Submit Button */}
         <Button
           type="submit"
           disabled={isLoading}
           className={cn(
             "w-full",
-            isLoading ? "bg-opacity-75" : "bg-opacity-100",
+            isLoading ? "bg-opacity-75" : "bg-opacity-100"
           )}
         >
           {isLoading ? (

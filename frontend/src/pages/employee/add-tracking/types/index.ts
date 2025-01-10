@@ -8,6 +8,9 @@ export const addTrackingFormSchema = z.object({
   warehouse: z
     .string({ message: "Warehouse is required" })
     .regex(/^[a-fA-F0-9]{24}$/, "Invalid Object Id"),
+  vehicle: z
+    .string({ message: "Vehicle is required" })
+    .regex(/^[a-fA-F0-9]{24}$/, "Invalid Object Id"),
 });
 
 export type AddTrackingFormValues = z.infer<typeof addTrackingFormSchema>;
