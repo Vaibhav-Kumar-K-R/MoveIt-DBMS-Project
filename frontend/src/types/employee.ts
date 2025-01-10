@@ -20,6 +20,8 @@ export type EmployeeType = {
   salary: number;
   curr_status: string;
   work_status: string;
+  createdAt: Date;
+  updatedAt: Date;
 };
 
 export type EmployeesUnderManager = {

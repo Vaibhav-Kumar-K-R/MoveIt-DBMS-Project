@@ -92,7 +92,7 @@ const signOutWarehouse = async (req, res, next) => {
   }
 };
 
-const getOrdersAssigned = async (req, res, next) => {
+const getAssignedOrders = async (req, res, next) => {
   try {
     const pageSize = 5;
     const page = parseInt(req.query?.page?.toString() || "1");
@@ -120,6 +120,54 @@ const getOrdersAssigned = async (req, res, next) => {
         total: totalOrders,
         page,
         pages: Math.ceil(totalOrders / pageSize),
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getAssignedTrackings = async (req, res, next) => {
+  try {
+    const pageSize = 5;
+    const page = parseInt(req.query?.page?.toString() || "1");
+    const skip = (page - 1) * pageSize;
+
+    const query = {
+      warehouse: req.warehouseId,
+      isVerified: false,
+    };
+
+    const trackings = await Tracking.find(query)
+      .sort({ createdAt: "asc" })
+      .skip(skip)
+      .limit(pageSize)
+      .select("-__v -warehouse")
+      .populate({
+        path: "order",
+        select: "-__v",
+        populate: {
+          path: "vendor",
+          select: "-password -__v",
+        }
+      })
+      .populate({
+        path: "vehicle",
+        select: "number_plate capacity curr_status model type vehicle_img",
+      })
+      .populate({
+        path: "employee",
+        select:
+          "profile_img name licence_number email phone city state dob role driving_experience curr_status",
+      });
+    const totalTrackings = await Tracking.countDocuments(query);
+
+    res.status(200).json({
+      trackings,
+      pagination: {
+        total: totalTrackings,
+        page,
+        pages: Math.ceil(totalTrackings / pageSize),
       },
     });
   } catch (error) {
@@ -323,6 +371,21 @@ const verifyTracking = async (req, res, next) => {
       });
     }
 
+    const order = await Order.findOne({
+      shipping_id: shippingId,
+    });
+
+    if (!order) {
+      return res.status(404).json({
+        message: "Order not found",
+      });
+    }
+
+    if (order.status === "placed") {
+      order.status = "in_transit";
+      await order.save();
+    }
+
     const tracking = await Tracking.findOne({
       shipping_id: shippingId,
     });
@@ -392,7 +455,8 @@ export default {
   getAllWarehouses,
   signInWarehouse,
   signOutWarehouse,
-  getOrdersAssigned,
+  getAssignedOrders,
+  getAssignedTrackings,
   updateOrderWarehouseStatus,
   departureTracking,
   outForDeliveryOrder,

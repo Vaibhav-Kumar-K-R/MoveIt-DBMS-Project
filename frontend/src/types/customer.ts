@@ -1,21 +1,16 @@
+import { EmployeeType } from "./employee";
 import { Order } from "./order";
-
-type Warehouse = {
-  name: string;
-  address: string;
-  city: string;
-  state: string;
-  pincode: string;
-};
+import { Vehicle } from "./vehicle";
+import { Warehouse } from "./warehouse";
 
 export type Tracking = {
   _id: string;
-  order: string;
+  order: Order;
+  employee: EmployeeType;
   warehouse: Warehouse;
-  driver_id: string;
-  vehicle: string;
-  isVerified: boolean;
+  vehicle: Vehicle;
   status: "arrived" | "departed" | "out_for_delivery";
+  isVerified: boolean;
   createdAt: Date;
   updatedAt: Date;
 };

@@ -1,3 +1,4 @@
+import { Tracking } from "./customer";
 import { Order } from "./order";
 import { Pagination } from "./pagination";
 
@@ -25,5 +26,10 @@ export type Warehouses = {
 
 export type AssignedOrders = {
   orders: Order[];
+  pagination: Pagination;
+}
+
+export type AssignedTrackings = {
+  trackings: Tracking[];
   pagination: Pagination;
 }

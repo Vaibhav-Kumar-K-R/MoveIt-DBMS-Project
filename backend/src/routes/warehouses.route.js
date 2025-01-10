@@ -21,7 +21,12 @@ warehouseRouter.post("/auth/sign-out", warehousesController.signOutWarehouse);
 
 warehouseRouter.get(
   "/get-assigned-orders",
-  warehousesController.getOrdersAssigned
+  warehousesController.getAssignedOrders
+);
+
+warehouseRouter.get(
+  "/get-assigned-trackings",
+  warehousesController.getAssignedTrackings
 );
 
 warehouseRouter.patch(

@@ -1,6 +1,5 @@
 import Employee from "../models/employee.model.js";
 import Order from "../models/order.model.js";
-import Warehouse from "../models/warehouse.model.js";
 import Tracking from "../models/tracking.model.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
@@ -93,7 +92,7 @@ const signOutEmployee = async (req, res, next) => {
 
 const addTracking = async (req, res, next) => {
   try {
-    const { shippingId, warehouse } = req.body;
+    const { shippingId, vehicle, warehouse } = req.body;
     const order = await Order.findOne({
       shipping_id: shippingId,
     });
@@ -157,10 +156,11 @@ const addTracking = async (req, res, next) => {
       warehouse: warehouse,
       status: "arrived",
       employee: req.employeeId,
+      vehicle: vehicle,
     });
 
     res.status(201).json({
-      orderStopId: tracking._id,
+      tracking: tracking._id,
       message: "Order stop added successfully",
     });
   } catch (error) {
