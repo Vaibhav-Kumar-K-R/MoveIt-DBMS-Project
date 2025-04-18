@@ -81,7 +81,9 @@ const signOutEmployee = async (req, res, next) => {
   try {
     res.clearCookie("employee_auth_token", {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure:true,
+      sameSite:"None",
+      path:"/ "
     });
 
     return res.status(200).json({

@@ -69,9 +69,11 @@ const signInAdmin = async (req, res, next) => {
 
 const signOutAdmin = async (req, res, next) => {
   try {
-    res.clearCookie("admin_auth_token", {
+    res.clearCookie("admin_auth_token",{
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure:true,
+      sameSite:"None",
+      path:"/ "
     });
 
     return res.status(200).json({
