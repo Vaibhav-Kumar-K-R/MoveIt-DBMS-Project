@@ -78,10 +78,12 @@ const signInVendor = async (req, res, next) => {
       expiresIn: "1d",
     });
 
-    res.cookie("vendor_auth_token", token, {
+  res.cookie("vendor_auth_token", token,{
       maxAge: 1000 * 60 * 60 * 24,
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure:true,
+      sameSite: "None",
+      
     });
 
     return res.status(200).json({
