@@ -27,7 +27,7 @@ const PORT = process.env.PORT || 5000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const allowedOrigins = ["https://moveitadmin.netlify.app", "https://moveitlogistics.netlify.app/"];
+const allowedOrigins = ["https://moveitadmin.netlify.app", "https://moveitlogistics.netlify.app"];
 
 app.use(cors({
   origin: (origin, callback) => {
