@@ -7,25 +7,16 @@ import { formatPhoneNumber } from "@/helpers/format-phone-number";
 import { avatarFallbackColor } from "@/constants/avatar-colors";
 import { cn } from "@/lib/utils";
 
-type AuthButtonProps = {
-  name: string;
-  email: string;
-  phone: string;
-  imageUrl: string;
-  children?: React.ReactNode;
-  logOut?: () => void;
-  isLogoutLoading?: boolean;
-};
 
 const AuthButton = ({
   name,
   email,
   phone,
-  imageUrl,
+  imageUrl1,
   children,
   logOut,
   isLogoutLoading,
-}: AuthButtonProps) => {
+}: any) => {
   const avatarColor = avatarFallbackColor();
 
   return (
@@ -33,7 +24,7 @@ const AuthButton = ({
       <Popover>
         <PopoverTrigger>
           <Avatar>
-            <AvatarImage src={imageUrl} />
+            <AvatarImage src={imageUrl1} />
             <AvatarFallback className={cn(avatarColor)}>
               {name.slice(0, 2).toUpperCase()}
             </AvatarFallback>
@@ -44,7 +35,7 @@ const AuthButton = ({
             <div>
               <div className="flex items-center gap-2">
                 <Avatar>
-                  <AvatarImage src={imageUrl} />
+                  <AvatarImage src={imageUrl1} />
                   <AvatarFallback className={cn(avatarColor)}>
                     {name.slice(0, 2).toUpperCase()}
                   </AvatarFallback>

@@ -26,12 +26,21 @@ const PORT = process.env.PORT || 5000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(
-  cors({
-    origin:"https://moveitadmin.netlify.app",
-    credentials: true,
-  }),
-);
+
+const allowedOrigins = ["https://moveitadmin.netlify.app", "https://moveitlogistics.netlify.app/"];
+
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    callback(new Error("Not allowed by CORS"));
+  },
+  credentials: true
+}));
+
+
+
 app.use(cookieParser());
 
 app.get("/health", (_req, res) => {

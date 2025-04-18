@@ -36,7 +36,7 @@ const AuthOptions = () => {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56 bg-zinc-100">
          <DropdownMenuItem className="bg-zinc-100 focus:bg-zinc-200">
-          <a href="https://www.google.com" target="_blank" className="flex items-center gap-2">
+          <a href="https://moveitadmin.netlify.app/" target="_blank" className="flex items-center gap-2">
             <UserCog className="h-4 w-4" />
             <span>Sign in as Admin</span>
           </a>
